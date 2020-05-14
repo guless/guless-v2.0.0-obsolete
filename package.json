@@ -5,7 +5,14 @@
         "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js"
     },
     "devDependencies": {
+        "autoprefixer": "^9.7.6",
+        "css-loader": "^3.5.3",
+        "cssnano": "^4.1.10",
         "html-webpack-plugin": "^4.3.0",
+        "node-sass": "^4.14.1",
+        "postcss-loader": "^3.0.0",
+        "sass-loader": "^8.0.2",
+        "style-loader": "^1.2.1",
         "ts-loader": "^7.0.3",
         "typescript": "^3.8.3",
         "webpack": "^4.43.0",

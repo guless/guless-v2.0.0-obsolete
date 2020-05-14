@@ -13,7 +13,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         context,
         mode: "development",
         entry: {
-            "main": "./main.ts",
+            "main": ["./main.scss", "./main.ts"],
         },
         output: {
             path: context,
@@ -40,6 +40,26 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                             options: {
                                 configFile: path.resolve(context, "tsconfig.json"),
                             },
+                        },
+                    ],
+                },
+                {
+                    test: /\.s?css(\?.*)?/i,
+                    use: [
+                        {
+                            loader: "style-loader",
+                        },
+                        {
+                            loader: "css-loader",
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                config: { path: path.resolve(context) },
+                            },
+                        },
+                        {
+                            loader: "sass-loader",
                         },
                     ],
                 },
