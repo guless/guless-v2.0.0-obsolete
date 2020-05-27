@@ -68,8 +68,8 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         plugins: [
             new HTMLWebpackPlugin({
                 chunks: ["main"],
-                title: "Hello World",
-                template: path.resolve(context, "template.html"),
+                title: "Hello World", 
+                template: path.resolve(context, "main.html"),
             }),
         ],
     });
