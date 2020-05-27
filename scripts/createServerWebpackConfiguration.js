@@ -11,9 +11,9 @@ const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfigu
 function createServerWebpackConfiguration(env = {}, argv = {}) {
     return mergeWebpackConfiguration(createDefaultWebpackConfiguration(env, argv), {
         context,
-        mode: "development",
+        mode: env.mode || "development",
         entry: {
-            "main": "./main.ts",
+            "main": ["./main.scss", "./main.ts"],
         },
         output: {
             path: context,
@@ -33,7 +33,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         module: {
             rules: [
                 {
-                    test: /\.tsx?(\?.*)?$/i,
+                    test: /\.tsx?(?:\?.*)?$/i,
                     use: [
                         {
                             loader: "ts-loader",
@@ -43,13 +43,44 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                         },
                     ],
                 },
+                {
+                    test: /\.s?css(?:\?.*)?/i,
+                    use: [
+                        {
+                            loader: "style-loader",
+                        },
+                        {
+                            loader: "css-loader",
+                            options: {
+                                url: false,
+                            },
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                config: { path: path.resolve(context) },
+                            },
+                        },
+                        {
+                            loader: "sass-loader",
+                        },
+                    ],
+                },
+                {
+                    test: /\.(?:glsl|vert|frag)(?:\?.*)?/i,
+                    use: [
+                        {
+                            loader: "raw-loader",
+                        },
+                    ],
+                },
             ],
         },
         plugins: [
             new HTMLWebpackPlugin({
                 chunks: ["main"],
-                title: "Hello World",
-                template: path.resolve(context, "template.html"),
+                title: "Hello World", 
+                template: path.resolve(context, "main.html"),
             }),
         ],
     });
