@@ -11,7 +11,7 @@ const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfigu
 function createServerWebpackConfiguration(env = {}, argv = {}) {
     return mergeWebpackConfiguration(createDefaultWebpackConfiguration(env, argv), {
         context,
-        mode: "development",
+        mode: env.mode || "development",
         entry: {
             "main": ["./main.scss", "./main.ts"],
         },
@@ -33,7 +33,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         module: {
             rules: [
                 {
-                    test: /\.tsx?(\?.*)?$/i,
+                    test: /\.tsx?(?:\?.*)?$/i,
                     use: [
                         {
                             loader: "ts-loader",
@@ -44,13 +44,16 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                     ],
                 },
                 {
-                    test: /\.s?css(\?.*)?/i,
+                    test: /\.s?css(?:\?.*)?/i,
                     use: [
                         {
                             loader: "style-loader",
                         },
                         {
                             loader: "css-loader",
+                            options: {
+                                url: false,
+                            },
                         },
                         {
                             loader: "postcss-loader",
@@ -60,6 +63,14 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                         },
                         {
                             loader: "sass-loader",
+                        },
+                    ],
+                },
+                {
+                    test: /\.(?:glsl|vert|frag)(?:\?.*)?/i,
+                    use: [
+                        {
+                            loader: "raw-loader",
                         },
                     ],
                 },

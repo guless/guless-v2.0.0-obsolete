@@ -2,7 +2,8 @@
     "name": "@guless/guless",
     "version": "6.0.1",
     "scripts": {
-        "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js"
+        "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js",
+        "build:www": "webpack-cli --config=scripts/createServerWebpackConfiguration.js --env.mode=production"
     },
     "devDependencies": {
         "autoprefixer": "^9.7.6",
