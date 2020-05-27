@@ -9,9 +9,11 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
 
 function createServerWebpackConfiguration(env = {}, argv = {}) {
+    env.mode = env.mode || "development";
     return mergeWebpackConfiguration(createDefaultWebpackConfiguration(env, argv), {
         context,
-        mode: env.mode || "development",
+        mode: env.mode,
+        devtool: env.mode === "development" ? "#inline-source-map" : false,
         entry: {
             "main": ["./main.scss", "./main.ts"],
         },
@@ -26,6 +28,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         },
         devServer: {
             contentBase: context,
+            https: true,
             host: "0.0.0.0",
             useLocalIp: true,
             disableHostCheck: true,
