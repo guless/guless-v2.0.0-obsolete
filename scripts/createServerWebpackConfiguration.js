@@ -9,11 +9,9 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
 
 function createServerWebpackConfiguration(env = {}, argv = {}) {
-    env.mode = env.mode || "development";
     return mergeWebpackConfiguration(createDefaultWebpackConfiguration(env, argv), {
         context,
-        mode: env.mode,
-        devtool: env.mode === "development" ? "#inline-source-map" : false,
+        devtool: "#inline-source-map",
         entry: {
             "main": ["./main.scss", "./main.ts"],
         },
@@ -66,14 +64,6 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                         },
                         {
                             loader: "sass-loader",
-                        },
-                    ],
-                },
-                {
-                    test: /\.(?:glsl|vert|frag)(?:\?.*)?/i,
-                    use: [
-                        {
-                            loader: "raw-loader",
                         },
                     ],
                 },
