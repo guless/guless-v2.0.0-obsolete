@@ -1,6 +1,17 @@
 {
     "name": "@guless/guless",
     "version": "6.0.2",
+    "description": "Web 前端标准扩展库(Standard extensions library for web developers)",
+    "homepage": "https://developers.guless.com/",
+    "author": "Samlv9<samlv9@live.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/guless/guless.git"
+    },
+    "bugs": {
+        "url": "https://github.com/guless/guless/issues"
+    },
     "scripts": {
         "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js",
         "build": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
