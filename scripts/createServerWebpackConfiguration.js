@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const fs = require("fs");
 const path = require("path");
 const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
@@ -26,10 +27,11 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         },
         devServer: {
             contentBase: context,
+            host: "www.guless.com",
+            port: 443,
             https: true,
-            host: "0.0.0.0",
-            useLocalIp: true,
-            disableHostCheck: true,
+            key: fs.readFileSync("./scripts/server.key"),
+            cert: fs.readFileSync("./scripts/server.crt"),
         },
         module: {
             rules: [

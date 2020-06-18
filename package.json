@@ -15,7 +15,8 @@
     "scripts": {
         "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js",
         "build": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
-        "push": "npm run build && npm version patch && cp package.json dist/esm/package.json && npm publish dist/esm/ --access public"
+        "push": "npm run build && npm version patch && cp package.json dist/esm/package.json && npm publish dist/esm/ --access public",
+        "keygen": "source scripts/keygen.sh"
     },
     "devDependencies": {
         "autoprefixer": "^9.7.6",
