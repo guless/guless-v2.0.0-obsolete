@@ -3,7 +3,8 @@
     "version": "6.0.1",
     "scripts": {
         "start": "webpack-dev-server --config=scripts/createServerWebpackConfiguration.js",
-        "build:www": "webpack-cli --config=scripts/createServerWebpackConfiguration.js --env.mode=production"
+        "build": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
+        "push": "npm run build && cp package.json dist/esm/package.json && npm publish dist/esm/"
     },
     "devDependencies": {
         "autoprefixer": "^9.7.6",
