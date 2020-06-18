@@ -35,24 +35,12 @@ class RegisteredEventListener {
         return this._iterateID;
     }
 
-    public set iterateID(value: number) {
-        this._iterateID = value;
-    }
-
     public get next(): null | RegisteredEventListener {
         return this._next;
     }
 
-    public set next(value: null | RegisteredEventListener) {
-        this._next = value;
-    }
-
     public get prev(): null | RegisteredEventListener {
         return this._prev;
-    }
-
-    public set prev(value: null | RegisteredEventListener) {
-        this._prev = value;
     }
 
     public get listener(): IEventListener {

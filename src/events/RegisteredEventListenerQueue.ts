@@ -7,6 +7,7 @@ import RegisteredEventListenerIterator from "./RegisteredEventListenerIterator";
 import Event from "./Event";
 import EventPhase from "./EventPhase";
 import IEventListener from "./IEventListener";
+import internal from "../internal";
 
 class RegisteredEventListenerQueue {
     private _iterateID: number = 0;
@@ -27,10 +28,11 @@ class RegisteredEventListenerQueue {
             prev = prev.prev;
         }
 
-        listener.iterateID = ++this._iterateID;
+        (listener as internal)._iterateID = ++this._iterateID;
 
-        if (prev !== null) { prev.next = listener; listener.prev = prev; }
-        if (next !== null) { next.prev = listener; listener.next = next; }
+        if (prev !== null) { (prev as internal)._next = listener; (listener as internal)._prev = prev; }
+        if (next !== null) { (next as internal)._prev = listener; (listener as internal)._next = next; }
+
         if (this._head === next) { this._head = listener; }
         if (this._tail === prev) { this._tail = listener; }
     }
@@ -40,13 +42,14 @@ class RegisteredEventListenerQueue {
             iterator.remove(listener);
         }
 
-        listener.iterateID = 0;
+        (listener as internal)._iterateID = 0;
 
         const prev: null | RegisteredEventListener = listener.prev;
         const next: null | RegisteredEventListener = listener.next;
 
-        if (prev !== null) { prev.next = next; listener.prev = null; }
-        if (next !== null) { next.prev = prev; listener.next = null; }
+        if (prev !== null) { (prev as internal)._next = next; (listener as internal)._prev = null; }
+        if (next !== null) { (next as internal)._prev = prev; (listener as internal)._next = null; }
+
         if (this._head === listener) { this._head = next; }
         if (this._tail === listener) { this._tail = prev; }
     }
