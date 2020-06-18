@@ -2,43 +2,78 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0.1 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 
 class RegisteredEventListenerIterator {
-    private _head: null | RegisteredEventListener;
-    private _tail: null | RegisteredEventListener;
+    private static __ITERATE_ID__: number = 0;
+    private static __ACTIVED_ITERATORS__: RegisteredEventListenerIterator[] = [];
 
-    constructor(head: null | RegisteredEventListener, tail: null | RegisteredEventListener) {
-        this._head = head;
-        this._tail = tail;
+    public static nodeWillBeInserted(listener: RegisteredEventListener): void {
+        RegisteredEventListenerIterator.setIterateID(listener, ++RegisteredEventListenerIterator.__ITERATE_ID__);
+    }
+
+    public static nodeWillBeRemoved(listener: RegisteredEventListener): void {
+        for (const iterator of RegisteredEventListenerIterator.__ACTIVED_ITERATORS__) {
+            iterator.remove(listener);
+        }
+
+        RegisteredEventListenerIterator.setIterateID(listener, 0);
+    }
+
+    private static getIterateID(listener: RegisteredEventListener): number {
+        return (listener as internal)["__ITERATE_ID__"] || 0;
+    }
+
+    private static setIterateID(listener: RegisteredEventListener, value: number): void {
+        (listener as internal)["__ITERATE_ID__"] = value;
+    }
+
+    private static init(iterator: RegisteredEventListenerIterator): void {
+        RegisteredEventListenerIterator.__ACTIVED_ITERATORS__.push(iterator);
+    }
+
+    private static dispose(iterator: RegisteredEventListenerIterator): void {
+        const lastIndex: number = RegisteredEventListenerIterator.__ACTIVED_ITERATORS__.lastIndexOf(iterator);
+
+        if (lastIndex >= 0) {
+            RegisteredEventListenerIterator.__ACTIVED_ITERATORS__.splice(lastIndex, 1);
+        }
+    }
+
+    private _listener: null | RegisteredEventListener;
+    private _iterateID: number = 0;
+
+    constructor(listener: null | RegisteredEventListener) {
+        this._listener = listener;
+        this._iterateID = RegisteredEventListenerIterator.__ITERATE_ID__;
     }
 
     public get next(): null | RegisteredEventListener {
-        if (this._head !== null) {
-            const willBeRemoved: RegisteredEventListener = this._head;
+        while (this._listener) {
+            const willBeRemoved: RegisteredEventListener = this._listener;
             this.remove(willBeRemoved);
-            return willBeRemoved;
+
+            if (RegisteredEventListenerIterator.getIterateID(willBeRemoved) !== 0 && RegisteredEventListenerIterator.getIterateID(willBeRemoved) <= this._iterateID) {
+                return willBeRemoved;
+            }
         }
 
-        return this._head;
+        return null;
     }
 
-    public get prev(): null | RegisteredEventListener {
-        if (this._tail !== null) {
-            const willBeRemoved: RegisteredEventListener = this._tail;
-            this.remove(willBeRemoved);
-            return willBeRemoved;
+    public remove(listener: RegisteredEventListener): void {
+        if (this._listener === listener) {
+            this._listener = this._listener.next;
         }
-
-        return this._tail;
     }
 
-    public remove(node: RegisteredEventListener): void {
-        const head: null | RegisteredEventListener = this._head;
-        const tail: null | RegisteredEventListener = this._tail;
+    public init(): void {
+        RegisteredEventListenerIterator.init(this);
+    }
 
-        if (head === node) { this._head = tail === node ? null : node.next; }
-        if (tail === node) { this._tail = head === node ? null : node.prev; }
+    public dispose(): void {
+        RegisteredEventListenerIterator.dispose(this);
     }
 }
 

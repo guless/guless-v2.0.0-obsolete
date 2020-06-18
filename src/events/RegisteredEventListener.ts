@@ -7,7 +7,6 @@ import IEventListener from "./IEventListener";
 import IAddEventListenerOptions from "./IAddEventListenerOptions";
 
 class RegisteredEventListener {
-    private _iterateID: number = 0;
     private _next: null | RegisteredEventListener = null;
     private _prev: null | RegisteredEventListener = null;
     private _listener: IEventListener;
@@ -29,10 +28,6 @@ class RegisteredEventListener {
             this._once = options.once ?? false;
             this._priority = options.priority ?? 0;
         }
-    }
-
-    public get iterateID(): number {
-        return this._iterateID;
     }
 
     public get next(): null | RegisteredEventListener {
