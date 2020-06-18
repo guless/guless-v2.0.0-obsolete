@@ -49,7 +49,7 @@ class RegisteredEventListenerIterator {
         this._iterateID = RegisteredEventListenerIterator.__ITERATE_ID__;
     }
 
-    public get next(): null | RegisteredEventListener {
+    public next(): null | RegisteredEventListener {
         while (this._listener) {
             const willBeRemoved: RegisteredEventListener = this._listener;
             this.remove(willBeRemoved);

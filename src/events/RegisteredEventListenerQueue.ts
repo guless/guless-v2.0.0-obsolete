@@ -67,7 +67,7 @@ class RegisteredEventListenerQueue {
         
         try {
             iterator.init();
-            for (let current: null | RegisteredEventListener = iterator.next; current !== null && !event.immediatePropagationStopped; current = current.next) {
+            for (let current: null | RegisteredEventListener = iterator.next(); current !== null && !event.immediatePropagationStopped; current = iterator.next()) {
                 if ((event.eventPhase === EventPhase.CAPTURING_PHASE && !current.capture) ||
                     (event.eventPhase === EventPhase.BUBBLING_PHASE  &&  current.capture)) {
                     continue;
