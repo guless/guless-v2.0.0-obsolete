@@ -44,31 +44,21 @@ class Node extends EventDispatcher {
             (ancestors[l] as internal)._dispatchEventToListeners(event);
         }
 
-        if (event.propagationStopped) {
-            (event as internal)._target = null;
-            (event as internal)._currentTarget = null;
-            (event as internal)._eventPhase = EventPhase.NONE;
-            return false;
-        }
-
         /// (2) AT_TARGET
-        (event as internal)._eventPhase = EventPhase.AT_TARGET;
-        (event as internal)._currentTarget = this;
-        (this as internal)._dispatchEventToListeners(event);
+        if (!event.propagationStopped) {
+            (event as internal)._eventPhase = EventPhase.AT_TARGET;
+            (event as internal)._currentTarget = this;
+            (this as internal)._dispatchEventToListeners(event);
 
-        if (event.propagationStopped || !event.bubbles) {
-            (event as internal)._target = null;
-            (event as internal)._currentTarget = null;
-            (event as internal)._eventPhase = EventPhase.NONE;
-            return !event.defaultPrevented;
-        }
+            /// (3) BUBBLING_PHASE
+            if (event.bubbles && !event.propagationStopped) {
+                (event as internal)._eventPhase = EventPhase.BUBBLING_PHASE;
 
-        /// (3) BUBBLING_PHASE
-        (event as internal)._eventPhase = EventPhase.BUBBLING_PHASE;
-
-        for (let i: number = 0; i < ancestors.length && !event.propagationStopped; ++i) {
-            (event as internal)._currentTarget = ancestors[i];
-            (ancestors[i] as internal)._dispatchEventToListeners(event);
+                for (let i: number = 0; i < ancestors.length && !event.propagationStopped; ++i) {
+                    (event as internal)._currentTarget = ancestors[i];
+                    (ancestors[i] as internal)._dispatchEventToListeners(event);
+                }
+            }
         }
 
         (event as internal)._target = null;
