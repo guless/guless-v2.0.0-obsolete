@@ -16,7 +16,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         context,
         devtool: "#inline-source-map",
         entry: {
-            "main": ["./main.scss", "./main.ts"],
+            "main": ["./main.ts"],
         },
         output: {
             path: dist,
@@ -31,8 +31,10 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             host: "www.guless.com",
             port: 443,
             https: true,
-            key: fs.readFileSync("./scripts/server.key"),
-            cert: fs.readFileSync("./scripts/server.crt"),
+            key: fs.readFileSync("./private/server.key"),
+            cert: fs.readFileSync("./private/server.crt"),
+            injectClient: false,
+            injectHot: false,
         },
         module: {
             rules: [
