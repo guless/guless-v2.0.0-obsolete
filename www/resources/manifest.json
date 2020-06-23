@@ -3,8 +3,8 @@
     "short_name": "Hello World",
     "display": "standalone",
     "orientation": "portrait",
-    "theme_color": "#333333",
-    "background_color": "#f8f8f8",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
     "icons": [
         {
             "src": "./icons/android-chrome-192x192.png",
@@ -29,5 +29,5 @@
             "purpose":"maskable"
         }
     ],
-    "start_url": "../index.html"
+    "start_url": "../"
 }
