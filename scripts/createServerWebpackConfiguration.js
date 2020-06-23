@@ -4,9 +4,11 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const fs = require("fs");
 const path = require("path");
+const dist = path.resolve(__dirname, "../dist/www/");
 const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
 
 function createServerWebpackConfiguration(env = {}, argv = {}) {
@@ -17,7 +19,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             "main": ["./main.scss", "./main.ts"],
         },
         output: {
-            path: context,
+            path: dist,
             filename: "[name].js",
         },
         resolve: {
@@ -26,7 +28,6 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             },
         },
         devServer: {
-            contentBase: context,
             host: "www.guless.com",
             port: 443,
             https: true,
@@ -72,6 +73,9 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             ],
         },
         plugins: [
+            new CopyWebpackPlugin({
+                patterns: [{ from: "./resources/", to: "./resources/", noErrorOnMissing: true }],
+            }),
             new HTMLWebpackPlugin({
                 chunks: ["main"],
                 template: path.resolve(context, "main.html"),
