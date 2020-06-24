@@ -16,7 +16,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         context,
         devtool: "#inline-source-map",
         entry: {
-            "main": ["./main.ts"],
+            "main": ["./main.scss", "./main.ts"],
         },
         output: {
             path: dist,
