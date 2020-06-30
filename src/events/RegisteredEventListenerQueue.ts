@@ -86,10 +86,12 @@ class RegisteredEventListenerQueue {
                     (event.eventPhase === EventPhase.BUBBLING_PHASE  &&  current.capture)) {
                     continue;
                 }
+                
+                current.handleEvent(event);
+
                 if (current.once) {
                     this.removeListener(current);
                 }
-                current.handleEvent(event);
             }
         } finally {
             this._activedIterators.pop();
