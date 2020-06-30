@@ -5,7 +5,6 @@
 import assert from "../assert";
 import internal from "../internal";
 import Node from "./Node";
-import NodeIterator from "./NodeIterator";
 
 class Container extends Node {
     private _head: null | Node = null;
@@ -24,8 +23,8 @@ class Container extends Node {
             node.parent.removeChild(node);
         }
 
-        this._nodeWillBeInserted(node);
         assert(before === null || before.parent === this, "The before to be referenced is not a child of this container.");
+        this._childWillBeInserted(node);
 
         (node as internal)._parent = this;
 
@@ -37,12 +36,13 @@ class Container extends Node {
 
         if (this._head === next) { this._head = node; }
         if (this._tail === prev) { this._tail = node; }
-        this._nodeHasBeenInserted(node);
+
+        this._childHasBeenInserted(node);
     }
 
     public removeChild(node: Node): void {
-        this._nodeWillBeRemoved(node);
         assert(node.parent === this, "The node to be removed is not a child of this container.");
+        this._childWillBeRemoved(node);
 
         (node as internal)._parent = null;
 
@@ -54,22 +54,23 @@ class Container extends Node {
 
         if (this._head === node) { this._head = next; }
         if (this._tail === node) { this._tail = prev; }
-        this._nodeHasBeenRemoved(node);
+        
+        this._childHasBeenRemoved(node);
     }
 
-    protected _nodeWillBeInserted(node: Node): void {
-        NodeIterator.nodeWillBeInserted(node);
-    }
-
-    protected _nodeHasBeenInserted(node: Node): void {
+    protected _childWillBeInserted(node: Node): void {
         /*< empty >*/
     }
 
-    protected _nodeWillBeRemoved(node: Node): void {
-        NodeIterator.nodeWillBeRemoved(node);
+    protected _childHasBeenInserted(node: Node): void {
+        /*< empty >*/
     }
 
-    protected _nodeHasBeenRemoved(node: Node): void {
+    protected _childWillBeRemoved(node: Node): void {
+        /*< empty >*/
+    }
+
+    protected _childHasBeenRemoved(node: Node): void {
         /*< empty >*/
     }
 }
