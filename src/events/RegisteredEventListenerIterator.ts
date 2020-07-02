@@ -5,11 +5,10 @@
 import RegisteredEventListener from "./RegisteredEventListener";
 
 class RegisteredEventListenerIterator {
-    private _iteratorID: number;
+    private _iteratorID: number = 0;
     private _listener: null | RegisteredEventListener;
 
-    constructor(iteratorID: number, listener: null | RegisteredEventListener) {
-        this._iteratorID = iteratorID;
+    constructor(listener: null | RegisteredEventListener) {
         this._listener = listener;
     }
 
@@ -20,13 +19,10 @@ class RegisteredEventListenerIterator {
     }
 
     public next(): null | RegisteredEventListener {
-        while (this._listener) {
+        if (this._listener !== null) {
             const willBeRemoved: RegisteredEventListener = this._listener;
             this.remove(willBeRemoved);
-
-            if (willBeRemoved.iteratorID !== 0 && willBeRemoved.iteratorID <= this._iteratorID) {
-                return willBeRemoved;
-            }
+            return willBeRemoved;
         }
 
         return null;

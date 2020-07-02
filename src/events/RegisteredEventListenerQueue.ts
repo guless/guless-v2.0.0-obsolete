@@ -5,15 +5,15 @@
 import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 import RegisteredEventListenerIterator from "./RegisteredEventListenerIterator";
+import RegisteredEventListenerIteratorController from "./RegisteredEventListenerIteratorController";
 import Event from "./Event";
 import EventPhase from "./EventPhase";
 import IEventListener from "./IEventListener";
 
 class RegisteredEventListenerQueue {
-    private _iteratorID: number = 0;
-    private _activedIterators: RegisteredEventListenerIterator[] = [];
     private _head: null | RegisteredEventListener = null;
     private _tail: null | RegisteredEventListener = null;
+    private _controller: RegisteredEventListenerIteratorController = new RegisteredEventListenerIteratorController();
 
     public get head(): null | RegisteredEventListener {
         return this._head;
@@ -36,7 +36,7 @@ class RegisteredEventListenerQueue {
             prev = prev.prev;
         }
 
-        (listener as internal)._iteratorID = ++this._iteratorID;
+        this._controller.addListener(listener);
 
         if (prev !== null) { (prev as internal)._next = listener; (listener as internal)._prev = prev; }
         if (next !== null) { (next as internal)._prev = listener; (listener as internal)._next = next; }
@@ -46,11 +46,7 @@ class RegisteredEventListenerQueue {
     }
 
     public removeListener(listener: RegisteredEventListener): void {
-        for (const iterator of this._activedIterators) {
-            iterator.remove(listener);
-        }
-
-        (listener as internal)._iteratorID = 0;
+        this._controller.removeListener(listener);
 
         const prev: null | RegisteredEventListener = listener.prev;
         const next: null | RegisteredEventListener = listener.next;
@@ -77,16 +73,16 @@ class RegisteredEventListenerQueue {
     }
 
     public dispatchEventToListeners(event: Event): void {
-        const iterator: RegisteredEventListenerIterator = new RegisteredEventListenerIterator(this._iteratorID, this._head);
-        this._activedIterators.push(iterator);
+        const iterator: RegisteredEventListenerIterator = new RegisteredEventListenerIterator(this._head);
+        this._controller.addIterator(iterator);
         
         try {
-            for (let current: null | RegisteredEventListener = iterator.next(); current !== null && !event.immediatePropagationStopped; current = iterator.next()) {
+            for (let current: null | RegisteredEventListener = this._controller.moveToNext(iterator); current !== null && !event.immediatePropagationStopped; current = this._controller.moveToNext(iterator)) {
                 if ((event.eventPhase === EventPhase.CAPTURING_PHASE && !current.capture) ||
                     (event.eventPhase === EventPhase.BUBBLING_PHASE  &&  current.capture)) {
                     continue;
                 }
-                
+
                 current.handleEvent(event);
 
                 if (current.once) {
@@ -94,7 +90,7 @@ class RegisteredEventListenerQueue {
                 }
             }
         } finally {
-            this._activedIterators.pop();
+            this._controller.removeIterator(iterator);
         }
     }
 }
