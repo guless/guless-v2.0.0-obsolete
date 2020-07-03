@@ -5,8 +5,8 @@
 const createServerWebpackConfiguration = require("./createServerWebpackConfiguration");
 const createWorkerWebpackConfiguration = require("./createWorkerWebpackConfiguration");
 
-function createPWAWebpackConfiguration(env = {}, argv = {}) {
+function createApplicationWebpackConfiguration(env = {}, argv = {}) {
     return [createServerWebpackConfiguration(env, argv), createWorkerWebpackConfiguration(env, argv)];
 }
 
-module.exports = createPWAWebpackConfiguration;
+module.exports = createApplicationWebpackConfiguration;

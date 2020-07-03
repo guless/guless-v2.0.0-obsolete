@@ -15,12 +15,12 @@
     "scripts": {
         "keygen": "source scripts/generate-self-signed-cert.sh",
         "clean": "rm -rf dist",
-        "start": "webpack-dev-server --config=scripts/createPWAWebpackConfiguration.js --mode=development",
+        "start": "webpack-dev-server --config=scripts/createApplicationWebpackConfiguration.js --mode=development",
         "build": "npm run build:src && npm run build:www",
         "build:src": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
-        "build:www": "webpack-cli --config=scripts/createPWAWebpackConfiguration.js --mode=production --devtool=false",
-        "deploy": "npm version patch && npm run deploy:src",
-        "deploy:src": "npm run build:src && cp package.json dist/esm/package.json && npm publish dist/esm/ --access public"
+        "build:www": "webpack-cli --config=scripts/createApplicationWebpackConfiguration.js --mode=production --devtool=false",
+        "deploy": "npm run deploy:src",
+        "deploy:src": "npm version patch && npm run build:src && cp package.json dist/esm/package.json && npm publish dist/esm/ --access public"
     },
     "devDependencies": {
         "autoprefixer": "^9.7.6",
