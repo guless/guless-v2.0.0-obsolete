@@ -71,9 +71,9 @@ class Node extends EventDispatcher {
         return !event.propagationStopped;
     }
 
-    private _dispatchEventAtBubbling(event: Event, path: Node[]): boolean {
+    private _dispatchEventAtBubbling(event: Event, path: Node[]): void {
         if (!event.bubbles) {
-            return !event.propagationStopped;
+            return;
         }
 
         for (let i: number = 1; i < path.length && !event.propagationStopped; ++i) {
@@ -81,8 +81,6 @@ class Node extends EventDispatcher {
             (event as internal)._currentTarget = path[i];
             (path[i] as internal)._dispatchEventToListeners(event);
         }
-
-        return !event.propagationStopped;
     }
 }
 
