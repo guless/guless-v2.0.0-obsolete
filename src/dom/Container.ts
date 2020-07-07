@@ -23,6 +23,10 @@ class Container extends Node {
             node.parent.removeChild(node);
         }
 
+        if (node.parent !== null) {
+            return;
+        }
+
         assert(before === null || before.parent === this, "The before to be referenced is not a child of this container.");
         this._childWillBeInserted(node);
 
