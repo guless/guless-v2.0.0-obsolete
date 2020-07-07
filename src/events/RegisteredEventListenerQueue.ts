@@ -8,7 +8,6 @@ import RegisteredEventListenerIterator from "./RegisteredEventListenerIterator";
 import RegisteredEventListenerIteratorController from "./RegisteredEventListenerIteratorController";
 import Event from "./Event";
 import EventPhase from "./EventPhase";
-import IEventListener from "./IEventListener";
 
 class RegisteredEventListenerQueue {
     private _head: null | RegisteredEventListener = null;
@@ -62,11 +61,9 @@ class RegisteredEventListenerQueue {
         return this._head !== null && this._tail !== null;
     }
 
-    public getListener(listener: IEventListener, capture: boolean): null | RegisteredEventListener {
+    public findListener(predicate: (listener: RegisteredEventListener) => boolean): null | RegisteredEventListener {
         for (let current: null | RegisteredEventListener = this._head; current !== null; current = current.next) {
-            if (current.listener === listener && current.capture === capture) {
-                return current;
-            }
+            if (predicate(current)) { return current; }
         }
 
         return null;

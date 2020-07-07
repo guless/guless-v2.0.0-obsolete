@@ -30,8 +30,8 @@ class EventDispatcher {
             return;
         }
 
-        const useCapture: boolean = typeof options === "boolean" ? options : options.capture ?? false;
-        const registeredListener: null | RegisteredEventListener = this._registeredEventListenersMap[type].getListener(listener, useCapture);
+        const capture: boolean = typeof options === "boolean" ? options : options.capture ?? false;
+        const registeredListener: null | RegisteredEventListener = this._registeredEventListenersMap[type].findListener((registeredListener: RegisteredEventListener) => registeredListener.listener === listener && registeredListener.capture === capture);
 
         if (!registeredListener) {
             return;
