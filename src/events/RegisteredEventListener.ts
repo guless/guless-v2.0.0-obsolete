@@ -31,6 +31,10 @@ class RegisteredEventListener {
         }
     }
 
+    public get iteratorID(): number {
+        return this._iteratorID;
+    }
+
     public get next(): null | RegisteredEventListener {
         return this._next;
     }

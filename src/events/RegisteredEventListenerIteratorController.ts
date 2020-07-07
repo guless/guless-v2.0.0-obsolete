@@ -36,16 +36,6 @@ class RegisteredEventListenerIteratorController {
 
         (iterator as internal)._iteratorID = 0;
     }
-
-    public moveToNext(iterator: RegisteredEventListenerIterator): null | RegisteredEventListener {
-        for (let current: null | RegisteredEventListener = iterator.next(); current !== null; current = iterator.next()) {
-            if ((current as internal)._iteratorID <= (iterator as internal)._iteratorID) {
-                return current;
-            }
-        }
-
-        return null;
-    }
 }
 
 export default RegisteredEventListenerIteratorController;

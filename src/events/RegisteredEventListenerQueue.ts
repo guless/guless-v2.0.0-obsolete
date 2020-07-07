@@ -77,7 +77,7 @@ class RegisteredEventListenerQueue {
         this._controller.addIterator(iterator);
         
         try {
-            for (let current: null | RegisteredEventListener = this._controller.moveToNext(iterator); current !== null && !event.immediatePropagationStopped; current = this._controller.moveToNext(iterator)) {
+            for (let current: null | RegisteredEventListener = iterator.next(); current !== null && !event.immediatePropagationStopped; current = iterator.next()) {
                 if ((event.eventPhase === EventPhase.CAPTURING_PHASE && !current.capture) ||
                     (event.eventPhase === EventPhase.BUBBLING_PHASE  &&  current.capture)) {
                     continue;
