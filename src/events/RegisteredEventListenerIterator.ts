@@ -2,33 +2,30 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 
 class RegisteredEventListenerIterator {
-    private _iteratorID: number = 0;
-    private _listener: null | RegisteredEventListener;
+    private _version: number = 0;
+    private _reference: null | RegisteredEventListener;
 
     constructor(listener: null | RegisteredEventListener) {
-        this._listener = listener;
-    }
-
-    public get iteratorID(): number {
-        return this._iteratorID;
+        this._reference = listener;
     }
 
     public remove(listener: RegisteredEventListener): void {
-        if (this._listener === listener) {
-            this._listener = this._listener.next;
+        if (this._reference === listener) {
+            this._reference = this._reference.next;
         }
     }
 
     public next(): null | RegisteredEventListener {
-        while (this._listener !== null) {
-            const willBeRemoved: RegisteredEventListener = this._listener;
-            this.remove(willBeRemoved);
+        while (this._reference !== null) {
+            const candidate: RegisteredEventListener = this._reference;
+            this.remove(candidate);
 
-            if (willBeRemoved.iteratorID <= this.iteratorID) {
-                return willBeRemoved;
+            if ((candidate as internal)._version <= this._version) {
+                return candidate;
             }
         }
 
