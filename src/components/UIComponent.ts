@@ -3,6 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import Container from "../dom/Container";
+import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
 class UIComponent extends Container {
     private _element: HTMLElement;
@@ -14,6 +15,26 @@ class UIComponent extends Container {
 
     public get element(): HTMLElement {
         return this._element;
+    }
+
+    public getAttribute(qualifiedName: string): null | string {
+        return this._element.getAttribute(qualifiedName);
+    }
+
+    public setAttribute(qualifiedName: string, value: null | string): void {
+        return value === null ? this._element.removeAttribute(qualifiedName) : this._element.setAttribute(qualifiedName, value);
+    }
+
+    public hasAttribute(qualifiedName: string): boolean {
+        return this._element.hasAttribute(qualifiedName);
+    }
+
+    public getAttributeValueBoolean(qualifiedName: string): boolean {
+        return UIAttributeValueConversion.attributeValueToBoolean(this.getAttribute(qualifiedName));
+    }
+
+    public setAttributeValueBoolean(qualifiedName: string, value: boolean): void {
+        return this.setAttribute(qualifiedName, UIAttributeValueConversion.booleanToAttributeValue(value));
     }
 
     protected _updateTreeAfterInsertion(node: UIComponent): void {
