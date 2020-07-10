@@ -5,14 +5,14 @@
 import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 import RegisteredEventListenerIterator from "./RegisteredEventListenerIterator";
-import RegisteredEventListenerManager from "./RegisteredEventListenerManager";
+import RegisteredEventListenerIteratorManager from "./RegisteredEventListenerIteratorManager";
 import Event from "./Event";
 import EventPhase from "./EventPhase";
 
 class RegisteredEventListenerQueue {
     private _head: null | RegisteredEventListener = null;
     private _tail: null | RegisteredEventListener = null;
-    private _manager: RegisteredEventListenerManager = new RegisteredEventListenerManager();
+    private _iterators: RegisteredEventListenerIteratorManager = new RegisteredEventListenerIteratorManager();
 
     public get head(): null | RegisteredEventListener {
         return this._head;
@@ -35,7 +35,7 @@ class RegisteredEventListenerQueue {
             prev = prev.prev;
         }
 
-        this._manager.updateForInsertion(listener);
+        this._iterators.updateForInsertion(listener);
 
         if (prev !== null) { (prev as internal)._next = listener; (listener as internal)._prev = prev; }
         if (next !== null) { (next as internal)._prev = listener; (listener as internal)._next = next; }
@@ -45,7 +45,7 @@ class RegisteredEventListenerQueue {
     }
 
     public removeListener(listener: RegisteredEventListener): void {
-        this._manager.updateForRemoval(listener);
+        this._iterators.updateForRemoval(listener);
 
         const prev: null | RegisteredEventListener = listener.prev;
         const next: null | RegisteredEventListener = listener.next;
@@ -71,7 +71,7 @@ class RegisteredEventListenerQueue {
 
     public dispatchEventToListeners(event: Event): void {
         const iterator: RegisteredEventListenerIterator = new RegisteredEventListenerIterator(this._head);
-        this._manager.addIterator(iterator);
+        this._iterators.addIterator(iterator);
         
         try {
             for (let current: null | RegisteredEventListener = iterator.next(); current !== null && !event.immediatePropagationStopped; current = iterator.next()) {
@@ -87,7 +87,7 @@ class RegisteredEventListenerQueue {
                 }
             }
         } finally {
-            this._manager.removeIterator(iterator);
+            this._iterators.removeIterator(iterator);
         }
     }
 }

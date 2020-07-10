@@ -7,7 +7,7 @@ import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 import RegisteredEventListenerIterator from "./RegisteredEventListenerIterator";
 
-class RegisteredEventListenerManager {
+class RegisteredEventListenerIteratorManager {
     private _globalVersion: number = 0;
     private _activeIterators: RegisteredEventListenerIterator[] = [];
 
@@ -29,8 +29,6 @@ class RegisteredEventListenerManager {
     }
 
     public removeIterator(iterator: RegisteredEventListenerIterator): void {
-        (iterator as internal)._version = 0;
-
         if (iterator === this._activeIterators[this._activeIterators.length - 1]) {
             this._activeIterators.pop();
         } else {
@@ -38,7 +36,9 @@ class RegisteredEventListenerManager {
             assert(index >= 0, "The iterator is not active or is controlled by another manager.");
             this._activeIterators.splice(index, 1);
         }
+
+        (iterator as internal)._version = 0;
     }
 }
 
-export default RegisteredEventListenerManager;
+export default RegisteredEventListenerIteratorManager;
