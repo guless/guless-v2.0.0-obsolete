@@ -16,14 +16,14 @@ class UIComponent extends Container {
         return this._element;
     }
 
-    protected _childHasBeenInserted(node: UIComponent): void {
-        this._element.insertBefore(node._element, (node.next as UIComponent)?._element);
-        super._childHasBeenInserted(node);
+    protected _updateTreeAfterInsertion(node: UIComponent): void {
+        super._updateTreeAfterInsertion(node);
+        this._element.insertBefore(node._element, node.next === null ? null : (node.next as UIComponent)._element);
     }
 
-    protected _childHasBeenRemoved(node: UIComponent): void {
+    protected _updateTreeAfterRemoval(node: UIComponent): void {
+        super._updateTreeAfterRemoval(node);
         this._element.removeChild(node._element);
-        super._childHasBeenRemoved(node);
     }
 }
 

@@ -62,19 +62,27 @@ class Container extends Node {
         this._childHasBeenRemoved(node);
     }
 
-    protected _childWillBeInserted(node: Node): void {
+    private _childWillBeInserted(node: Node): void {
         /*< empty >*/
     }
 
-    protected _childHasBeenInserted(node: Node): void {
+    private _childHasBeenInserted(node: Node): void {
+        this._updateTreeAfterInsertion(node);
+    }
+
+    private _childWillBeRemoved(node: Node): void {
         /*< empty >*/
     }
 
-    protected _childWillBeRemoved(node: Node): void {
+    private _childHasBeenRemoved(node: Node): void {
+        this._updateTreeAfterRemoval(node);
+    }
+
+    protected _updateTreeAfterInsertion(node: Node): void {
         /*< empty >*/
     }
 
-    protected _childHasBeenRemoved(node: Node): void {
+    protected _updateTreeAfterRemoval(node: Node): void {
         /*< empty >*/
     }
 }
