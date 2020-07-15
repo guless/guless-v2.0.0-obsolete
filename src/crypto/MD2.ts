@@ -26,7 +26,9 @@ class MD2 extends HashAlgorithm {
         49 , 68 , 80 , 180, 143, 237, 31 , 26 , 219, 153, 141, 51 , 159, 17 , 131, 20 ,
     ]);
 
-    private _digest: Uint8Array = new Uint8Array(48); /*< state(16) + block(16) + state^block(16) >*/
+    private static readonly __X__: Uint8Array = new Uint8Array(32);
+
+    private _digest: Uint8Array = new Uint8Array(16);
     private _checksum: Uint8Array = new Uint8Array(16);
     private _buffer: Uint8Array = new Uint8Array(16);
     private _cursor: number = 0;
@@ -72,15 +74,18 @@ class MD2 extends HashAlgorithm {
     }
 
     private _transform(block: Uint8Array, start: number = 0): void {
-        memcpy(block, this._digest, start, start + 16, 16);
+        memcpy(block, MD2.__X__, start, start + 16);
 
         for (let k: number = 0; k < 16; ++k) {
-            this._digest[k + 32] = this._digest[k] ^ block[start + k];
+            MD2.__X__[k + 16] = this._digest[k] ^ block[start + k];
         }
 
         for (let r: number = 0, t: number = 0; r < 18; ++r) {
-            for (let k: number = 0; k < 48; ++k) {
+            for (let k: number = 0; k < 16; ++k) {
                 t = this._digest[k] ^= MD2.__PI_SUBST__[t];
+            }
+            for (let k: number = 0; k < 32; ++k) {
+                t = MD2.__X__[k] ^= MD2.__PI_SUBST__[t];
             }
             t = (t + r) & 0xFF;
         }
@@ -89,7 +94,7 @@ class MD2 extends HashAlgorithm {
             t = this._checksum[k] ^= MD2.__PI_SUBST__[block[start + k] ^ t];
         }
 
-        memset(this._digest, 0, 16);
+        memset(MD2.__X__, 0);
     }
 }
 
