@@ -38,24 +38,25 @@ class MD2 extends HashAlgorithm {
     }
 
     public update(input: Uint8Array): void {
-        const partial: number = 16 - this._cursor;
+        let partial: number = 16 - this._cursor;
+        let start: number = 0;
 
-        if (input.length < partial) {
-            memcpy(input, this._buffer, 0, input.length, this._cursor);
-            this._cursor += input.length;
-            return;
+        if (input.length >= partial) {
+            partial = partial & 0x0F;
+
+            if (partial !== 0) {
+                memcpy(input, this._buffer, 0, partial, this._cursor);
+                this._cursor = 0;
+                this._transform(this._buffer);
+            }
+
+            for (start = partial; start + 16 <= input.length; start += 16) {
+                this._transform(input, start);
+            }
         }
 
-        if (partial !== 16) {
-            memcpy(input, this._buffer, 0, partial, this._cursor);
-            this._transform(this._buffer);
-            this._transform(input, partial);
-        } else {
-            this._transform(input);
-        }
-
-        this._cursor = (this._cursor + input.length) & 0x0F;
-        memcpy(input, this._buffer, input.length - this._cursor);
+        memcpy(input, this._buffer, start, input.length, this._cursor);
+        this._cursor += input.length - start;
     }
 
     public final(): Uint8Array {
@@ -70,27 +71,25 @@ class MD2 extends HashAlgorithm {
         return output;
     }
 
-    private _transform(block: Uint8Array, start: number = 0, end: number = block.length): void {
-        for (let i: number = start; i + 16 <= end; i += 16) {
-            memcpy(block, this._digest, i, i + 16, 16);
+    private _transform(block: Uint8Array, start: number = 0): void {
+        memcpy(block, this._digest, start, start + 16, 16);
 
-            for (let k: number = 0; k < 16; ++k) {
-                this._digest[k + 32] = this._digest[k] ^ block[i + k];
-            }
-
-            for (let r: number = 0, t: number = 0; r < 18; ++r) {
-                for (let k: number = 0; k < 48; ++k) {
-                    t = this._digest[k] ^= MD2.__PI_SUBST__[t];
-                }
-                t = (t + r) & 0xFF;
-            }
-
-            for (let k: number = 0, t: number = this._checksum[15]; k < 16; ++k) {
-                t = this._checksum[k] ^= MD2.__PI_SUBST__[block[i + k] ^ t];
-            }
-
-            memset(this._digest, 0, 16);
+        for (let k: number = 0; k < 16; ++k) {
+            this._digest[k + 32] = this._digest[k] ^ block[start + k];
         }
+
+        for (let r: number = 0, t: number = 0; r < 18; ++r) {
+            for (let k: number = 0; k < 48; ++k) {
+                t = this._digest[k] ^= MD2.__PI_SUBST__[t];
+            }
+            t = (t + r) & 0xFF;
+        }
+
+        for (let k: number = 0, t: number = this._checksum[15]; k < 16; ++k) {
+            t = this._checksum[k] ^= MD2.__PI_SUBST__[block[start + k] ^ t];
+        }
+
+        memset(this._digest, 0, 16);
     }
 }
 
