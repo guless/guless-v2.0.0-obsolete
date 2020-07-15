@@ -3,8 +3,8 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
+import memset from "../buffer/memset";
 
 class MD2 extends HashAlgorithm {
     private static readonly __PI_SUBST__: Uint8Array = new Uint8Array([
@@ -35,6 +35,7 @@ class MD2 extends HashAlgorithm {
 
     public reset(): void {
         this._cursor = 0;
+        memset(this._buffer, 0);
         memset(this._digest, 0);
         memset(this._checksum, 0);
     }
