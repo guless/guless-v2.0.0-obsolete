@@ -76,22 +76,22 @@ class MD2 extends HashAlgorithm {
     private _transform(block: Uint8Array, start: number = 0): void {
         memcpy(block, MD2.__X__, start, start + 16);
 
-        for (let k: number = 0; k < 16; ++k) {
-            MD2.__X__[k + 16] = this._digest[k] ^ block[start + k];
+        for (let i: number = 0; i < 16; ++i) {
+            MD2.__X__[i + 16] = this._digest[i] ^ block[start + i];
         }
 
         for (let r: number = 0, t: number = 0; r < 18; ++r) {
-            for (let k: number = 0; k < 16; ++k) {
-                t = this._digest[k] ^= MD2.__PI_SUBST__[t];
+            for (let i: number = 0; i < 16; ++i) {
+                t = this._digest[i] ^= MD2.__PI_SUBST__[t];
             }
-            for (let k: number = 0; k < 32; ++k) {
-                t = MD2.__X__[k] ^= MD2.__PI_SUBST__[t];
+            for (let i: number = 0; i < 32; ++i) {
+                t = MD2.__X__[i] ^= MD2.__PI_SUBST__[t];
             }
             t = (t + r) & 0xFF;
         }
 
-        for (let k: number = 0, t: number = this._checksum[15]; k < 16; ++k) {
-            t = this._checksum[k] ^= MD2.__PI_SUBST__[block[start + k] ^ t];
+        for (let i: number = 0, t: number = this._checksum[15]; i < 16; ++i) {
+            t = this._checksum[i] ^= MD2.__PI_SUBST__[block[start + i] ^ t];
         }
 
         memset(MD2.__X__, 0);
