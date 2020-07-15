@@ -85,6 +85,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             }),
             new HTMLWebpackPlugin({
                 chunks: ["crypto"],
+                filename: "crypto.html",
                 template: path.resolve(context, "crypto.html"),
             }),
         ],
