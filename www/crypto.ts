@@ -4,7 +4,6 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
-import strset from "@/buffer/strset";
 
 const crc32Impl: CRC32 = new CRC32();
 const md2Impl: MD2 = new MD2();
@@ -17,15 +16,23 @@ function hex16(bytes: Uint8Array): string {
     return output;
 }
 
+function bytes(value: string): Uint8Array {
+    let output: Uint8Array = new Uint8Array(value.length);
+    for (let i: number = 0; i < value.length; ++i) {
+        output[i] = value.charCodeAt(i);
+    }
+    return output;
+}
+
 function test_crc32(value: string, expect: number): void {
-    crc32Impl.update(strset(value, new Uint8Array(value.length)));
+    crc32Impl.update(bytes(value));
     const actual: number = crc32Impl.final();
 
     console.log(`%c crc32("${value}") => actual:${"0x" + ("00000000" + actual.toString(16)).slice(-8)}, expect:${"0x" + ("00000000" + expect.toString(16)).slice(-8)};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
 function test_md2(value: string, expect: string): void {
-    md2Impl.update(strset(value, new Uint8Array(value.length)));
+    md2Impl.update(bytes(value));
     const actual: string = hex16(md2Impl.final());
 
     console.log(`%c md2("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
