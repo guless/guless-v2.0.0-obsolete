@@ -17,6 +17,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         devtool: "#inline-source-map",
         entry: {
             "main": ["./main.scss", "./main.ts"],
+            "crypto": ["./crypto.ts"],
         },
         output: {
             path: dist,
@@ -81,6 +82,10 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             new HTMLWebpackPlugin({
                 chunks: ["main"],
                 template: path.resolve(context, "main.html"),
+            }),
+            new HTMLWebpackPlugin({
+                chunks: ["crypto"],
+                template: path.resolve(context, "crypto.html"),
             }),
         ],
     });
