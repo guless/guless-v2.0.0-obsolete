@@ -144,7 +144,7 @@ class MD4 extends HashAlgorithm {
 
         /* Round 1 */
         a = MD4.__FF__(a, b, c, d, MD4.__X__[ 0], MD4.__S11__); /* 1 */
-        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 1], 7); /* 2 */
+        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 1], MD4.__S12__); /* 2 */
         c = MD4.__FF__(c, d, a, b, MD4.__X__[ 2], MD4.__S13__); /* 3 */
         b = MD4.__FF__(b, c, d, a, MD4.__X__[ 3], MD4.__S14__); /* 4 */
         a = MD4.__FF__(a, b, c, d, MD4.__X__[ 4], MD4.__S11__); /* 5 */
