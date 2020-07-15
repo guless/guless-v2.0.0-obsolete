@@ -2,10 +2,10 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-abstract class HashAlgorithm {
+abstract class HashAlgorithm<T extends number | Uint8Array = Uint8Array> {
     public abstract reset(): void;
     public abstract update(input: Uint8Array): void;
-    public abstract final(): Uint8Array;
+    public abstract final(): T;
 }
 
 export default HashAlgorithm;
