@@ -4,16 +4,16 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import TypedArray from "./TypedArray";
 
-function memset<T extends TypedArray>(buffer: T, value: number, start: number = 0, end: number = buffer.length): typeof buffer {
-    if (typeof buffer.fill === "function") {
-        buffer.fill(value, start, end);
+function memset<T extends TypedArray>(source: T, value: number, sourceStart: number = 0, sourceEnd: number = source.length): typeof source {
+    if (typeof source.fill === "function") {
+        source.fill(value, sourceStart, sourceEnd);
     } else {
-        for (let i: number = start; i < end; ++i) {
-            buffer[i] = value;
+        for (let i: number = sourceStart; i < sourceEnd; ++i) {
+            source[i] = value;
         }
     }
 
-    return buffer;
+    return source;
 }
 
 export default memset;
