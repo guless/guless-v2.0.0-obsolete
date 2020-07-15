@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import TypedArray from "./TypedArray";
 
-function setUChar<T extends TypedArray>(source: string, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function strset<T extends TypedArray>(source: string, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j < targetEnd; ++i, ++j) {
         target[j] = source.charCodeAt(i);
     }
@@ -12,4 +12,4 @@ function setUChar<T extends TypedArray>(source: string, target: T, sourceStart: 
     return target;
 }
 
-export default setUChar;
+export default strset;

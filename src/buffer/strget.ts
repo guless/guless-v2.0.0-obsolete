@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import TypedArray from "./TypedArray";
 
-function getUChar<T extends TypedArray>(source: T, sourceStart: number = 0, sourceEnd: number = source.length): string {
+function strget<T extends TypedArray>(source: T, sourceStart: number = 0, sourceEnd: number = source.length): string {
     let target: string = "";
     for (let i: number = sourceStart; i < sourceEnd; ++i) {
         target += String.fromCharCode(source[i]);
@@ -12,4 +12,4 @@ function getUChar<T extends TypedArray>(source: T, sourceStart: number = 0, sour
     return target;
 }
 
-export default getUChar;
+export default strget;
