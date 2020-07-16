@@ -5,11 +5,11 @@
 function u32dec(source: Uint8Array, target: Uint32Array, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     if (littleEndian) {
         for (let i: number = sourceStart, j: number = targetStart; i + 4 <= sourceEnd && j < targetEnd; i += 4, ++j) {
-            target[j] = (source[i]) | (source[i + 1] << 8) | (source[i + 2] << 16) | (source[i + 3] << 24);
+            target[j] = ((source[i]) | (source[i + 1] << 8) | (source[i + 2] << 16) | (source[i + 3] << 24)) >>> 0;
         }
     } else {
         for (let i: number = sourceStart, j: number = targetStart; i + 4 <= sourceEnd && j < targetEnd; i += 4, ++j) {
-            target[j] = (source[i] << 24) | (source[i + 1] << 16) | (source[i + 2] << 8) | (source[i + 3]);
+            target[j] = ((source[i] << 24) | (source[i + 1] << 16) | (source[i + 2] << 8) | (source[i + 3])) >>> 0;
         }
     }
     return target;

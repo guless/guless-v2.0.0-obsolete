@@ -92,10 +92,11 @@ class MD4 extends HashAlgorithm {
     public update(input: Uint8Array): void {
         let partial: number = 64 - this._cursor;
         let start: number = 0;
-        let numbits: number = (input.length << 3) >>> 0;
+        let lbits: number = (input.length << 3) >>> 0;
+        let hbits: number = (input.length >>> 29);
 
-        this._length[0] = (this._length[0] + numbits) >>> 0;
-        this._length[1] = (this._length[1] + (input.length >>> 29) + (this._length[0] < numbits ? 1 : 0)) >>> 0;
+        this._length[0] = (this._length[0] + lbits) >>> 0;
+        this._length[1] = (this._length[1] + hbits + (this._length[0] < lbits ? 1 : 0)) >>> 0;
 
         if (input.length >= partial) {
             partial = partial & 0x3F;
