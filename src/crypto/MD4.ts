@@ -17,6 +17,8 @@ class MD4 extends HashAlgorithm {
         0   , 0, 0, 0, 0, 0, 0, 0,
     ]);
 
+    private static readonly __X__: Uint32Array = new Uint32Array(16);
+
     private static readonly __S11__: number = 3;
     private static readonly __S12__: number = 7;
     private static readonly __S13__: number = 11;
@@ -32,8 +34,6 @@ class MD4 extends HashAlgorithm {
     private static readonly __S33__: number = 11;
     private static readonly __S34__: number = 15;
 
-    private static readonly __X__: Uint32Array = new Uint32Array(16);
-
     private static __F__(x: number, y: number, z: number): number {
         return (((x) & (y)) | ((~x) & (z)));
     }
@@ -44,18 +44,6 @@ class MD4 extends HashAlgorithm {
 
     private static __H__(x: number, y: number, z: number): number {
         return ((x) ^ (y) ^ (z));
-    }
-
-    private static __ROTATE_LEFT__(x: number, n: number): number {
-        return (((x) << (n)) | ((x) >>> (32 - (n))));
-    }
-
-    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
-        const lo: number = (v << 3) >>> 0;
-        const hi: number = (v >>> 29);
-        u[0] = (u[0] + lo) >>> 0;
-        u[1] = (u[1] + hi + (u[0] < lo ? 1 : 0)) >>> 0;
-        return u;
     }
 
     private static __FF__(a: number, b: number, c: number, d: number, x: number, s: number): number {
@@ -74,6 +62,18 @@ class MD4 extends HashAlgorithm {
         (a) += MD4.__H__((b), (c), (d)) + (x) + 0x6ed9eba1;
         (a)  = MD4.__ROTATE_LEFT__((a), (s));
         return a;
+    }
+
+    private static __ROTATE_LEFT__(x: number, n: number): number {
+        return (((x) << (n)) | ((x) >>> (32 - (n))));
+    }
+
+    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
+        const lo: number = (v << 3) >>> 0;
+        const hi: number = (v >>> 29);
+        u[0] = (u[0] + lo) >>> 0;
+        u[1] = (u[1] + hi + (u[0] < lo ? 1 : 0)) >>> 0;
+        return u;
     }
 
     private _digest: Uint32Array = new Uint32Array([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]);
