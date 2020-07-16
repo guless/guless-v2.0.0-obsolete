@@ -5,10 +5,12 @@
 import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
 import MD4 from "@/crypto/MD4";
+import MD5 from "@/crypto/MD5";
 
 const crc32Impl: CRC32 = new CRC32();
 const md2Impl: MD2 = new MD2();
 const md4Impl: MD4 = new MD4();
+const md5Impl: MD5 = new MD5();
 
 function hex16(bytes: Uint8Array): string {
     let output: string = "";
@@ -56,6 +58,16 @@ function test_md4(value: string, expect: string): void {
     console.log(`%c md4("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
+function test_md5(value: string, expect: string): void {
+    const block: number = 120;
+    for (let i: number = 0; i < value.length; i += block) {
+        md5Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(md5Impl.final());
+    console.log(`%c md5("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
 console.group("crc32");
 test_crc32("", 0x00000000);
 test_crc32("a", 0xe8b7be43);
@@ -84,4 +96,14 @@ test_md4("message digest", "d9130a8164549fe818874806e1c7014b");
 test_md4("abcdefghijklmnopqrstuvwxyz", "d79e1c308aa5bbcdeea8ed63df412da9");
 test_md4("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "043f8582f241db351ce627e153e7f0e4");
 test_md4("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "e33b4ddc9c38f2199c3e7b164fcc0536");
+console.groupEnd();
+
+console.group("md5");
+test_md5("", "d41d8cd98f00b204e9800998ecf8427e");
+test_md5("a", "0cc175b9c0f1b6a831c399e269772661");
+test_md5("abc", "900150983cd24fb0d6963f7d28e17f72");
+test_md5("message digest", "f96b697d7cb7938d525a2f31aaf161d0");
+test_md5("abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b");
+test_md5("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "d174ab98d277d9f5a5611c2c9f419d9f");
+test_md5("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "57edf4a22be3c955ac49da2e2107b67a");
 console.groupEnd();
