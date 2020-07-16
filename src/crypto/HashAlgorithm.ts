@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 abstract class HashAlgorithm<T extends number | Uint8Array = Uint8Array> {
     public abstract reset(): void;
-    public abstract update(input: Uint8Array): void;
+    public abstract update(source: Uint8Array, sourceStart?: number, sourceEnd?: number): void;
     public abstract final(): T;
 }
 

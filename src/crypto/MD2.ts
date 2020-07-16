@@ -34,32 +34,33 @@ class MD2 extends HashAlgorithm {
     private _cursor: number = 0;
 
     public reset(): void {
-        this._cursor = 0;
-        memset(this._buffer, 0);
         memset(this._digest, 0);
         memset(this._checksum, 0);
+        this._cursor = 0;
+        memset(this._buffer, 0);
     }
 
-    public update(input: Uint8Array): void {
-        let partial: number = 16 - this._cursor;
-        let start: number = 0;
+    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
+        const buffer: number = 16 - this._cursor;
+        const length: number = sourceEnd - sourceStart;
+        let i: number = sourceStart;
 
-        if (input.length >= partial) {
-            partial = partial & 0x0F;
+        if (length >= buffer) {
+            const partial: number = buffer & 0x0F;
 
             if (partial !== 0) {
-                memcpy(input, this._buffer, 0, partial, this._cursor);
+                memcpy(source, this._buffer, 0, partial, this._cursor);
                 this._cursor = 0;
                 this._transform(this._buffer);
             }
 
-            for (start = partial; start + 16 <= input.length; start += 16) {
-                this._transform(input, start);
+            for (i += partial; i + 16 <= sourceEnd; i += 16) {
+                this._transform(source, i);
             }
         }
 
-        memcpy(input, this._buffer, start, input.length, this._cursor);
-        this._cursor += input.length - start;
+        memcpy(source, this._buffer, i, sourceEnd, this._cursor);
+        this._cursor += sourceEnd - i;
     }
 
     public final(): Uint8Array {

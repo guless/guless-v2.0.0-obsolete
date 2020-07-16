@@ -46,10 +46,10 @@ class CRC32 extends HashAlgorithm<number> {
         this._digest = 0;
     }
     
-    public update(input: Uint8Array): void {
+    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
         this._digest ^= -1;
-        for (let i: number = 0; i < input.length; ++i) {
-            this._digest = CRC32.__IEEE_TABLE__[(this._digest ^ input[i]) & 0xFF] ^ (this._digest >>> 8);
+        for (let i: number = sourceStart; i < sourceEnd; ++i) {
+            this._digest = CRC32.__IEEE_TABLE__[(this._digest ^ source[i]) & 0xFF] ^ (this._digest >>> 8);
         }
         this._digest ^= -1;
     }

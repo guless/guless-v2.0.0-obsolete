@@ -9,18 +9,12 @@ import u32dec from "../buffer/u32dec";
 import u32enc from "../buffer/u32enc";
 
 class MD4 extends HashAlgorithm {
-    private static readonly __PADDING__: Uint8Array = new Uint8Array([
+    private static readonly __PADLEN__: Uint8Array = new Uint8Array([
         0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ]);
-
-    private static readonly __LENGTH__: Uint8Array = new Uint8Array([
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0   , 0, 0, 0, 0, 0, 0, 0,
     ]);
 
     private static readonly __S11__: number = 3;
@@ -56,6 +50,14 @@ class MD4 extends HashAlgorithm {
         return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
+    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
+        const lo: number = (v << 3) >>> 0;
+        const hi: number = (v >>> 29);
+        u[0] = (u[0] + lo) >>> 0;
+        u[1] = (u[1] + hi + (u[0] < lo ? 1 : 0)) >>> 0;
+        return u;
+    }
+
     private static __FF__(a: number, b: number, c: number, d: number, x: number, s: number): number {
         (a) += MD4.__F__((b), (c), (d)) + (x);
         (a)  = MD4.__ROTATE_LEFT__((a), (s));
@@ -80,53 +82,51 @@ class MD4 extends HashAlgorithm {
     private _cursor: number = 0;
 
     public reset(): void {
-        this._cursor = 0;
-        memset(this._buffer, 0);
-        memset(this._length, 0);
         this._digest[0] = 0x67452301;
         this._digest[1] = 0xefcdab89;
         this._digest[2] = 0x98badcfe;
         this._digest[3] = 0x10325476;
+        memset(this._length, 0);
+        this._cursor = 0;
+        memset(this._buffer, 0);
     }
     
-    public update(input: Uint8Array): void {
-        let partial: number = 64 - this._cursor;
-        let start: number = 0;
-        let lbits: number = (input.length << 3) >>> 0;
-        let hbits: number = (input.length >>> 29);
+    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
+        const buffer: number = 64 - this._cursor;
+        const length: number = sourceEnd - sourceStart;
+        let i: number = sourceStart;
 
-        this._length[0] = (this._length[0] + lbits) >>> 0;
-        this._length[1] = (this._length[1] + hbits + (this._length[0] < lbits ? 1 : 0)) >>> 0;
+        MD4.__ADD_LENGTH__(this._length, length);
 
-        if (input.length >= partial) {
-            partial = partial & 0x3F;
+        if (length >= buffer) {
+            const partial: number = buffer & 0x3F;
 
             if (partial !== 0) {
-                memcpy(input, this._buffer, 0, partial, this._cursor);
+                memcpy(source, this._buffer, 0, partial, this._cursor);
                 this._cursor = 0;
                 this._transform(this._buffer);
             }
 
-            for (start = partial; start + 64 <= input.length; start += 64) {
-                this._transform(input, start);
+            for (i += partial; i + 64 <= sourceEnd; i += 64) {
+                this._transform(source, i);
             }
         }
 
-        memcpy(input, this._buffer, start, input.length, this._cursor);
-        this._cursor += input.length - start;
+        memcpy(source, this._buffer, i, sourceEnd, this._cursor);
+        this._cursor += sourceEnd - i;
     }
 
     public final(): Uint8Array {
         if (this._cursor < 56) {
-            memcpy(MD4.__PADDING__, this._buffer, 0, 56 - this._cursor, this._cursor);
+            memcpy(MD4.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
             u32enc(this._length, this._buffer, true, 0, 2, 56);
             this._transform(this._buffer);
         } else {
-            memcpy(MD4.__PADDING__, this._buffer, 0, 64 - this._cursor, this._cursor);
+            memcpy(MD4.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32enc(this._length, MD4.__LENGTH__, true, 0, 2, 56);
-            this._transform(MD4.__LENGTH__);
-            memset(MD4.__LENGTH__, 0, 56);
+            u32enc(this._length, MD4.__PADLEN__, true, 0, 2, 64);
+            this._transform(MD4.__PADLEN__, 8);
+            memset(MD4.__PADLEN__, 0, 64);
         }
 
         const output: Uint8Array = u32enc(this._digest, new Uint8Array(16), true);
