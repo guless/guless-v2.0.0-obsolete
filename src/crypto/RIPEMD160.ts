@@ -5,8 +5,8 @@
 import HashAlgorithm from "./HashAlgorithm";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
-import u32dec from "../buffer/u32dec";
-import u32enc from "../buffer/u32enc";
+import u32vdec from "../buffer/u32vdec";
+import u32venc from "../buffer/u32venc";
 
 class RIPEMD160 extends HashAlgorithm {
     private static readonly __PADLEN__: Uint8Array = new Uint8Array([
@@ -155,17 +155,17 @@ class RIPEMD160 extends HashAlgorithm {
     public final(): Uint8Array {
         if (this._cursor < 56) {
             memcpy(RIPEMD160.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
-            u32enc(this._length, this._buffer, true, 0, 2, 56);
+            u32venc(this._length, this._buffer, true, 0, 2, 56);
             this._transform(this._buffer);
         } else {
             memcpy(RIPEMD160.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32enc(this._length, RIPEMD160.__PADLEN__, true, 0, 2, 64);
+            u32venc(this._length, RIPEMD160.__PADLEN__, true, 0, 2, 64);
             this._transform(RIPEMD160.__PADLEN__, 8);
             memset(RIPEMD160.__PADLEN__, 0, 64);
         }
 
-        const output: Uint8Array = u32enc(this._digest, new Uint8Array(20), true);
+        const output: Uint8Array = u32venc(this._digest, new Uint8Array(20), true);
         this.reset();
 
         return output;
@@ -184,7 +184,7 @@ class RIPEMD160 extends HashAlgorithm {
         let ddd: number = dd;
         let eee: number = ee;
 
-        u32dec(block, RIPEMD160.__X__, true, start, start + 64);
+        u32vdec(block, RIPEMD160.__X__, true, start, start + 64);
         
         /* round 1 */
         aa = RIPEMD160.__FF__(aa, bb, cc, dd, ee, RIPEMD160.__X__[ 0], 11); cc = RIPEMD160.__ROTL__(cc, 10);
