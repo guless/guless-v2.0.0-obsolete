@@ -33,27 +33,27 @@ class MD4 extends HashAlgorithm {
 
     private static __FF__(a: number, b: number, c: number, d: number, x: number, s: number): number {
         (a) += MD4.__F__((b), (c), (d)) + (x);
-        (a)  = MD4.__ROTATE_LEFT__((a), (s));
+        (a)  = MD4.__ROTL__((a), (s));
         return a;
     }
 
     private static __GG__(a: number, b: number, c: number, d: number, x: number, s: number): number {
         (a) += MD4.__G__((b), (c), (d)) + (x) + 0x5a827999;
-        (a)  = MD4.__ROTATE_LEFT__((a), (s));
+        (a)  = MD4.__ROTL__((a), (s));
         return a;
     }
 
     private static __HH__(a: number, b: number, c: number, d: number, x: number, s: number): number {
         (a) += MD4.__H__((b), (c), (d)) + (x) + 0x6ed9eba1;
-        (a)  = MD4.__ROTATE_LEFT__((a), (s));
+        (a)  = MD4.__ROTL__((a), (s));
         return a;
     }
 
-    private static __ROTATE_LEFT__(x: number, n: number): number {
+    private static __ROTL__(x: number, n: number): number {
         return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
-    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
+    private static __U64_ADD__(u: Uint32Array, v: number): Uint32Array {
         const lo: number = (v << 3) >>> 0;
         const hi: number = (v >>> 29);
         u[0] = (u[0] + lo) >>> 0;
@@ -81,7 +81,7 @@ class MD4 extends HashAlgorithm {
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
 
-        MD4.__ADD_LENGTH__(this._length, length);
+        MD4.__U64_ADD__(this._length, length);
 
         if (length >= buffer) {
             const partial: number = buffer & 0x3F;

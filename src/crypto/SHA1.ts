@@ -19,11 +19,11 @@ class SHA1 extends HashAlgorithm {
 
     private static readonly __X__: Uint32Array = new Uint32Array(80);
 
-    private static __ROTATE_LEFT__(x: number, n: number): number {
+    private static __ROTL__(x: number, n: number): number {
         return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
-    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
+    private static __U64BE_ADD__(u: Uint32Array, v: number): Uint32Array {
         const lo: number = (v << 3) >>> 0;
         const hi: number = (v >>> 29);
         u[1] = (u[1] + lo) >>> 0;
@@ -52,7 +52,7 @@ class SHA1 extends HashAlgorithm {
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
 
-        SHA1.__ADD_LENGTH__(this._length, length);
+        SHA1.__U64BE_ADD__(this._length, length);
 
         if (length >= buffer) {
             const partial: number = buffer & 0x3F;
@@ -101,41 +101,41 @@ class SHA1 extends HashAlgorithm {
         u32dec(block, SHA1.__X__, false, start, start + 64);
 
         for (let i: number = 16; i < 80; ++i) {
-            SHA1.__X__[i] = SHA1.__ROTATE_LEFT__(SHA1.__X__[i - 3] ^ SHA1.__X__[i - 8] ^ SHA1.__X__[i - 14] ^ SHA1.__X__[i - 16], 1);
+            SHA1.__X__[i] = SHA1.__ROTL__(SHA1.__X__[i - 3] ^ SHA1.__X__[i - 8] ^ SHA1.__X__[i - 14] ^ SHA1.__X__[i - 16], 1);
         }
 
         for (let i: number = 0, t: number; i < 20; ++i) {
-            t = SHA1.__ROTATE_LEFT__(a, 5) + ((b & c) | ((~b) & d)) + e + SHA1.__X__[i] + 0x5a827999;
+            t = SHA1.__ROTL__(a, 5) + ((b & c) | ((~b) & d)) + e + SHA1.__X__[i] + 0x5a827999;
             e = d;
             d = c;
-            c = SHA1.__ROTATE_LEFT__(b, 30);
+            c = SHA1.__ROTL__(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 20, t: number; i < 40; ++i) {
-            t = SHA1.__ROTATE_LEFT__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0x6ed9eba1;
+            t = SHA1.__ROTL__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0x6ed9eba1;
             e = d;
             d = c;
-            c = SHA1.__ROTATE_LEFT__(b, 30);
+            c = SHA1.__ROTL__(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 40, t: number; i < 60; ++i) {
-            t = SHA1.__ROTATE_LEFT__(a, 5) + ((b & c) | (b & d) | (c & d)) + e + SHA1.__X__[i] + 0x8f1bbcdc;
+            t = SHA1.__ROTL__(a, 5) + ((b & c) | (b & d) | (c & d)) + e + SHA1.__X__[i] + 0x8f1bbcdc;
             e = d;
             d = c;
-            c = SHA1.__ROTATE_LEFT__(b, 30);
+            c = SHA1.__ROTL__(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 60, t: number; i < 80; ++i) {
-            t = SHA1.__ROTATE_LEFT__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0xca62c1d6;
+            t = SHA1.__ROTL__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0xca62c1d6;
             e = d;
             d = c;
-            c = SHA1.__ROTATE_LEFT__(b, 30);
+            c = SHA1.__ROTL__(b, 30);
             b = a;
             a = t;
         }

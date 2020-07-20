@@ -37,37 +37,37 @@ class MD5 extends HashAlgorithm {
 
     private static __FF__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__F__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTATE_LEFT__((a), (s));
+        (a)  = MD5.__ROTL__((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __GG__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__G__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTATE_LEFT__((a), (s));
+        (a)  = MD5.__ROTL__((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __HH__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__H__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTATE_LEFT__((a), (s));
+        (a)  = MD5.__ROTL__((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __II__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__I__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTATE_LEFT__ ((a), (s));
+        (a)  = MD5.__ROTL__((a), (s));
         (a) += (b);
         return a;
     }
 
-    private static __ROTATE_LEFT__(x: number, n: number): number {
+    private static __ROTL__(x: number, n: number): number {
         return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
-    private static __ADD_LENGTH__(u: Uint32Array, v: number): Uint32Array {
+    private static __U64_ADD__(u: Uint32Array, v: number): Uint32Array {
         const lo: number = (v << 3) >>> 0;
         const hi: number = (v >>> 29);
         u[0] = (u[0] + lo) >>> 0;
@@ -95,7 +95,7 @@ class MD5 extends HashAlgorithm {
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
 
-        MD5.__ADD_LENGTH__(this._length, length);
+        MD5.__U64_ADD__(this._length, length);
 
         if (length >= buffer) {
             const partial: number = buffer & 0x3F;
