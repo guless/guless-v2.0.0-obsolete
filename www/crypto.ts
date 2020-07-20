@@ -6,11 +6,18 @@ import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
 import MD4 from "@/crypto/MD4";
 import MD5 from "@/crypto/MD5";
+import RIPEMD128 from "@/crypto/RIPEMD128";
+import RIPEMD160 from "@/crypto/RIPEMD160";
+
+const block: number = 1 + Math.floor(Math.random() * 0x0F);
+console.log("block:", block);
 
 const crc32Impl: CRC32 = new CRC32();
 const md2Impl: MD2 = new MD2();
 const md4Impl: MD4 = new MD4();
 const md5Impl: MD5 = new MD5();
+const ripemd128Impl: RIPEMD128 = new RIPEMD128();
+const ripemd160Impl: RIPEMD160 = new RIPEMD160();
 
 function hex16(bytes: Uint8Array): string {
     let output: string = "";
@@ -29,7 +36,6 @@ function bytes(value: string): Uint8Array {
 }
 
 function test_crc32(value: string, expect: number): void {
-    const block: number = 12;
     for (let i: number = 0; i < value.length; i += block) {
         crc32Impl.update(bytes(value.slice(i, i + block)));
     }
@@ -39,7 +45,6 @@ function test_crc32(value: string, expect: number): void {
 }
 
 function test_md2(value: string, expect: string): void {
-    const block: number = 12;
     for (let i: number = 0; i < value.length; i += block) {
         md2Impl.update(bytes(value.slice(i, i + block)));
     }
@@ -49,7 +54,6 @@ function test_md2(value: string, expect: string): void {
 }
 
 function test_md4(value: string, expect: string): void {
-    const block: number = 120;
     for (let i: number = 0; i < value.length; i += block) {
         md4Impl.update(bytes(value.slice(i, i + block)));
     }
@@ -59,13 +63,30 @@ function test_md4(value: string, expect: string): void {
 }
 
 function test_md5(value: string, expect: string): void {
-    const block: number = 120;
     for (let i: number = 0; i < value.length; i += block) {
         md5Impl.update(bytes(value.slice(i, i + block)));
     }
 
     const actual: string = hex16(md5Impl.final());
     console.log(`%c md5("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
+function test_ripemd128(value: string, expect: string): void {
+    for (let i: number = 0; i < value.length; i += block) {
+        ripemd128Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(ripemd128Impl.final());
+    console.log(`%c ripemd128("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
+function test_ripemd160(value: string, expect: string): void {
+    for (let i: number = 0; i < value.length; i += block) {
+        ripemd160Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(ripemd160Impl.final());
+    console.log(`%c ripemd160("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
 console.group("crc32");
@@ -106,4 +127,24 @@ test_md5("message digest", "f96b697d7cb7938d525a2f31aaf161d0");
 test_md5("abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b");
 test_md5("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "d174ab98d277d9f5a5611c2c9f419d9f");
 test_md5("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "57edf4a22be3c955ac49da2e2107b67a");
+console.groupEnd();
+
+console.group("ripemd128");
+test_ripemd128("", "cdf26213a150dc3ecb610f18f6b38b46");
+test_ripemd128("a", "86be7afa339d0fc7cfc785e72f578d33");
+test_ripemd128("abc", "c14a12199c66e4ba84636b0f69144c77");
+test_ripemd128("message digest", "9e327b3d6e523062afc1132d7df9d1b8");
+test_ripemd128("abcdefghijklmnopqrstuvwxyz", "fd2aa607f71dc8f510714922b371834e");
+test_ripemd128("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "d1e959eb179c911faea4624c60c5c702");
+test_ripemd128("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "3f45ef194732c2dbb2c4a2c769795fa3");
+console.groupEnd();
+
+console.group("ripemd160");
+test_ripemd160("", "9c1185a5c5e9fc54612808977ee8f548b2258d31");
+test_ripemd160("a", "0bdc9d2d256b3ee9daae347be6f4dc835a467ffe");
+test_ripemd160("abc", "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc");
+test_ripemd160("message digest", "5d0689ef49d2fae572b881b123a85ffa21595f36");
+test_ripemd160("abcdefghijklmnopqrstuvwxyz", "f71c27109c692c1b56bbdceb5b9d2865b3708dbc");
+test_ripemd160("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "b0e20b6e3116640286ed3a87a5713079b21f5189");
+test_ripemd160("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "9b752e45573d4b39f4dbd3323cab82bf63326bfb");
 console.groupEnd();
