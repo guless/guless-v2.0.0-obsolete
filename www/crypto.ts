@@ -10,6 +10,7 @@ import RIPEMD128 from "@/crypto/RIPEMD128";
 import RIPEMD160 from "@/crypto/RIPEMD160";
 import RIPEMD256 from "@/crypto/RIPEMD256";
 import RIPEMD320 from "@/crypto/RIPEMD320";
+import SHA1 from "@/crypto/SHA1";
 
 const block: number = 1 + Math.floor(Math.random() * 0x0F);
 console.log("block:", block);
@@ -22,6 +23,7 @@ const ripemd128Impl: RIPEMD128 = new RIPEMD128();
 const ripemd160Impl: RIPEMD160 = new RIPEMD160();
 const ripemd256Impl: RIPEMD256 = new RIPEMD256();
 const ripemd320Impl: RIPEMD320 = new RIPEMD320();
+const sha1Impl: SHA1 = new SHA1();
 
 function hex16(bytes: Uint8Array): string {
     let output: string = "";
@@ -111,6 +113,15 @@ function test_ripemd320(value: string, expect: string): void {
     console.log(`%c ripemd320("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
+function test_sha1(value: string, expect: string): void {
+    for (let i: number = 0; i < value.length; i += block) {
+        sha1Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(sha1Impl.final());
+    console.log(`%c sha1("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
 console.group("crc32");
 test_crc32("", 0x00000000);
 test_crc32("a", 0xe8b7be43);
@@ -189,4 +200,14 @@ test_ripemd320("message digest", "3a8e28502ed45d422f68844f9dd316e7b98533fa3f2a91
 test_ripemd320("abcdefghijklmnopqrstuvwxyz", "cabdb1810b92470a2093aa6bce05952c28348cf43ff60841975166bb40ed234004b8824463e6b009");
 test_ripemd320("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "ed544940c86d67f250d232c30b7b3e5770e0c60c8cb9a4cafe3b11388af9920e1b99230b843c86a4");
 test_ripemd320("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "557888af5f6d8ed62ab66945c6d2a0a47ecd5341e915eb8fea1d0524955f825dc717e4a008ab2d42");
+console.groupEnd();
+
+console.group("sha1");
+test_sha1("", "da39a3ee5e6b4b0d3255bfef95601890afd80709");
+test_sha1("a", "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8");
+test_sha1("abc", "a9993e364706816aba3e25717850c26c9cd0d89d");
+test_sha1("secure hash algorithm", "d4d6d2f0ebe317513bbd8d967d89bac5819c2f60");
+test_sha1("abcdefghijklmnopqrstuvwxyz", "32d10c7b8cf96570ca04ce37f2a19d84240d3a89");
+test_sha1("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "761c457bf73b14d27e9e9265c46f4b4dda11f940");
+test_sha1("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "50abf5706a150990a08b2c5ea40fa0e585554732");
 console.groupEnd();
