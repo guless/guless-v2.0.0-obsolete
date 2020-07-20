@@ -19,21 +19,6 @@ class MD4 extends HashAlgorithm {
 
     private static readonly __X__: Uint32Array = new Uint32Array(16);
 
-    private static readonly __S11__: number = 3;
-    private static readonly __S12__: number = 7;
-    private static readonly __S13__: number = 11;
-    private static readonly __S14__: number = 19;
-
-    private static readonly __S21__: number = 3;
-    private static readonly __S22__: number = 5;
-    private static readonly __S23__: number = 9;
-    private static readonly __S24__: number = 13;
-
-    private static readonly __S31__: number = 3;
-    private static readonly __S32__: number = 9;
-    private static readonly __S33__: number = 11;
-    private static readonly __S34__: number = 15;
-
     private static __F__(x: number, y: number, z: number): number {
         return (((x) & (y)) | ((~x) & (z)));
     }
@@ -144,58 +129,58 @@ class MD4 extends HashAlgorithm {
         u32dec(block, MD4.__X__, true, start, start + 64);
 
         /* Round 1 */
-        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 0], MD4.__S11__); /* 1 */
-        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 1], MD4.__S12__); /* 2 */
-        c = MD4.__FF__(c, d, a, b, MD4.__X__[ 2], MD4.__S13__); /* 3 */
-        b = MD4.__FF__(b, c, d, a, MD4.__X__[ 3], MD4.__S14__); /* 4 */
-        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 4], MD4.__S11__); /* 5 */
-        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 5], MD4.__S12__); /* 6 */
-        c = MD4.__FF__(c, d, a, b, MD4.__X__[ 6], MD4.__S13__); /* 7 */
-        b = MD4.__FF__(b, c, d, a, MD4.__X__[ 7], MD4.__S14__); /* 8 */
-        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 8], MD4.__S11__); /* 9 */
-        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 9], MD4.__S12__); /* 10 */
-        c = MD4.__FF__(c, d, a, b, MD4.__X__[10], MD4.__S13__); /* 11 */
-        b = MD4.__FF__(b, c, d, a, MD4.__X__[11], MD4.__S14__); /* 12 */
-        a = MD4.__FF__(a, b, c, d, MD4.__X__[12], MD4.__S11__); /* 13 */
-        d = MD4.__FF__(d, a, b, c, MD4.__X__[13], MD4.__S12__); /* 14 */
-        c = MD4.__FF__(c, d, a, b, MD4.__X__[14], MD4.__S13__); /* 15 */
-        b = MD4.__FF__(b, c, d, a, MD4.__X__[15], MD4.__S14__); /* 16 */
+        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 0],  3);
+        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 1],  7);
+        c = MD4.__FF__(c, d, a, b, MD4.__X__[ 2], 11);
+        b = MD4.__FF__(b, c, d, a, MD4.__X__[ 3], 19);
+        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 4],  3);
+        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 5],  7);
+        c = MD4.__FF__(c, d, a, b, MD4.__X__[ 6], 11);
+        b = MD4.__FF__(b, c, d, a, MD4.__X__[ 7], 19);
+        a = MD4.__FF__(a, b, c, d, MD4.__X__[ 8],  3);
+        d = MD4.__FF__(d, a, b, c, MD4.__X__[ 9],  7);
+        c = MD4.__FF__(c, d, a, b, MD4.__X__[10], 11);
+        b = MD4.__FF__(b, c, d, a, MD4.__X__[11], 19);
+        a = MD4.__FF__(a, b, c, d, MD4.__X__[12],  3);
+        d = MD4.__FF__(d, a, b, c, MD4.__X__[13],  7);
+        c = MD4.__FF__(c, d, a, b, MD4.__X__[14], 11);
+        b = MD4.__FF__(b, c, d, a, MD4.__X__[15], 19);
 
         /* Round 2 */
-        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 0], MD4.__S21__); /* 17 */
-        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 4], MD4.__S22__); /* 18 */
-        c = MD4.__GG__(c, d, a, b, MD4.__X__[ 8], MD4.__S23__); /* 19 */
-        b = MD4.__GG__(b, c, d, a, MD4.__X__[12], MD4.__S24__); /* 20 */
-        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 1], MD4.__S21__); /* 21 */
-        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 5], MD4.__S22__); /* 22 */
-        c = MD4.__GG__(c, d, a, b, MD4.__X__[ 9], MD4.__S23__); /* 23 */
-        b = MD4.__GG__(b, c, d, a, MD4.__X__[13], MD4.__S24__); /* 24 */
-        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 2], MD4.__S21__); /* 25 */
-        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 6], MD4.__S22__); /* 26 */
-        c = MD4.__GG__(c, d, a, b, MD4.__X__[10], MD4.__S23__); /* 27 */
-        b = MD4.__GG__(b, c, d, a, MD4.__X__[14], MD4.__S24__); /* 28 */
-        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 3], MD4.__S21__); /* 29 */
-        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 7], MD4.__S22__); /* 30 */
-        c = MD4.__GG__(c, d, a, b, MD4.__X__[11], MD4.__S23__); /* 31 */
-        b = MD4.__GG__(b, c, d, a, MD4.__X__[15], MD4.__S24__); /* 32 */
+        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 0],  3);
+        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 4],  5);
+        c = MD4.__GG__(c, d, a, b, MD4.__X__[ 8],  9);
+        b = MD4.__GG__(b, c, d, a, MD4.__X__[12], 13);
+        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 1],  3);
+        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 5],  5);
+        c = MD4.__GG__(c, d, a, b, MD4.__X__[ 9],  9);
+        b = MD4.__GG__(b, c, d, a, MD4.__X__[13], 13);
+        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 2],  3);
+        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 6],  5);
+        c = MD4.__GG__(c, d, a, b, MD4.__X__[10],  9);
+        b = MD4.__GG__(b, c, d, a, MD4.__X__[14], 13);
+        a = MD4.__GG__(a, b, c, d, MD4.__X__[ 3],  3);
+        d = MD4.__GG__(d, a, b, c, MD4.__X__[ 7],  5);
+        c = MD4.__GG__(c, d, a, b, MD4.__X__[11],  9);
+        b = MD4.__GG__(b, c, d, a, MD4.__X__[15], 13);
 
         /* Round 3 */
-        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 0], MD4.__S31__); /* 33 */
-        d = MD4.__HH__(d, a, b, c, MD4.__X__[ 8], MD4.__S32__); /* 34 */
-        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 4], MD4.__S33__); /* 35 */
-        b = MD4.__HH__(b, c, d, a, MD4.__X__[12], MD4.__S34__); /* 36 */
-        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 2], MD4.__S31__); /* 37 */
-        d = MD4.__HH__(d, a, b, c, MD4.__X__[10], MD4.__S32__); /* 38 */
-        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 6], MD4.__S33__); /* 39 */
-        b = MD4.__HH__(b, c, d, a, MD4.__X__[14], MD4.__S34__); /* 40 */
-        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 1], MD4.__S31__); /* 41 */
-        d = MD4.__HH__(d, a, b, c, MD4.__X__[ 9], MD4.__S32__); /* 42 */
-        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 5], MD4.__S33__); /* 43 */
-        b = MD4.__HH__(b, c, d, a, MD4.__X__[13], MD4.__S34__); /* 44 */
-        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 3], MD4.__S31__); /* 45 */
-        d = MD4.__HH__(d, a, b, c, MD4.__X__[11], MD4.__S32__); /* 46 */
-        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 7], MD4.__S33__); /* 47 */
-        b = MD4.__HH__(b, c, d, a, MD4.__X__[15], MD4.__S34__); /* 48 */
+        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 0],  3);
+        d = MD4.__HH__(d, a, b, c, MD4.__X__[ 8],  9);
+        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 4], 11);
+        b = MD4.__HH__(b, c, d, a, MD4.__X__[12], 15);
+        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 2],  3);
+        d = MD4.__HH__(d, a, b, c, MD4.__X__[10],  9);
+        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 6], 11);
+        b = MD4.__HH__(b, c, d, a, MD4.__X__[14], 15);
+        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 1],  3);
+        d = MD4.__HH__(d, a, b, c, MD4.__X__[ 9],  9);
+        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 5], 11);
+        b = MD4.__HH__(b, c, d, a, MD4.__X__[13], 15);
+        a = MD4.__HH__(a, b, c, d, MD4.__X__[ 3],  3);
+        d = MD4.__HH__(d, a, b, c, MD4.__X__[11],  9);
+        c = MD4.__HH__(c, d, a, b, MD4.__X__[ 7], 11);
+        b = MD4.__HH__(b, c, d, a, MD4.__X__[15], 15);
 
         this._digest[0] += a;
         this._digest[1] += b;

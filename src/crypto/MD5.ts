@@ -19,26 +19,6 @@ class MD5 extends HashAlgorithm {
 
     private static readonly __X__: Uint32Array = new Uint32Array(16);
 
-    private static readonly __S11__: number = 7;
-    private static readonly __S12__: number = 12;
-    private static readonly __S13__: number = 17;
-    private static readonly __S14__: number = 22;
-
-    private static readonly __S21__: number = 5;
-    private static readonly __S22__: number = 9;
-    private static readonly __S23__: number = 14;
-    private static readonly __S24__: number = 20;
-
-    private static readonly __S31__: number = 4;
-    private static readonly __S32__: number = 11;
-    private static readonly __S33__: number = 16;
-    private static readonly __S34__: number = 23;
-
-    private static readonly __S41__: number = 6;
-    private static readonly __S42__: number = 10;
-    private static readonly __S43__: number = 15;
-    private static readonly __S44__: number = 21;
-
     private static __F__(x: number, y: number, z: number): number {
         return (((x) & (y)) | ((~x) & (z)));
     }
@@ -163,76 +143,76 @@ class MD5 extends HashAlgorithm {
         u32dec(block, MD5.__X__, true, start, start + 64);
 
         /* Round 1 */
-        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 0], MD5.__S11__, 0xd76aa478); /* 1 */
-        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 1], MD5.__S12__, 0xe8c7b756); /* 2 */
-        c = MD5.__FF__(c, d, a, b, MD5.__X__[ 2], MD5.__S13__, 0x242070db); /* 3 */
-        b = MD5.__FF__(b, c, d, a, MD5.__X__[ 3], MD5.__S14__, 0xc1bdceee); /* 4 */
-        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 4], MD5.__S11__, 0xf57c0faf); /* 5 */
-        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 5], MD5.__S12__, 0x4787c62a); /* 6 */
-        c = MD5.__FF__(c, d, a, b, MD5.__X__[ 6], MD5.__S13__, 0xa8304613); /* 7 */
-        b = MD5.__FF__(b, c, d, a, MD5.__X__[ 7], MD5.__S14__, 0xfd469501); /* 8 */
-        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 8], MD5.__S11__, 0x698098d8); /* 9 */
-        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 9], MD5.__S12__, 0x8b44f7af); /* 10 */
-        c = MD5.__FF__(c, d, a, b, MD5.__X__[10], MD5.__S13__, 0xffff5bb1); /* 11 */
-        b = MD5.__FF__(b, c, d, a, MD5.__X__[11], MD5.__S14__, 0x895cd7be); /* 12 */
-        a = MD5.__FF__(a, b, c, d, MD5.__X__[12], MD5.__S11__, 0x6b901122); /* 13 */
-        d = MD5.__FF__(d, a, b, c, MD5.__X__[13], MD5.__S12__, 0xfd987193); /* 14 */
-        c = MD5.__FF__(c, d, a, b, MD5.__X__[14], MD5.__S13__, 0xa679438e); /* 15 */
-        b = MD5.__FF__(b, c, d, a, MD5.__X__[15], MD5.__S14__, 0x49b40821); /* 16 */
+        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 0],  7, 0xd76aa478);
+        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 1], 12, 0xe8c7b756);
+        c = MD5.__FF__(c, d, a, b, MD5.__X__[ 2], 17, 0x242070db);
+        b = MD5.__FF__(b, c, d, a, MD5.__X__[ 3], 22, 0xc1bdceee);
+        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 4],  7, 0xf57c0faf);
+        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 5], 12, 0x4787c62a);
+        c = MD5.__FF__(c, d, a, b, MD5.__X__[ 6], 17, 0xa8304613);
+        b = MD5.__FF__(b, c, d, a, MD5.__X__[ 7], 22, 0xfd469501);
+        a = MD5.__FF__(a, b, c, d, MD5.__X__[ 8],  7, 0x698098d8);
+        d = MD5.__FF__(d, a, b, c, MD5.__X__[ 9], 12, 0x8b44f7af);
+        c = MD5.__FF__(c, d, a, b, MD5.__X__[10], 17, 0xffff5bb1);
+        b = MD5.__FF__(b, c, d, a, MD5.__X__[11], 22, 0x895cd7be);
+        a = MD5.__FF__(a, b, c, d, MD5.__X__[12],  7, 0x6b901122);
+        d = MD5.__FF__(d, a, b, c, MD5.__X__[13], 12, 0xfd987193);
+        c = MD5.__FF__(c, d, a, b, MD5.__X__[14], 17, 0xa679438e);
+        b = MD5.__FF__(b, c, d, a, MD5.__X__[15], 22, 0x49b40821);
 
         /* Round 2 */
-        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 1], MD5.__S21__, 0xf61e2562); /* 17 */
-        d = MD5.__GG__(d, a, b, c, MD5.__X__[ 6], MD5.__S22__, 0xc040b340); /* 18 */
-        c = MD5.__GG__(c, d, a, b, MD5.__X__[11], MD5.__S23__, 0x265e5a51); /* 19 */
-        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 0], MD5.__S24__, 0xe9b6c7aa); /* 20 */
-        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 5], MD5.__S21__, 0xd62f105d); /* 21 */
-        d = MD5.__GG__(d, a, b, c, MD5.__X__[10], MD5.__S22__,  0x2441453); /* 22 */
-        c = MD5.__GG__(c, d, a, b, MD5.__X__[15], MD5.__S23__, 0xd8a1e681); /* 23 */
-        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 4], MD5.__S24__, 0xe7d3fbc8); /* 24 */
-        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 9], MD5.__S21__, 0x21e1cde6); /* 25 */
-        d = MD5.__GG__(d, a, b, c, MD5.__X__[14], MD5.__S22__, 0xc33707d6); /* 26 */
-        c = MD5.__GG__(c, d, a, b, MD5.__X__[ 3], MD5.__S23__, 0xf4d50d87); /* 27 */
-        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 8], MD5.__S24__, 0x455a14ed); /* 28 */
-        a = MD5.__GG__(a, b, c, d, MD5.__X__[13], MD5.__S21__, 0xa9e3e905); /* 29 */
-        d = MD5.__GG__(d, a, b, c, MD5.__X__[ 2], MD5.__S22__, 0xfcefa3f8); /* 30 */
-        c = MD5.__GG__(c, d, a, b, MD5.__X__[ 7], MD5.__S23__, 0x676f02d9); /* 31 */
-        b = MD5.__GG__(b, c, d, a, MD5.__X__[12], MD5.__S24__, 0x8d2a4c8a); /* 32 */
+        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 1],  5, 0xf61e2562);
+        d = MD5.__GG__(d, a, b, c, MD5.__X__[ 6],  9, 0xc040b340);
+        c = MD5.__GG__(c, d, a, b, MD5.__X__[11], 14, 0x265e5a51);
+        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 0], 20, 0xe9b6c7aa);
+        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 5],  5, 0xd62f105d);
+        d = MD5.__GG__(d, a, b, c, MD5.__X__[10],  9,  0x2441453);
+        c = MD5.__GG__(c, d, a, b, MD5.__X__[15], 14, 0xd8a1e681);
+        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 4], 20, 0xe7d3fbc8);
+        a = MD5.__GG__(a, b, c, d, MD5.__X__[ 9],  5, 0x21e1cde6);
+        d = MD5.__GG__(d, a, b, c, MD5.__X__[14],  9, 0xc33707d6);
+        c = MD5.__GG__(c, d, a, b, MD5.__X__[ 3], 14, 0xf4d50d87);
+        b = MD5.__GG__(b, c, d, a, MD5.__X__[ 8], 20, 0x455a14ed);
+        a = MD5.__GG__(a, b, c, d, MD5.__X__[13],  5, 0xa9e3e905);
+        d = MD5.__GG__(d, a, b, c, MD5.__X__[ 2],  9, 0xfcefa3f8);
+        c = MD5.__GG__(c, d, a, b, MD5.__X__[ 7], 14, 0x676f02d9);
+        b = MD5.__GG__(b, c, d, a, MD5.__X__[12], 20, 0x8d2a4c8a);
 
         /* Round 3 */
-        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 5], MD5.__S31__, 0xfffa3942); /* 33 */
-        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 8], MD5.__S32__, 0x8771f681); /* 34 */
-        c = MD5.__HH__(c, d, a, b, MD5.__X__[11], MD5.__S33__, 0x6d9d6122); /* 35 */
-        b = MD5.__HH__(b, c, d, a, MD5.__X__[14], MD5.__S34__, 0xfde5380c); /* 36 */
-        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 1], MD5.__S31__, 0xa4beea44); /* 37 */
-        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 4], MD5.__S32__, 0x4bdecfa9); /* 38 */
-        c = MD5.__HH__(c, d, a, b, MD5.__X__[ 7], MD5.__S33__, 0xf6bb4b60); /* 39 */
-        b = MD5.__HH__(b, c, d, a, MD5.__X__[10], MD5.__S34__, 0xbebfbc70); /* 40 */
-        a = MD5.__HH__(a, b, c, d, MD5.__X__[13], MD5.__S31__, 0x289b7ec6); /* 41 */
-        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 0], MD5.__S32__, 0xeaa127fa); /* 42 */
-        c = MD5.__HH__(c, d, a, b, MD5.__X__[ 3], MD5.__S33__, 0xd4ef3085); /* 43 */
-        b = MD5.__HH__(b, c, d, a, MD5.__X__[ 6], MD5.__S34__,  0x4881d05); /* 44 */
-        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 9], MD5.__S31__, 0xd9d4d039); /* 45 */
-        d = MD5.__HH__(d, a, b, c, MD5.__X__[12], MD5.__S32__, 0xe6db99e5); /* 46 */
-        c = MD5.__HH__(c, d, a, b, MD5.__X__[15], MD5.__S33__, 0x1fa27cf8); /* 47 */
-        b = MD5.__HH__(b, c, d, a, MD5.__X__[ 2], MD5.__S34__, 0xc4ac5665); /* 48 */
+        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 5],  4, 0xfffa3942);
+        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 8], 11, 0x8771f681);
+        c = MD5.__HH__(c, d, a, b, MD5.__X__[11], 16, 0x6d9d6122);
+        b = MD5.__HH__(b, c, d, a, MD5.__X__[14], 23, 0xfde5380c);
+        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 1],  4, 0xa4beea44);
+        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 4], 11, 0x4bdecfa9);
+        c = MD5.__HH__(c, d, a, b, MD5.__X__[ 7], 16, 0xf6bb4b60);
+        b = MD5.__HH__(b, c, d, a, MD5.__X__[10], 23, 0xbebfbc70);
+        a = MD5.__HH__(a, b, c, d, MD5.__X__[13],  4, 0x289b7ec6);
+        d = MD5.__HH__(d, a, b, c, MD5.__X__[ 0], 11, 0xeaa127fa);
+        c = MD5.__HH__(c, d, a, b, MD5.__X__[ 3], 16, 0xd4ef3085);
+        b = MD5.__HH__(b, c, d, a, MD5.__X__[ 6], 23,  0x4881d05);
+        a = MD5.__HH__(a, b, c, d, MD5.__X__[ 9],  4, 0xd9d4d039);
+        d = MD5.__HH__(d, a, b, c, MD5.__X__[12], 11, 0xe6db99e5);
+        c = MD5.__HH__(c, d, a, b, MD5.__X__[15], 16, 0x1fa27cf8);
+        b = MD5.__HH__(b, c, d, a, MD5.__X__[ 2], 23, 0xc4ac5665);
 
         /* Round 4 */
-        a = MD5.__II__(a, b, c, d, MD5.__X__[ 0], MD5.__S41__, 0xf4292244); /* 49 */
-        d = MD5.__II__(d, a, b, c, MD5.__X__[ 7], MD5.__S42__, 0x432aff97); /* 50 */
-        c = MD5.__II__(c, d, a, b, MD5.__X__[14], MD5.__S43__, 0xab9423a7); /* 51 */
-        b = MD5.__II__(b, c, d, a, MD5.__X__[ 5], MD5.__S44__, 0xfc93a039); /* 52 */
-        a = MD5.__II__(a, b, c, d, MD5.__X__[12], MD5.__S41__, 0x655b59c3); /* 53 */
-        d = MD5.__II__(d, a, b, c, MD5.__X__[ 3], MD5.__S42__, 0x8f0ccc92); /* 54 */
-        c = MD5.__II__(c, d, a, b, MD5.__X__[10], MD5.__S43__, 0xffeff47d); /* 55 */
-        b = MD5.__II__(b, c, d, a, MD5.__X__[ 1], MD5.__S44__, 0x85845dd1); /* 56 */
-        a = MD5.__II__(a, b, c, d, MD5.__X__[ 8], MD5.__S41__, 0x6fa87e4f); /* 57 */
-        d = MD5.__II__(d, a, b, c, MD5.__X__[15], MD5.__S42__, 0xfe2ce6e0); /* 58 */
-        c = MD5.__II__(c, d, a, b, MD5.__X__[ 6], MD5.__S43__, 0xa3014314); /* 59 */
-        b = MD5.__II__(b, c, d, a, MD5.__X__[13], MD5.__S44__, 0x4e0811a1); /* 60 */
-        a = MD5.__II__(a, b, c, d, MD5.__X__[ 4], MD5.__S41__, 0xf7537e82); /* 61 */
-        d = MD5.__II__(d, a, b, c, MD5.__X__[11], MD5.__S42__, 0xbd3af235); /* 62 */
-        c = MD5.__II__(c, d, a, b, MD5.__X__[ 2], MD5.__S43__, 0x2ad7d2bb); /* 63 */
-        b = MD5.__II__(b, c, d, a, MD5.__X__[ 9], MD5.__S44__, 0xeb86d391); /* 64 */
+        a = MD5.__II__(a, b, c, d, MD5.__X__[ 0],  6, 0xf4292244);
+        d = MD5.__II__(d, a, b, c, MD5.__X__[ 7], 10, 0x432aff97);
+        c = MD5.__II__(c, d, a, b, MD5.__X__[14], 15, 0xab9423a7);
+        b = MD5.__II__(b, c, d, a, MD5.__X__[ 5], 21, 0xfc93a039);
+        a = MD5.__II__(a, b, c, d, MD5.__X__[12],  6, 0x655b59c3);
+        d = MD5.__II__(d, a, b, c, MD5.__X__[ 3], 10, 0x8f0ccc92);
+        c = MD5.__II__(c, d, a, b, MD5.__X__[10], 15, 0xffeff47d);
+        b = MD5.__II__(b, c, d, a, MD5.__X__[ 1], 21, 0x85845dd1);
+        a = MD5.__II__(a, b, c, d, MD5.__X__[ 8],  6, 0x6fa87e4f);
+        d = MD5.__II__(d, a, b, c, MD5.__X__[15], 10, 0xfe2ce6e0);
+        c = MD5.__II__(c, d, a, b, MD5.__X__[ 6], 15, 0xa3014314);
+        b = MD5.__II__(b, c, d, a, MD5.__X__[13], 21, 0x4e0811a1);
+        a = MD5.__II__(a, b, c, d, MD5.__X__[ 4],  6, 0xf7537e82);
+        d = MD5.__II__(d, a, b, c, MD5.__X__[11], 10, 0xbd3af235);
+        c = MD5.__II__(c, d, a, b, MD5.__X__[ 2], 15, 0x2ad7d2bb);
+        b = MD5.__II__(b, c, d, a, MD5.__X__[ 9], 21, 0xeb86d391);
 
         this._digest[0] += a;
         this._digest[1] += b;
