@@ -8,6 +8,8 @@ import MD4 from "@/crypto/MD4";
 import MD5 from "@/crypto/MD5";
 import RIPEMD128 from "@/crypto/RIPEMD128";
 import RIPEMD160 from "@/crypto/RIPEMD160";
+import RIPEMD256 from "@/crypto/RIPEMD256";
+import RIPEMD320 from "@/crypto/RIPEMD320";
 
 const block: number = 1 + Math.floor(Math.random() * 0x0F);
 console.log("block:", block);
@@ -18,6 +20,8 @@ const md4Impl: MD4 = new MD4();
 const md5Impl: MD5 = new MD5();
 const ripemd128Impl: RIPEMD128 = new RIPEMD128();
 const ripemd160Impl: RIPEMD160 = new RIPEMD160();
+const ripemd256Impl: RIPEMD256 = new RIPEMD256();
+const ripemd320Impl: RIPEMD320 = new RIPEMD320();
 
 function hex16(bytes: Uint8Array): string {
     let output: string = "";
@@ -89,6 +93,24 @@ function test_ripemd160(value: string, expect: string): void {
     console.log(`%c ripemd160("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
+function test_ripemd256(value: string, expect: string): void {
+    for (let i: number = 0; i < value.length; i += block) {
+        ripemd256Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(ripemd256Impl.final());
+    console.log(`%c ripemd256("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
+function test_ripemd320(value: string, expect: string): void {
+    for (let i: number = 0; i < value.length; i += block) {
+        ripemd320Impl.update(bytes(value.slice(i, i + block)));
+    }
+
+    const actual: string = hex16(ripemd320Impl.final());
+    console.log(`%c ripemd320("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
 console.group("crc32");
 test_crc32("", 0x00000000);
 test_crc32("a", 0xe8b7be43);
@@ -147,4 +169,24 @@ test_ripemd160("message digest", "5d0689ef49d2fae572b881b123a85ffa21595f36");
 test_ripemd160("abcdefghijklmnopqrstuvwxyz", "f71c27109c692c1b56bbdceb5b9d2865b3708dbc");
 test_ripemd160("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "b0e20b6e3116640286ed3a87a5713079b21f5189");
 test_ripemd160("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "9b752e45573d4b39f4dbd3323cab82bf63326bfb");
+console.groupEnd();
+
+console.group("test_ripemd256");
+test_ripemd256("", "02ba4c4e5f8ecd1877fc52d64d30e37a2d9774fb1e5d026380ae0168e3c5522d");
+test_ripemd256("a", "f9333e45d857f5d90a91bab70a1eba0cfb1be4b0783c9acfcd883a9134692925");
+test_ripemd256("abc", "afbd6e228b9d8cbbcef5ca2d03e6dba10ac0bc7dcbe4680e1e42d2e975459b65");
+test_ripemd256("message digest", "87e971759a1ce47a514d5c914c392c9018c7c46bc14465554afcdf54a5070c0e");
+test_ripemd256("abcdefghijklmnopqrstuvwxyz", "649d3034751ea216776bf9a18acc81bc7896118a5197968782dd1fd97d8d5133");
+test_ripemd256("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "5740a408ac16b720b84424ae931cbb1fe363d1d0bf4017f1a89f7ea6de77a0b8");
+test_ripemd256("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "06fdcc7a409548aaf91368c06a6275b553e3f099bf0ea4edfd6778df89a890dd");
+console.groupEnd();
+
+console.group("ripemd320");
+test_ripemd320("", "22d65d5661536cdc75c1fdf5c6de7b41b9f27325ebc61e8557177d705a0ec880151c3a32a00899b8");
+test_ripemd320("a", "ce78850638f92658a5a585097579926dda667a5716562cfcf6fbe77f63542f99b04705d6970dff5d");
+test_ripemd320("abc", "de4c01b3054f8930a79d09ae738e92301e5a17085beffdc1b8d116713e74f82fa942d64cdbc4682d");
+test_ripemd320("message digest", "3a8e28502ed45d422f68844f9dd316e7b98533fa3f2a91d29f84d425c88d6b4eff727df66a7c0197");
+test_ripemd320("abcdefghijklmnopqrstuvwxyz", "cabdb1810b92470a2093aa6bce05952c28348cf43ff60841975166bb40ed234004b8824463e6b009");
+test_ripemd320("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", "ed544940c86d67f250d232c30b7b3e5770e0c60c8cb9a4cafe3b11388af9920e1b99230b843c86a4");
+test_ripemd320("12345678901234567890123456789012345678901234567890123456789012345678901234567890", "557888af5f6d8ed62ab66945c6d2a0a47ecd5341e915eb8fea1d0524955f825dc717e4a008ab2d42");
 console.groupEnd();
