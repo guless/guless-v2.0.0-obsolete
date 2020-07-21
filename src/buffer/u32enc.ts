@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { u8, u8vec, u32vec } from "./ctypes";
 
-function u32venc(source: u32vec, target: u8vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function u32enc(source: u32vec, target: u8vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     if (littleEndian) {
         for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j + 4 <= targetEnd; ++i, j += 4) {
             target[j    ] = u8((source[i]      ));
@@ -23,4 +23,4 @@ function u32venc(source: u32vec, target: u8vec, littleEndian: boolean = true, so
     return target;
 }
 
-export default u32venc;
+export default u32enc;
