@@ -3,21 +3,22 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
+import { u32, u8vec, u32vec } from "../buffer/ctypes";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32vdec from "../buffer/u32vdec";
 import u32venc from "../buffer/u32venc";
 
 class MD4 extends HashAlgorithm {
-    private static readonly __PADLEN__: Uint8Array = new Uint8Array([
+    private static readonly __PADLEN__: u8vec = u8vec([
         0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0   , 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
     ]);
 
-    private static readonly __X__: Uint32Array = new Uint32Array(16);
+    private static readonly __X__: u32vec = u32vec(16);
 
     private static __F__(x: number, y: number, z: number): number {
         return (((x) & (y)) | ((~x) & (z)));
@@ -53,7 +54,7 @@ class MD4 extends HashAlgorithm {
         return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
-    private static __U64_ADD__(u: Uint32Array, v: number): Uint32Array {
+    private static __U64_ADD__(u: u32vec, v: number): u32vec {
         const lo: number = (v << 3) >>> 0;
         const hi: number = (v >>> 29);
         u[0] = (u[0] + lo) >>> 0;
@@ -61,9 +62,9 @@ class MD4 extends HashAlgorithm {
         return u;
     }
 
-    private _digest: Uint32Array = new Uint32Array([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]);
-    private _length: Uint32Array = new Uint32Array(2);
-    private _buffer: Uint8Array = new Uint8Array(64);
+    private _digest: u32vec = u32vec([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]);
+    private _length: u32vec = u32vec(2);
+    private _buffer: u8vec = u8vec(64);
     private _cursor: number = 0;
 
     public reset(): void {
@@ -76,7 +77,7 @@ class MD4 extends HashAlgorithm {
         memset(this._buffer, 0);
     }
     
-    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
+    public update(source: u8vec, sourceStart: number = 0, sourceEnd: number = source.length): void {
         const buffer: number = 64 - this._cursor;
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
@@ -101,7 +102,7 @@ class MD4 extends HashAlgorithm {
         this._cursor += sourceEnd - i;
     }
 
-    public final(): Uint8Array {
+    public final(): u8vec {
         if (this._cursor < 56) {
             memcpy(MD4.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
             u32venc(this._length, this._buffer, true, 0, 2, 56);
@@ -114,13 +115,13 @@ class MD4 extends HashAlgorithm {
             memset(MD4.__PADLEN__, 0, 64);
         }
 
-        const output: Uint8Array = u32venc(this._digest, new Uint8Array(16), true);
+        const output: u8vec = u32venc(this._digest, u8vec(16), true);
         this.reset();
 
         return output;
     }
 
-    private _transform(block: Uint8Array, start: number = 0): void {
+    private _transform(block: u8vec, start: number = 0): void {
         let a: number = this._digest[0];
         let b: number = this._digest[1];
         let c: number = this._digest[2];
@@ -182,10 +183,10 @@ class MD4 extends HashAlgorithm {
         c = MD4.__HH__(c, d, a, b, MD4.__X__[ 7], 11);
         b = MD4.__HH__(b, c, d, a, MD4.__X__[15], 15);
 
-        this._digest[0] += a;
-        this._digest[1] += b;
-        this._digest[2] += c;
-        this._digest[3] += d;
+        this._digest[0] = u32(this._digest[0] + a);
+        this._digest[1] = u32(this._digest[1] + b);
+        this._digest[2] = u32(this._digest[2] + c);
+        this._digest[3] = u32(this._digest[3] + d);
 
         memset(MD4.__X__, 0);
     }

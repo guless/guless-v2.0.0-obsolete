@@ -2,13 +2,15 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function memset<T extends Uint8Array | Uint16Array | Uint32Array | Int8Array | Int16Array | Int32Array | Uint8ClampedArray | Float32Array | Float64Array>(source: T, value: number, sourceStart: number = 0, sourceEnd: number = source.length): typeof source {
-    if (typeof source.fill === "function") {
-        source.fill(value, sourceStart, sourceEnd);
-    } else {
-        for (let i: number = sourceStart; i < sourceEnd; ++i) {
-            source[i] = value;
-        }
+import { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec } from "./ctypes";
+
+function memset<T extends i8vec | i16vec | i32vec | u8vec | u16vec | u32vec | f32vec | f64vec>(source: T, value: number, start: number = 0, end: number = source.length): typeof source {
+    if (typeof (source as any).fill === "function") {
+        return (source as any).fill(value, start, end);
+    }
+
+    for (let i: number = start; i < end; ++i) {
+        source[i] = value;
     }
 
     return source;

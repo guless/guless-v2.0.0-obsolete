@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import { u8vec } from "@/buffer/ctypes";
 import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
 import MD4 from "@/crypto/MD4";
@@ -25,7 +26,7 @@ const ripemd256Impl: RIPEMD256 = new RIPEMD256();
 const ripemd320Impl: RIPEMD320 = new RIPEMD320();
 const sha1Impl: SHA1 = new SHA1();
 
-function hex16(bytes: Uint8Array): string {
+function hex16(bytes: u8vec): string {
     let output: string = "";
     for (let i: number = 0; i < bytes.length; ++i) {
         output += ("0" + bytes[i].toString(16)).slice(-2);
@@ -33,8 +34,8 @@ function hex16(bytes: Uint8Array): string {
     return output;
 }
 
-function bytes(value: string): Uint8Array {
-    let output: Uint8Array = new Uint8Array(value.length);
+function bytes(value: string): u8vec {
+    let output: u8vec = u8vec(value.length);
     for (let i: number = 0; i < value.length; ++i) {
         output[i] = value.charCodeAt(i);
     }

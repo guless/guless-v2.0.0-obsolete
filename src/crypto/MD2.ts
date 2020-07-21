@@ -3,11 +3,12 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
+import { u8vec } from "../buffer/ctypes";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 
 class MD2 extends HashAlgorithm {
-    private static readonly __PI_SUBST__: Uint8Array = new Uint8Array([
+    private static readonly __PI_SUBST__: u8vec = u8vec([
         41 , 46 , 67 , 201, 162, 216, 124, 1  , 61 , 54 , 84 , 161, 236, 240, 6  , 19 ,
         98 , 167, 5  , 243, 192, 199, 115, 140, 152, 147, 43 , 217, 188, 76 , 130, 202,
         30 , 155, 87 , 60 , 253, 212, 224, 22 , 103, 66 , 111, 24 , 138, 23 , 229, 18 ,
@@ -26,11 +27,11 @@ class MD2 extends HashAlgorithm {
         49 , 68 , 80 , 180, 143, 237, 31 , 26 , 219, 153, 141, 51 , 159, 17 , 131, 20 ,
     ]);
 
-    private static readonly __X__: Uint8Array = new Uint8Array(32);
+    private static readonly __X__: u8vec = u8vec(32);
 
-    private _digest: Uint8Array = new Uint8Array(16);
-    private _checksum: Uint8Array = new Uint8Array(16);
-    private _buffer: Uint8Array = new Uint8Array(16);
+    private _digest: u8vec = u8vec(16);
+    private _checksum: u8vec = u8vec(16);
+    private _buffer: u8vec = u8vec(16);
     private _cursor: number = 0;
 
     public reset(): void {
@@ -40,7 +41,7 @@ class MD2 extends HashAlgorithm {
         memset(this._buffer, 0);
     }
 
-    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
+    public update(source: u8vec, sourceStart: number = 0, sourceEnd: number = source.length): void {
         const buffer: number = 16 - this._cursor;
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
@@ -63,19 +64,19 @@ class MD2 extends HashAlgorithm {
         this._cursor += sourceEnd - i;
     }
 
-    public final(): Uint8Array {
+    public final(): u8vec {
         memset(this._buffer, 16 - this._cursor, this._cursor);
 
         this._transform(this._buffer);
         this._transform(this._checksum);
 
-        const output: Uint8Array = memcpy(this._digest, new Uint8Array(16));
+        const output: u8vec = memcpy(this._digest, u8vec(16));
         this.reset();
 
         return output;
     }
 
-    private _transform(block: Uint8Array, start: number = 0): void {
+    private _transform(block: u8vec, start: number = 0): void {
         memcpy(block, MD2.__X__, start, start + 16);
 
         for (let i: number = 0; i < 16; ++i) {

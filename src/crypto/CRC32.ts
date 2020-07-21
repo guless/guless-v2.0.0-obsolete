@@ -3,9 +3,10 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
+import { u32, u8vec, u32vec } from "../buffer/ctypes";
 
-class CRC32 extends HashAlgorithm<number> {
-    private static readonly __IEEE_TABLE__: Uint32Array = new Uint32Array([
+class CRC32 extends HashAlgorithm<u32> {
+    private static readonly __IEEE_TABLE__: u32vec = u32vec([
         0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
         0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91,
         0x1db71064, 0x6ab020f2, 0xf3b97148, 0x84be41de,	0x1adad47d, 0x6ddde4eb, 0xf4d4b551, 0x83d385c7,
@@ -40,22 +41,22 @@ class CRC32 extends HashAlgorithm<number> {
         0xb3667a2e, 0xc4614ab8, 0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d,
     ]);
 
-    private _digest: number = 0;
+    private _digest: u32 = 0;
 
     public reset(): void {
         this._digest = 0;
     }
     
-    public update(source: Uint8Array, sourceStart: number = 0, sourceEnd: number = source.length): void {
+    public update(source: u8vec, sourceStart: number = 0, sourceEnd: number = source.length): void {
         this._digest ^= -1;
         for (let i: number = sourceStart; i < sourceEnd; ++i) {
             this._digest = CRC32.__IEEE_TABLE__[(this._digest ^ source[i]) & 0xFF] ^ (this._digest >>> 8);
         }
-        this._digest ^= -1;
+        this._digest = u32(this._digest ^ -1);
     }
 
-    public final(): number {
-        const output: number = this._digest >>> 0;
+    public final(): u32 {
+        const output: u32 = this._digest;
         this.reset();
 
         return output;
