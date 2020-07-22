@@ -4,6 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
 import { u32, u8vec, u32vec } from "../buffer/ctypes";
+import { i32rotl } from "../buffer/coperators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32dec from "../buffer/u32dec";
@@ -19,10 +20,6 @@ class SHA1 extends HashAlgorithm {
     ]);
 
     private static readonly __X__: u32vec = u32vec(80);
-
-    private static __ROTL__(x: number, n: number): number {
-        return (((x) << (n)) | ((x) >>> (32 - (n))));
-    }
 
     private static __U64BE_ADD__(u: u32vec, v: number): u32vec {
         const lo: number = (v << 3) >>> 0;
@@ -102,41 +99,41 @@ class SHA1 extends HashAlgorithm {
         u32dec(block, SHA1.__X__, false, start, start + 64);
 
         for (let i: number = 16; i < 80; ++i) {
-            SHA1.__X__[i] = SHA1.__ROTL__(SHA1.__X__[i - 3] ^ SHA1.__X__[i - 8] ^ SHA1.__X__[i - 14] ^ SHA1.__X__[i - 16], 1);
+            SHA1.__X__[i] = i32rotl(SHA1.__X__[i - 3] ^ SHA1.__X__[i - 8] ^ SHA1.__X__[i - 14] ^ SHA1.__X__[i - 16], 1);
         }
 
         for (let i: number = 0, t: number; i < 20; ++i) {
-            t = SHA1.__ROTL__(a, 5) + ((b & c) | ((~b) & d)) + e + SHA1.__X__[i] + 0x5a827999;
+            t = i32rotl(a, 5) + ((b & c) | ((~b) & d)) + e + SHA1.__X__[i] + 0x5a827999;
             e = d;
             d = c;
-            c = SHA1.__ROTL__(b, 30);
+            c = i32rotl(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 20, t: number; i < 40; ++i) {
-            t = SHA1.__ROTL__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0x6ed9eba1;
+            t = i32rotl(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0x6ed9eba1;
             e = d;
             d = c;
-            c = SHA1.__ROTL__(b, 30);
+            c = i32rotl(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 40, t: number; i < 60; ++i) {
-            t = SHA1.__ROTL__(a, 5) + ((b & c) | (b & d) | (c & d)) + e + SHA1.__X__[i] + 0x8f1bbcdc;
+            t = i32rotl(a, 5) + ((b & c) | (b & d) | (c & d)) + e + SHA1.__X__[i] + 0x8f1bbcdc;
             e = d;
             d = c;
-            c = SHA1.__ROTL__(b, 30);
+            c = i32rotl(b, 30);
             b = a;
             a = t;
         }
 
         for (let i: number = 60, t: number; i < 80; ++i) {
-            t = SHA1.__ROTL__(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0xca62c1d6;
+            t = i32rotl(a, 5) + (b ^ c ^ d) + e + SHA1.__X__[i] + 0xca62c1d6;
             e = d;
             d = c;
-            c = SHA1.__ROTL__(b, 30);
+            c = i32rotl(b, 30);
             b = a;
             a = t;
         }

@@ -4,6 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
 import { u32, u8vec, u32vec } from "../buffer/ctypes";
+import { i32rotl } from "../buffer/coperators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32dec from "../buffer/u32dec";
@@ -38,34 +39,30 @@ class MD5 extends HashAlgorithm {
 
     private static __FF__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__F__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTL__((a), (s));
+        (a)  = i32rotl((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __GG__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__G__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTL__((a), (s));
+        (a)  = i32rotl((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __HH__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__H__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTL__((a), (s));
+        (a)  = i32rotl((a), (s));
         (a) += (b);
         return a;
     }
 
     private static __II__(a: number, b: number, c: number, d: number, x: number, s: number, ac: number): number {
         (a) += MD5.__I__((b), (c), (d)) + (x) + (ac);
-        (a)  = MD5.__ROTL__((a), (s));
+        (a)  = i32rotl((a), (s));
         (a) += (b);
         return a;
-    }
-
-    private static __ROTL__(x: number, n: number): number {
-        return (((x) << (n)) | ((x) >>> (32 - (n))));
     }
 
     private static __U64_ADD__(u: u32vec, v: number): u32vec {
