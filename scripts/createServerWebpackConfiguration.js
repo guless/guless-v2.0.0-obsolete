@@ -17,6 +17,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         devtool: "#inline-source-map",
         entry: {
             "main": ["./main.scss", "./main.ts"],
+            "ctypes": ["./ctypes.ts"],
             "crypto": ["./crypto.ts"],
         },
         output: {
@@ -87,6 +88,11 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                 chunks: ["crypto"],
                 filename: "crypto.html",
                 template: path.resolve(context, "crypto.html"),
+            }),
+            new HTMLWebpackPlugin({
+                chunks: ["ctypes"],
+                filename: "ctypes.html",
+                template: path.resolve(context, "ctypes.html"),
             }),
         ],
     });

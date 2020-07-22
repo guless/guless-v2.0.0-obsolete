@@ -3,12 +3,11 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/types";
-import { i32rotl } from "../buffer/operators";
+import { u32, u8vec, u32vec, i32rotl } from "../buffer/ctypes";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
-import u32vdec from "../buffer/u32vdec";
-import u32venc from "../buffer/u32venc";
+import u32dec from "../buffer/u32dec";
+import u32enc from "../buffer/u32enc";
 
 class RIPEMD320 extends HashAlgorithm {
     private static readonly __PADLEN__: u8vec = u8vec([
@@ -158,17 +157,17 @@ class RIPEMD320 extends HashAlgorithm {
     public final(): u8vec {
         if (this._cursor < 56) {
             memcpy(RIPEMD320.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
-            u32venc(this._length, this._buffer, true, 0, 2, 56);
+            u32enc(this._length, this._buffer, true, 0, 2, 56);
             this._transform(this._buffer);
         } else {
             memcpy(RIPEMD320.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32venc(this._length, RIPEMD320.__PADLEN__, true, 0, 2, 64);
+            u32enc(this._length, RIPEMD320.__PADLEN__, true, 0, 2, 64);
             this._transform(RIPEMD320.__PADLEN__, 8);
             memset(RIPEMD320.__PADLEN__, 0, 64);
         }
 
-        const output: u8vec = u32venc(this._digest, u8vec(40), true);
+        const output: u8vec = u32enc(this._digest, u8vec(40), true);
         this.reset();
 
         return output;
@@ -187,7 +186,7 @@ class RIPEMD320 extends HashAlgorithm {
         let ddd: number = this._digest[8];
         let eee: number = this._digest[9];
 
-        u32vdec(block, RIPEMD320.__X__, true, start, start + 64);
+        u32dec(block, RIPEMD320.__X__, true, start, start + 64);
         
         /* round 1 */
         aa = RIPEMD320.__FF__(aa, bb, cc, dd, ee, RIPEMD320.__X__[ 0], 11); cc = i32rotl(cc, 10);

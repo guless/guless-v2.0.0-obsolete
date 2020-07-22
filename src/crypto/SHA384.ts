@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/types";
+import { u32, u8vec, u32vec } from "../buffer/ctypes";
 
 class SHA384 extends HashAlgorithm {
     public reset(): void {

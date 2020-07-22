@@ -3,12 +3,11 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/types";
-import { i32rotl } from "../buffer/operators";
+import { u32, u8vec, u32vec, i32rotl } from "../buffer/ctypes";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
-import u32vdec from "../buffer/u32vdec";
-import u32venc from "../buffer/u32venc";
+import u32dec from "../buffer/u32dec";
+import u32enc from "../buffer/u32enc";
 
 class RIPEMD160 extends HashAlgorithm {
     private static readonly __PADLEN__: u8vec = u8vec([
@@ -153,17 +152,17 @@ class RIPEMD160 extends HashAlgorithm {
     public final(): u8vec {
         if (this._cursor < 56) {
             memcpy(RIPEMD160.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
-            u32venc(this._length, this._buffer, true, 0, 2, 56);
+            u32enc(this._length, this._buffer, true, 0, 2, 56);
             this._transform(this._buffer);
         } else {
             memcpy(RIPEMD160.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32venc(this._length, RIPEMD160.__PADLEN__, true, 0, 2, 64);
+            u32enc(this._length, RIPEMD160.__PADLEN__, true, 0, 2, 64);
             this._transform(RIPEMD160.__PADLEN__, 8);
             memset(RIPEMD160.__PADLEN__, 0, 64);
         }
 
-        const output: u8vec = u32venc(this._digest, u8vec(20), true);
+        const output: u8vec = u32enc(this._digest, u8vec(20), true);
         this.reset();
 
         return output;
@@ -182,7 +181,7 @@ class RIPEMD160 extends HashAlgorithm {
         let ddd: number = dd;
         let eee: number = ee;
 
-        u32vdec(block, RIPEMD160.__X__, true, start, start + 64);
+        u32dec(block, RIPEMD160.__X__, true, start, start + 64);
         
         /* round 1 */
         aa = RIPEMD160.__FF__(aa, bb, cc, dd, ee, RIPEMD160.__X__[ 0], 11); cc = i32rotl(cc, 10);

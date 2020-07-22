@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { u8vec } from "@/buffer/types";
+import { u8vec } from "@/buffer/ctypes";
 import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
 import MD4 from "@/crypto/MD4";

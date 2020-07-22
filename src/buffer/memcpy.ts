@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec } from "./types";
+import { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec } from "./ctypes";
 
 function memcpy<T extends i8vec | i16vec | i32vec | u8vec | u16vec | u32vec | f32vec | f64vec>(source: T, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     if (typeof (target as any).set === "function" && typeof (source as any).subarray === "function") {
