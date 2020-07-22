@@ -62,8 +62,21 @@ function f32(x: number): f32 {
         return (__F32_TYPE_CAST__[0] = x);
     }
 
-    // #fixedme: should't return the double precision floating point.
-    return x;
+    if (x === 0 || isNaN(x)) {
+        return x;
+    }
+
+    const sign: number = x < 0 ? -1 : 1; x *= sign;
+    const exp: number = Math.floor(Math.log(x) / Math.LN2);
+    const pow: number = Math.pow(2, Math.max(-126, Math.min(exp, 127)));
+    const leading = exp < -127 ? 0 : 1;
+    const mantissa = Math.round((leading - x / pow) * 0x800000);
+
+    if (mantissa <= -0x800000) {
+        return sign * Infinity;
+    }
+
+    return sign * pow * (leading - mantissa / 0x800000);
 }
 
 function f64(x: number): f64 {
