@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { u32, u8vec } from "../buffer/ctypes";
+import { u32, u8vec } from "../buffer/types";
 
 abstract class HashAlgorithm<T extends u32 | u8vec = u8vec> {
     public abstract reset(): void;

@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { i32, u32 } from "./ctypes";
+import { i32, u32 } from "./types";
 
 function i32rotl(x: number, n: number): i32 {
     return (((x) << (n)) | ((x) >>> (32 - (n))));

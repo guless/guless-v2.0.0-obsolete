@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u8vec } from "../buffer/ctypes";
+import { u8vec } from "../buffer/types";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 

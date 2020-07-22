@@ -51,7 +51,18 @@ function u32(x: number): u32 {
     return ((x) >>> 0);
 }
 
+const __F32_TYPE_CAST__: null | Float32Array = (typeof Float32Array === "function" && typeof Math.fround !== "function") ? new Float32Array(1) : null;
+
 function f32(x: number): f32 {
+    if (typeof Math.fround === "function") {
+        return Math.fround(x);
+    }
+
+    if (__F32_TYPE_CAST__ !== null) {
+        return (__F32_TYPE_CAST__[0] = x);
+    }
+
+    // #fixedme: should't return the double precision floating point.
     return x;
 }
 

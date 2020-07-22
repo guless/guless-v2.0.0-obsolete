@@ -3,8 +3,8 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/ctypes";
-import { i32rotl } from "../buffer/coperators";
+import { u32, u8vec, u32vec } from "../buffer/types";
+import { i32rotl } from "../buffer/operators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32dec from "../buffer/u32dec";
