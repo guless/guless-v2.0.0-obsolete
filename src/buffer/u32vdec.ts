@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { u32, u8vec, u32vec } from "./types";
 
-function u32dec(source: u8vec, target: u32vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function u32vdec(source: u8vec, target: u32vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     if (littleEndian) {
         for (let i: number = sourceStart, j: number = targetStart; i + 4 <= sourceEnd && j < targetEnd; i += 4, ++j) {
             target[j] = u32((source[i]) | (source[i + 1] << 8) | (source[i + 2] << 16) | (source[i + 3] << 24));
@@ -17,4 +17,4 @@ function u32dec(source: u8vec, target: u32vec, littleEndian: boolean = true, sou
     return target;
 }
 
-export default u32dec;
+export default u32vdec;

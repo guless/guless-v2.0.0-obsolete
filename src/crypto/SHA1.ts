@@ -7,8 +7,8 @@ import { u32, u8vec, u32vec } from "../buffer/types";
 import { i32rotl } from "../buffer/operators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
-import u32dec from "../buffer/u32dec";
-import u32enc from "../buffer/u32enc";
+import u32vdec from "../buffer/u32vdec";
+import u32venc from "../buffer/u32venc";
 
 class SHA1 extends HashAlgorithm {
     private static readonly __PADLEN__: u8vec = u8vec([
@@ -73,17 +73,17 @@ class SHA1 extends HashAlgorithm {
     public final(): u8vec {
         if (this._cursor < 56) {
             memcpy(SHA1.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
-            u32enc(this._length, this._buffer, false, 0, 2, 56);
+            u32venc(this._length, this._buffer, false, 0, 2, 56);
             this._transform(this._buffer);
         } else {
             memcpy(SHA1.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32enc(this._length, SHA1.__PADLEN__, false, 0, 2, 64);
+            u32venc(this._length, SHA1.__PADLEN__, false, 0, 2, 64);
             this._transform(SHA1.__PADLEN__, 8);
             memset(SHA1.__PADLEN__, 0, 64);
         }
 
-        const output: u8vec = u32enc(this._digest, u8vec(20), false);
+        const output: u8vec = u32venc(this._digest, u8vec(20), false);
         this.reset();
 
         return output;
@@ -96,7 +96,7 @@ class SHA1 extends HashAlgorithm {
         let d: number = this._digest[3];
         let e: number = this._digest[4];
 
-        u32dec(block, SHA1.__X__, false, start, start + 64);
+        u32vdec(block, SHA1.__X__, false, start, start + 64);
 
         for (let i: number = 16; i < 80; ++i) {
             SHA1.__X__[i] = i32rotl(SHA1.__X__[i - 3] ^ SHA1.__X__[i - 8] ^ SHA1.__X__[i - 14] ^ SHA1.__X__[i - 16], 1);
