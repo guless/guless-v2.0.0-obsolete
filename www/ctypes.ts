@@ -3,6 +3,8 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { i64, u64, f32, f64, i8, u8, i16, i32, u16, u32, i64vec, u64vec } from "@/buffer/ctypes";
+import memset from "@/buffer/memset";
+import memcpy from "@/buffer/memcpy";
 
 const m1: i64 = i64(-1);
 const m2: u64 = u64(-1);
@@ -20,3 +22,18 @@ console.log("float64:", f64(m1), f64(m2));
 console.log(i64vec(10), u64vec(10));
 console.log(i64vec([-1, -2]), u64vec([-1, -2]))
 console.log(i64vec([1, 2, 3, 4, 5]), u64vec([1, 2, 3, 4, 5]));
+
+const v1: i64vec = i64vec(10);
+const v2: u64vec = u64vec(10);
+
+console.log("v1:", v1);
+console.log("v2:", v2);
+
+memset(v1, -1, 0, 2);
+memset(v2, -1);
+memcpy(v1, v1, 0, 2, 2, 4);
+
+console.log("v1:", v1);
+console.log("v2:", v2);
+
+
