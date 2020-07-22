@@ -128,18 +128,52 @@ function f64(x: number | i64 | u64): f64 {
     return x;
 }
 
-function i64(x: number): i64 {
+function i64(x: number | i64 | u64 | [number, number]): i64 {
     const v: u32vec = u32vec(2);
+
     (v as any)["__IS_BIT64__"] = true;
     (v as any)["__UNSIGNED__"] = false;
-    return l64parse(v, x, 0/*<, false >*/);
+
+    if (typeof x === "number") {
+        return l64parse(v, x, 0/*<, false >*/);
+    } else {
+        let l32: u32;
+        let h32: u32;
+
+        if ((x as any)["__IS_BIT64__"]) {
+            l32 = l64l32(x, 0, true);
+            h32 = l64h32(x, 0, true);
+        } else {
+            l32 = u32(x[0]);
+            h32 = u32(x[1]);
+        }
+
+        return l64join(v, l32, h32, 0/*<, false >*/);
+    }
 }
 
-function u64(x: number): u64 {
+function u64(x: number | i64 | u64 | [number, number]): u64 {
     const v: u32vec = u32vec(2);
+
     (v as any)["__IS_BIT64__"] = true;
     (v as any)["__UNSIGNED__"] = true;
-    return l64parse(v, x, 0/*<, true >*/);
+
+    if (typeof x === "number") {
+        return l64parse(v, x, 0/*<, true >*/);
+    } else {
+        let l32: u32;
+        let h32: u32;
+
+        if ((x as any)["__IS_BIT64__"]) {
+            l32 = l64l32(x, 0, true);
+            h32 = l64h32(x, 0, true);
+        } else {
+            l32 = u32(x[0]);
+            h32 = u32(x[1]);
+        }
+
+        return l64join(v, l32, h32, 0/*<, true >*/);
+    }
 }
 
 function i8vec(args: number | Array<number>): i8vec {
@@ -238,7 +272,7 @@ function f64vec(args: number | Array<number>): f64vec {
     return args.map(value => f64(value));
 }
 
-function i64vec(args: number | Array<number>): i64vec {
+function i64vec(args: number | Array<number> | Array<i64 | u64> | Array<[number, number]>): i64vec {
     let v: i64vec;
 
     if (typeof args === "number") {
@@ -255,7 +289,24 @@ function i64vec(args: number | Array<number>): i64vec {
         }
 
         for (let i: number = 0, j: number = 0; i + 2 <= v.length && j < args.length; i += 2, ++j) {
-            l64parse(v, args[j], i/*<, false >*/);
+            if (typeof args[j] === "number") {
+                l64parse(v, args[j] as number, i/*<, false >*/);
+            } else {
+                const x = args[j] as [number, number];
+
+                let l32: u32;
+                let h32: u32;
+
+                if ((x as any)["__IS_BIT64__"]) {
+                    l32 = l64l32(x, 0, true);
+                    h32 = l64h32(x, 0, true);
+                } else {
+                    l32 = u32(x[0]);
+                    h32 = u32(x[1]);
+                }
+
+                l64join(v, l32, h32, i/*<, false >*/);
+            }
         }
     }
 
@@ -265,7 +316,7 @@ function i64vec(args: number | Array<number>): i64vec {
     return v;
 }
 
-function u64vec(args: number | Array<number>): u64vec {
+function u64vec(args: number | Array<number> | Array<i64 | u64> | Array<[number, number]>): u64vec {
     let v: u64vec;
 
     if (typeof args === "number") {
@@ -282,7 +333,24 @@ function u64vec(args: number | Array<number>): u64vec {
         }
 
         for (let i: number = 0, j: number = 0; i + 2 <= v.length && j < args.length; i += 2, ++j) {
-            l64parse(v, args[j], i/*<, false >*/);
+            if (typeof args[j] === "number") {
+                l64parse(v, args[j] as number, i/*<, true >*/);
+            } else {
+                const x = args[j] as [number, number];
+
+                let l32: u32;
+                let h32: u32;
+
+                if ((x as any)["__IS_BIT64__"]) {
+                    l32 = l64l32(x, 0, true);
+                    h32 = l64h32(x, 0, true);
+                } else {
+                    l32 = u32(x[0]);
+                    h32 = u32(x[1]);
+                }
+
+                l64join(v, l32, h32, i/*<, true >*/);
+            }
         }
     }
 
@@ -292,10 +360,7 @@ function u64vec(args: number | Array<number>): u64vec {
     return v;
 }
 
-function l64parse(v: u32vec, x: number, i: number = 0/*<, unsigned: boolean = (v as any)["__UNSIGNED__"]>*/): u32vec {
-    const l32: number = u32(x);
-    const h32: number = u32(Math.floor((x - l32) / 4294967296));
-
+function l64join(v: u32vec, l32: u32, h32: u32, i: number = 0/*<, unsigned: boolean = (v as any)["__UNSIGNED__"]>*/): u32vec {
     if (__IS_LITTLE_ENDIAN__) {
         v[i] = l32;
         v[i + 1] = h32;
@@ -305,6 +370,13 @@ function l64parse(v: u32vec, x: number, i: number = 0/*<, unsigned: boolean = (v
     }
 
     return v;
+}
+
+function l64parse(v: u32vec, x: number, i: number = 0/*<, unsigned: boolean = (v as any)["__UNSIGNED__"]>*/): u32vec {
+    const l32: number = u32(x);
+    const h32: number = u32(Math.floor((x - l32) / 4294967296));
+
+    return l64join(v, l32, h32, i/*<, unsigned>*/)
 }
 
 function l64value(v: u32vec, i: number = 0, unsigned: boolean = (v as any)["__UNSIGNED__"]): number {
@@ -396,5 +468,5 @@ export const isLittleEndian: boolean = __IS_LITTLE_ENDIAN__;
 export const isBigEndian: boolean = __IS_BIG_ENDIAN__;
 export { i8, i16, i32, u8, u16, u32, f32, f64, i64, u64 };
 export { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec, i64vec, u64vec };
-export { l64l32, l64h32, l64parse, l64value };
+export { l64l32, l64h32, l64join, l64parse, l64value };
 export { i32rotl, i32rotr };
