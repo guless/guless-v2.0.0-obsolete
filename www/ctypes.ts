@@ -2,38 +2,21 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { i64, u64, f32, f64, i8, u8, i16, i32, u16, u32, u8vec, i64vec, u64vec } from "@/buffer/ctypes";
-import memset from "@/buffer/memset";
-import memcpy from "@/buffer/memcpy";
-import u64enc from "@/buffer/u64enc";
+import { i8, i16, i32, u8, u16, u32, f32, f64, i64, u64 } from "@/buffer/ctypes";
+import { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec, i64vec, u64vec } from "@/buffer/ctypes";
 
-const m1: i64 = i64([0x01234567, 0x89abcdef]);
-const m2: u64 = u64([0xfedeba98, 0x76543210]);
-const v1: i64vec = i64vec([m1, m2]);
-const v2: u64vec = u64vec([m1, m2]);
+const i8val : i8  = i8 (0xFF      );
+const u8val : u8  = u8 (0xFF      );
+const i16val: i16 = i16(0xFFFF    );
+const u16val: u16 = u16(0xFFFF    );
+const i32val: i32 = i32(0xFFFFFFFF);
+const u32val: u32 = u32(0xFFFFFFFF);
+const i64val: i64 = i64([0xFFFFFFFF, 0xFFFFFFFF]);
+const u64val: u64 = u64([0xFFFFFFFF, 0xFFFFFFFF]);
 
-console.log(m1, m2);
-console.log(v1, v2);
-console.log(u64enc(m1, u8vec(16)), u64enc(m2, u8vec(16)));
-console.log(u64enc(v1, u8vec(16)), u64enc(v2, u8vec(16)));
-
-console.log("int8:", i8(m1), i8(m2));
-console.log("int16:", i16(m1), i16(m2));
-console.log("int32:", i32(m1), i32(m2));
-console.log("uint8:", u8(m1), u8(m2));
-console.log("uint16:", u16(m1), u16(m2));
-console.log("uint32:", u32(m1), u32(m2));
-console.log("float32:", f32(m1), f32(m2));
-console.log("float64:", f64(m1), f64(m2));
-
-console.log("----------------------------------------")
-
-memset(m1, -1);
-memset(m2, -1);
-memcpy(m1, v1, 0, 2, 2, 4);
-memcpy(m2, v2, 0, 2, 2, 4);
-
-console.log(m1, m2);
-console.log(v1, v2);
-console.log(u64enc(m1, u8vec(16)), u64enc(m2, u8vec(16)));
-console.log(u64enc(v1, u8vec(16)), u64enc(v2, u8vec(16)));
+console.log(i8val, u8val);
+console.log(i16val, u16val);
+console.log(i32val, u32val);
+console.log(i64val, u64val);
+console.log(f64(i64val), f64(u64val));
+console.log(f32(i64val), f32(u64val));
