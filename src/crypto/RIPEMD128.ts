@@ -5,13 +5,13 @@
 import HashAlgorithm from "./HashAlgorithm";
 import { u32 } from "../buffer/ctypes";
 import { u8vec, u32vec, u64vec } from "../buffer/ctypes";
-import { l64l32, l64h32, l64set } from "../buffer/ctypes";
 import { i32rotl } from "../buffer/coperators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32dec from "../buffer/u32dec";
 import u32enc from "../buffer/u32enc";
 import u64enc from "../buffer/u64enc";
+import u64abits from "../buffer/u64abits";
 
 class RIPEMD128 extends HashAlgorithm {
     private static readonly __PADLEN__: u8vec = u8vec([
@@ -86,14 +86,6 @@ class RIPEMD128 extends HashAlgorithm {
         return a;
     }
 
-    private static __ADD_LEN__(u: u64vec, v: number): u64vec {
-        const lo: number = (v << 3) >>> 0;
-        const hi: number = (v >>> 29);
-        const l32: u32 = u32(l64l32(u) + lo);
-        const h32: u32 = u32(l64h32(u) + hi + (l32 < lo ? 1 : 0));
-        return l64set(u, l32, h32);
-    }
-
     private _digest: u32vec = u32vec([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476]);
     private _length: u64vec = u64vec(1);
     private _buffer: u8vec = u8vec(64);
@@ -114,7 +106,7 @@ class RIPEMD128 extends HashAlgorithm {
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
 
-        RIPEMD128.__ADD_LEN__(this._length, length);
+        u64abits(this._length, length);
 
         if (length >= buffer) {
             const partial: number = buffer & 0x3F;
