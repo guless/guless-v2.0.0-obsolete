@@ -311,4 +311,4 @@ function l64val(v: l64vec, i: number = 0): f64 {
 
 export { i8, i16, i32, u8, u16, u32, f32, f64, i64, u64 };
 export { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec, i64vec, u64vec };
-export { l64tst, l64cnv };
+export { l64l32, l64h32, l64set, l64tst, l64cnv };
