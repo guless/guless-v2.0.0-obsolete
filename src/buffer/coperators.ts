@@ -4,11 +4,11 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { i32 } from "./ctypes";
 
-function i32rotl(x: number, n: number): i32 {
+function i32rotl(x: i32, n: number): i32 {
     return (((x) << (n)) | ((x) >>> (32 - (n))));
 }
 
-function i32rotr(x: number, n: number): i32 {
+function i32rotr(x: i32, n: number): i32 {
     return (((x) << (32 - (n))) | ((x) >>> (n)));
 }
 
