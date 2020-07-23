@@ -2,7 +2,8 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { u32, u8vec, u32vec } from "./ctypes";
+import { u32 } from "./ctypes";
+import { u8vec, u32vec } from "./ctypes";
 
 function u32dec(source: u8vec, target: u32vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
     if (littleEndian) {

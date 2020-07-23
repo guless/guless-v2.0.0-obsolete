@@ -2,7 +2,8 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { u8, u8vec, u64vec } from "./ctypes";
+import { u8 } from "./ctypes";
+import { u8vec, u64vec } from "./ctypes";
 import { l64l32, l64h32 } from "./ctypes";
 
 function u64enc(source: u64vec, target: u8vec, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {

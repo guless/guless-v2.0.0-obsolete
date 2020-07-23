@@ -3,12 +3,15 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/ctypes";
+import { u32 } from "../buffer/ctypes";
+import { u8vec, u32vec, u64vec } from "../buffer/ctypes";
+import { l64l32, l64h32, l64set } from "../buffer/ctypes";
 import { i32rotl } from "../buffer/coperators";
 import memcpy from "../buffer/memcpy";
 import memset from "../buffer/memset";
 import u32dec from "../buffer/u32dec";
 import u32enc from "../buffer/u32enc";
+import u64enc from "../buffer/u64enc";
 
 class SHA1 extends HashAlgorithm {
     private static readonly __PADLEN__: u8vec = u8vec([
@@ -21,16 +24,16 @@ class SHA1 extends HashAlgorithm {
 
     private static readonly __X__: u32vec = u32vec(80);
 
-    private static __U64BE_ADD__(u: u32vec, v: number): u32vec {
+    private static __ADD_LEN__(u: u64vec, v: number): u64vec {
         const lo: number = (v << 3) >>> 0;
         const hi: number = (v >>> 29);
-        u[1] = (u[1] + lo) >>> 0;
-        u[0] = (u[0] + hi + (u[1] < lo ? 1 : 0)) >>> 0;
-        return u;
+        const l32: u32 = u32(l64l32(u) + lo);
+        const h32: u32 = u32(l64h32(u) + hi + (l32 < lo ? 1 : 0));
+        return l64set(u, l32, h32);
     }
 
     private _digest: u32vec = u32vec([0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0]);
-    private _length: u32vec = u32vec(2);
+    private _length: u64vec = u64vec(1);
     private _buffer: u8vec = u8vec(64);
     private _cursor: number = 0;
 
@@ -50,7 +53,7 @@ class SHA1 extends HashAlgorithm {
         const length: number = sourceEnd - sourceStart;
         let i: number = sourceStart;
 
-        SHA1.__U64BE_ADD__(this._length, length);
+        SHA1.__ADD_LEN__(this._length, length);
 
         if (length >= buffer) {
             const partial: number = buffer & 0x3F;
@@ -73,12 +76,12 @@ class SHA1 extends HashAlgorithm {
     public final(): u8vec {
         if (this._cursor < 56) {
             memcpy(SHA1.__PADLEN__, this._buffer, 0, 56 - this._cursor, this._cursor);
-            u32enc(this._length, this._buffer, false, 0, 2, 56);
+            u64enc(this._length, this._buffer, false, 0, 2, 56);
             this._transform(this._buffer);
         } else {
             memcpy(SHA1.__PADLEN__, this._buffer, 0, 64 - this._cursor, this._cursor);
             this._transform(this._buffer);
-            u32enc(this._length, SHA1.__PADLEN__, false, 0, 2, 64);
+            u64enc(this._length, SHA1.__PADLEN__, false, 0, 2, 64);
             this._transform(SHA1.__PADLEN__, 8);
             memset(SHA1.__PADLEN__, 0, 64);
         }

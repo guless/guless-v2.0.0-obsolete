@@ -3,7 +3,8 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import HashAlgorithm from "./HashAlgorithm";
-import { u32, u8vec, u32vec } from "../buffer/ctypes";
+import { u32 } from "../buffer/ctypes";
+import { u8vec, u32vec } from "../buffer/ctypes";
 
 class CRC32 extends HashAlgorithm<number> {
     private static readonly __IEEE_TABLE__: u32vec = u32vec([
