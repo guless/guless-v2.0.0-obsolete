@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import memset from "./memset";
+import internal from "../internal";
 
 type i8  = number;
 type i16 = number;
@@ -23,17 +23,19 @@ type u16vec = vec<u16>;
 type u32vec = vec<u32>;
 type f32vec = vec<f32>;
 type f64vec = vec<f64>;
+type l64vec = u32vec;
 type i64vec = l64vec;
 type u64vec = l64vec;
 
-interface l64vec extends u32vec {
-    __IS_BIT64__: true;
-    __UNSIGNED__: boolean;
-}
-
-interface vec<T extends i8 | i16 | i32 | u8 | u16 | u32 | f32 | f64> {
+interface arr<T extends i8 | i16 | i32 | u8 | u16 | u32 | f32 | f64> {
     readonly length: number;
     [index: number]: T;
+}
+
+interface vec<T extends i8 | i16 | i32 | u8 | u16 | u32 | f32 | f64> extends arr<T> {
+    readonly __BYTES_PER_ELEMENT__: number;
+    readonly __IS_BIT64__: boolean;
+    readonly __UNSIGNED__: boolean;
 }
 
 const __HAS_TYPED_ARRAY__: boolean = (typeof Uint8Array === "function");
@@ -85,99 +87,83 @@ function u64(x: number | [number, number] | l64vec): u64 {
 }
 
 function i8vec(buffer: number | Array<number>): i8vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Int8Array(buffer as number);
-    }
+    let v: arr<i8> = (__HAS_TYPED_ARRAY__ ? new Int8Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<i8>(buffer)) : buffer.map(value => i8(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<i8>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 1;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = false;
 
-    return buffer.map(value => i8(value));
+    return v as i8vec;
 }
 
 function i16vec(buffer: number | Array<number>): i16vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Int16Array(buffer as number);
-    }
+    let v: arr<i16> = (__HAS_TYPED_ARRAY__ ? new Int16Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<i16>(buffer)) : buffer.map(value => i16(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<i16>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 2;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = false;
 
-    return buffer.map(value => i16(value));
+    return v as i16vec;
 }
 
 function i32vec(buffer: number | Array<number>): i32vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Int32Array(buffer as number);
-    }
+    let v: arr<i32> = (__HAS_TYPED_ARRAY__ ? new Int32Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<i32>(buffer)) : buffer.map(value => i32(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<i32>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 4;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = false;
 
-    return buffer.map(value => i32(value));
+    return v as i32vec;
 }
 
 function u8vec(buffer: number | Array<number>): u8vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Uint8Array(buffer as number);
-    }
+    let v: arr<u8> = (__HAS_TYPED_ARRAY__ ? new Uint8Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<u8>(buffer)) : buffer.map(value => u8(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<u8>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 1;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = true;
 
-    return buffer.map(value => u8(value));
+    return v as u8vec;
 }
 
 function u16vec(buffer: number | Array<number>): u16vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Uint16Array(buffer as number);
-    }
+    let v: arr<u16> = (__HAS_TYPED_ARRAY__ ? new Uint16Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<u16>(buffer)) : buffer.map(value => u16(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<u16>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 2;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = true;
 
-    return buffer.map(value => u16(value));
+    return v as u16vec;
 }
 
 function u32vec(buffer: number | Array<number>): u32vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Uint32Array(buffer as number);
-    }
+    let v: arr<u32> = (__HAS_TYPED_ARRAY__ ? new Uint32Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<u32>(buffer)) : buffer.map(value => u32(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<u32>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 4;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = true;
 
-    return buffer.map(value => u32(value));
+    return v as u32vec;
 }
 
 function f32vec(buffer: number | Array<number>): f32vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Float32Array(buffer as number);
-    }
+    let v: arr<f32> = (__HAS_TYPED_ARRAY__ ? new Float32Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<f32>(buffer)) : buffer.map(value => f32(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<f32>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 4;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = false;
 
-    return buffer.map(value => f32(value));
+    return v as f32vec;
 }
 
 function f64vec(buffer: number | Array<number>): f64vec {
-    if (__HAS_TYPED_ARRAY__) {
-        return new Float64Array(buffer as number);
-    }
+    let v: arr<f64> = (__HAS_TYPED_ARRAY__ ? new Float64Array(buffer as number) : typeof buffer === "number" ? setzero(new Array<f64>(buffer)) : buffer.map(value => f64(value)));
 
-    if (typeof buffer === "number") {
-        return memset(new Array<f64>(buffer), 0);
-    }
+    (v as internal).__BYTES_PER_ELEMENT__ = 8;
+    (v as internal).__IS_BIT64__ = false;
+    (v as internal).__UNSIGNED__ = false;
 
-    return buffer.map(value => f64(value));
+    return v as f64vec;
 }
 
 function i64vec(buffer: number | Array<number> | Array<[number, number]> | Array<l64vec>): i64vec {
@@ -208,6 +194,13 @@ function u64vec(buffer: number | Array<number> | Array<[number, number]> | Array
     return v;
 }
 
+function setzero(v: arr<i8 | i16 | i32 | u8 | u16 | u32 | f32 | f64>): typeof v {
+    for (let i: number = 0; i < v.length; ++i) {
+        v[i] = 0;
+    }
+    return v;
+}
+
 function f32rnd(x: number): f32 {
     if (__HAS_MATH_FROUND__) { return Math.fround(x); }
     if (__F32_TYPE_CASTER__ !== null) { __F32_TYPE_CASTER__[0] = x; return __F32_TYPE_CASTER__[0]; }
@@ -234,17 +227,14 @@ function f32rnd(x: number): f32 {
     return sign * p * (l - m / 0x800000);
 }
 
-function l64tst(x: vec<i8 | i16 | i32 | u8 | u16 | u32 | f32 | f64>): x is l64vec {
-    return ((x as any as l64vec).__IS_BIT64__ === true);
-}
-
 function l64alc(n: number, unsgined: boolean): l64vec {
-    const v: u32vec = u32vec(n * 2);
+    const v: arr<u32> = (__HAS_TYPED_ARRAY__ ? new Uint32Array(n * 2) : setzero(new Array<u32>(n * 2)));
 
-    (v as l64vec).__IS_BIT64__ = true;
-    (v as l64vec).__UNSIGNED__ = unsgined;
+    (v as internal).__BYTES_PER_ELEMENT__ = 8;
+    (v as internal).__IS_BIT64__ = true;
+    (v as internal).__UNSIGNED__ = unsgined;
 
-    return (v as l64vec);
+    return v as l64vec;
 }
 
 function l64l32(v: l64vec, i: number = 0): u32 {
@@ -284,8 +274,8 @@ function l64cnv(v: l64vec, x: number | [number, number] | l64vec, i: number = 0)
         return l64rnd(v, x, i);
     }
 
-    if (l64tst(x)) {
-        return l64cpy(v, x, i);
+    if ((x as internal).__IS_BIT64__) {
+        return l64cpy(v, x as l64vec, i);
     }
 
     return l64set(v, x[0], x[1], i);
@@ -311,4 +301,4 @@ function l64val(v: l64vec, i: number = 0): f64 {
 
 export { i8, i16, i32, u8, u16, u32, f32, f64, i64, u64 };
 export { i8vec, i16vec, i32vec, u8vec, u16vec, u32vec, f32vec, f64vec, i64vec, u64vec };
-export { l64l32, l64h32, l64set, l64tst, l64cnv };
+export { l64l32, l64h32, l64set, l64cnv, l64val };
