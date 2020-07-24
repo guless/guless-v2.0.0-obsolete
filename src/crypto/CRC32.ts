@@ -51,7 +51,7 @@ class CRC32 extends HashAlgorithm<number> {
     public update(source: u8vec, sourceStart: number = 0, sourceEnd: number = source.length): void {
         this._digest ^= -1;
         for (let i: number = sourceStart; i < sourceEnd; ++i) {
-            this._digest = CRC32.__IEEE_TABLE__[(this._digest ^ source[i]) & 0xFF] ^ (this._digest >>> 8);
+            this._digest = CRC32.__IEEE_TABLE__[(this._digest ^ source[i]) & 0xff] ^ (this._digest >>> 8);
         }
         this._digest = u32(this._digest ^ -1);
     }

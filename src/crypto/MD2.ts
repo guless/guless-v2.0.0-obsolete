@@ -47,7 +47,7 @@ class MD2 extends HashAlgorithm {
         let i: number = sourceStart;
 
         if (length >= buffer) {
-            const partial: number = buffer & 0x0F;
+            const partial: number = buffer & 0x0f;
 
             if (partial !== 0) {
                 memcpy(source, this._buffer, 0, partial, this._cursor);
@@ -90,7 +90,7 @@ class MD2 extends HashAlgorithm {
             for (let i: number = 0; i < 32; ++i) {
                 t = MD2.__X__[i] ^= MD2.__PI_SUBST__[t];
             }
-            t = (t + r) & 0xFF;
+            t = (t + r) & 0xff;
         }
 
         for (let i: number = 0, t: number = this._checksum[15]; i < 16; ++i) {

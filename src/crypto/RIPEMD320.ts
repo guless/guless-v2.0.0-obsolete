@@ -133,7 +133,7 @@ class RIPEMD320 extends HashAlgorithm {
         u64abits(this._length, length);
 
         if (length >= buffer) {
-            const partial: number = buffer & 0x3F;
+            const partial: number = buffer & 0x3f;
 
             if (partial !== 0) {
                 memcpy(source, this._buffer, 0, partial, this._cursor);

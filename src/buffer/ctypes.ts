@@ -59,11 +59,11 @@ function i32(x: number | l64vec): i32 {
 }
 
 function u8(x: number | l64vec): u8 {
-    return ((typeof x === "number" ? x : l64l32(x)) & 0xFF);
+    return ((typeof x === "number" ? x : l64l32(x)) & 0xff);
 }
 
 function u16(x: number | l64vec): u16 {
-    return ((typeof x === "number" ? x : l64l32(x)) & 0xFFFF);
+    return ((typeof x === "number" ? x : l64l32(x)) & 0xffff);
 }
 
 function u32(x: number | l64vec): u32 {
