@@ -36,7 +36,6 @@ function u64enc(source: u64vec, target: u8vec, littleEndian: boolean = true, sou
             target[j    ] = u8((h32 >> 24));
         }
     }
-
     return target;
 }
 
