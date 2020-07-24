@@ -3,6 +3,9 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import { u8vec } from "@/buffer/ctypes";
+import strenc from "@/buffer/strenc";
+import strdmp from "@/buffer/strdmp";
+import HashAlgorithm from "@/crypto/HashAlgorithm";
 import CRC32 from "@/crypto/CRC32";
 import MD2 from "@/crypto/MD2";
 import MD4 from "@/crypto/MD4";
@@ -26,101 +29,56 @@ const ripemd256Impl: RIPEMD256 = new RIPEMD256();
 const ripemd320Impl: RIPEMD320 = new RIPEMD320();
 const sha1Impl: SHA1 = new SHA1();
 
-function hex16(bytes: u8vec): string {
-    let output: string = "";
-    for (let i: number = 0; i < bytes.length; ++i) {
-        output += ("0" + bytes[i].toString(16)).slice(-2);
-    }
-    return output;
-}
-
-function bytes(value: string): u8vec {
-    let output: u8vec = u8vec(value.length);
-    for (let i: number = 0; i < value.length; ++i) {
-        output[i] = value.charCodeAt(i);
-    }
-    return output;
-}
-
 function test_crc32(value: string, expect: number): void {
     for (let i: number = 0; i < value.length; i += block) {
-        crc32Impl.update(bytes(value.slice(i, i + block)));
+        const partial: string = value.slice(i, i + block);
+        crc32Impl.update(strenc(partial, u8vec(partial.length)));
     }
 
     const actual: number = crc32Impl.final();
     console.log(`%c crc32("${value}") => actual:${"0x" + ("00000000" + actual.toString(16)).slice(-8)}, expect:${"0x" + ("00000000" + expect.toString(16)).slice(-8)};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
 }
 
-function test_md2(value: string, expect: string): void {
+function test_hash(name: string, impl: HashAlgorithm, value: string, expect: string): void {
     for (let i: number = 0; i < value.length; i += block) {
-        md2Impl.update(bytes(value.slice(i, i + block)));
+        const partial: string = value.slice(i, i + block);
+        impl.update(strenc(partial, u8vec(partial.length)));
     }
 
-    const actual: string = hex16(md2Impl.final());
-    console.log(`%c md2("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    const actual: string = strdmp(impl.final());
+    console.log(`%c ${name}("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+}
+
+function test_md2(value: string, expect: string): void {
+    return test_hash("md2", md2Impl, value, expect);
 }
 
 function test_md4(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        md4Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(md4Impl.final());
-    console.log(`%c md4("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("md4", md4Impl, value, expect);
 }
 
 function test_md5(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        md5Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(md5Impl.final());
-    console.log(`%c md5("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("md5", md5Impl, value, expect);
 }
 
 function test_ripemd128(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        ripemd128Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(ripemd128Impl.final());
-    console.log(`%c ripemd128("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("ripemd128", ripemd128Impl, value, expect);
 }
 
 function test_ripemd160(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        ripemd160Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(ripemd160Impl.final());
-    console.log(`%c ripemd160("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("ripemd160", ripemd160Impl, value, expect);
 }
 
 function test_ripemd256(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        ripemd256Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(ripemd256Impl.final());
-    console.log(`%c ripemd256("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("ripemd256", ripemd256Impl, value, expect);
 }
 
 function test_ripemd320(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        ripemd320Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(ripemd320Impl.final());
-    console.log(`%c ripemd320("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("ripemd320", ripemd320Impl, value, expect);
 }
 
 function test_sha1(value: string, expect: string): void {
-    for (let i: number = 0; i < value.length; i += block) {
-        sha1Impl.update(bytes(value.slice(i, i + block)));
-    }
-
-    const actual: string = hex16(sha1Impl.final());
-    console.log(`%c sha1("${value}") => actual:${actual}, expect:${expect};`, `color: ${actual === expect ? "#0a0" : "#a00"};`);
+    return test_hash("sha1", sha1Impl, value, expect);
 }
 
 console.group("crc32");
