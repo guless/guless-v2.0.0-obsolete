@@ -16,7 +16,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         context,
         devtool: "#inline-source-map",
         entry: {
-            "main": ["./main.scss", "./main.ts"],
+            "index": ["./index.scss", "./index.ts"],
         },
         output: {
             path: dist,
@@ -79,8 +79,9 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                 patterns: [{ from: "./resources/", to: "./resources/", noErrorOnMissing: true }],
             }),
             new HTMLWebpackPlugin({
-                chunks: ["main"],
-                template: path.resolve(context, "main.html"),
+                chunks: ["index"],
+                title: "Guless",
+                template: path.resolve(context, "template.html"),
             }),
         ],
     });
