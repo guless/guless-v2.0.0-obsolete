@@ -16,9 +16,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         context,
         devtool: "#inline-source-map",
         entry: {
-            "main": ["./main.scss", "./main.ts"],
-            "ctypes": ["./ctypes.ts"],
-            "crypto": ["./crypto.ts"],
+            "index": ["./index.scss", "./index.ts"],
         },
         output: {
             path: dist,
@@ -81,18 +79,9 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                 patterns: [{ from: "./resources/", to: "./resources/", noErrorOnMissing: true }],
             }),
             new HTMLWebpackPlugin({
-                chunks: ["main"],
-                template: path.resolve(context, "main.html"),
-            }),
-            new HTMLWebpackPlugin({
-                chunks: ["crypto"],
-                filename: "crypto.html",
-                template: path.resolve(context, "crypto.html"),
-            }),
-            new HTMLWebpackPlugin({
-                chunks: ["ctypes"],
-                filename: "ctypes.html",
-                template: path.resolve(context, "ctypes.html"),
+                chunks: ["index"],
+                title: 'Guless',
+                template: path.resolve(context, "template.html"),
             }),
         ],
     });
