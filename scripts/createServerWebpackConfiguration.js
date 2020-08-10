@@ -80,7 +80,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             }),
             new HTMLWebpackPlugin({
                 chunks: ["index"],
-                title: 'Guless',
+                title: "Guless",
                 template: path.resolve(context, "template.html"),
             }),
         ],
