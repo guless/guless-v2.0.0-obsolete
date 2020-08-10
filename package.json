@@ -5,12 +5,11 @@
         "keygen": "source scripts/generate-self-signed-cert.sh",
         "clean": "rm -rf dist",
         "start": "webpack-dev-server --config=scripts/createApplicationWebpackConfiguration.js --mode=development",
-        "build": "npm run clean && npm run build:src && npm run build:es5 && npm run build:www",
+        "build": "npm run clean && npm run build:esm && npm run build:es5 && npm run build:pkg",
         "build:es5": "tsc -p src/tsconfig.json --target es5 --declaration --outDir dist/es5/",
-        "build:src": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
-        "build:www": "webpack-cli --config=scripts/createApplicationWebpackConfiguration.js --mode=production --devtool=false",
-        "prenpm": "cp package.json dist/package.json && cp .npmignore dist/.npmignore",
-        "deploy": "npm version patch && npm run build && npm run prenpm && npm publish dist/ --access public"
+        "build:esm": "tsc -p src/tsconfig.json --declaration --outDir dist/esm/",
+        "build:pkg": "cp package.json dist/package.json",
+        "deploy": "npm version patch && npm run build && npm publish dist/ --access public"
     },
     "devDependencies": {
         "autoprefixer": "^9.7.6",
