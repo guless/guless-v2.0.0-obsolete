@@ -22,7 +22,21 @@ class EventDispatcher {
             this._registeredEventListenersMap[type] = new RegisteredEventListenerQueue();
         }
 
-        return this._registeredEventListenersMap[type].addListener(new RegisteredEventListener(listener, options));
+        let capture: boolean = false;
+        let context: any;
+        let once: boolean = false;
+        let priority: number = 0;
+
+        if (typeof options === "boolean") {
+            capture = options;
+        } else {
+            if (options.capture  !== void 0) { capture  = options.capture;  }
+            if (options.context  !== void 0) { context  = options.context;  }
+            if (options.once     !== void 0) { once     = options.once;     }
+            if (options.priority !== void 0) { priority = options.priority; }
+        }
+
+        return this._registeredEventListenersMap[type].addListener(new RegisteredEventListener(listener, capture, context, once, priority));
     }
 
     public removeEventListener(type: string, listener: IEventListener, options: boolean | IEventListenerOptions = false): void {
@@ -30,7 +44,14 @@ class EventDispatcher {
             return;
         }
 
-        const capture: boolean = typeof options === "boolean" ? options : options.capture ?? false;
+        let capture: boolean = false;
+
+        if (typeof options === "boolean") {
+            capture = options;
+        } else {
+            if (options.capture !== void 0) { capture = options.capture; }
+        }
+
         const registeredListener: null | RegisteredEventListener = this._registeredEventListenersMap[type].findListener((registeredListener: RegisteredEventListener) => registeredListener.listener === listener && registeredListener.capture === capture);
 
         if (!registeredListener) {
