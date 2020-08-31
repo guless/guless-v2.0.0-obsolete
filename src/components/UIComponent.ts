@@ -29,6 +29,10 @@ class UIComponent extends Container {
         return this._element.hasAttribute(qualifiedName);
     }
 
+    public removeAttribute(qualifiedName: string): void {
+        return this._element.removeAttribute(qualifiedName);
+    }
+
     public getAttributeValueBoolean(qualifiedName: string): boolean {
         return UIAttributeValueConversion.attributeValueToBoolean(this.getAttribute(qualifiedName));
     }
@@ -37,13 +41,21 @@ class UIComponent extends Container {
         return this.setAttribute(qualifiedName, UIAttributeValueConversion.booleanToAttributeValue(value));
     }
 
-    protected _updateTreeAfterInsertion(node: UIComponent): void {
-        super._updateTreeAfterInsertion(node);
+    public getAttributeValueNumber(qualifiedName: string): number {
+        return UIAttributeValueConversion.attributeValueToNumber(this.getAttribute(qualifiedName));
+    }
+
+    public setAttributeValueNumber(qualifiedName: string, value: number): void {
+        return this.setAttribute(qualifiedName, UIAttributeValueConversion.numberToAttributeValue(value));
+    }
+
+    protected _updateSubtreeForInsertion(node: UIComponent): void {
+        super._updateSubtreeForInsertion(node);
         this._element.insertBefore(node._element, node.next === null ? null : (node.next as UIComponent)._element);
     }
 
-    protected _updateTreeAfterRemoval(node: UIComponent): void {
-        super._updateTreeAfterRemoval(node);
+    protected _updateSubtreeForRemoval(node: UIComponent): void {
+        super._updateSubtreeForRemoval(node);
         this._element.removeChild(node._element);
     }
 }

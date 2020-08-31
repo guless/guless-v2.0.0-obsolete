@@ -41,7 +41,7 @@ class Container extends Node {
         if (this._head === next) { this._head = node; }
         if (this._tail === prev) { this._tail = node; }
 
-        this._childHasBeenInserted(node);
+        this._updateSubtreeForInsertion(node);
     }
 
     public removeChild(node: Node): void {
@@ -59,30 +59,22 @@ class Container extends Node {
         if (this._head === node) { this._head = next; }
         if (this._tail === node) { this._tail = prev; }
         
-        this._childHasBeenRemoved(node);
+        this._updateSubtreeForRemoval(node);
     }
 
-    private _childWillBeInserted(node: Node): void {
+    protected _childWillBeInserted(node: Node): void {
         /*< empty >*/
     }
 
-    private _childHasBeenInserted(node: Node): void {
-        this._updateTreeAfterInsertion(node);
-    }
-
-    private _childWillBeRemoved(node: Node): void {
+    protected _childWillBeRemoved(node: Node): void {
         /*< empty >*/
     }
 
-    private _childHasBeenRemoved(node: Node): void {
-        this._updateTreeAfterRemoval(node);
-    }
-
-    protected _updateTreeAfterInsertion(node: Node): void {
+    protected _updateSubtreeForInsertion(node: Node): void {
         /*< empty >*/
     }
 
-    protected _updateTreeAfterRemoval(node: Node): void {
+    protected _updateSubtreeForRemoval(node: Node): void {
         /*< empty >*/
     }
 }

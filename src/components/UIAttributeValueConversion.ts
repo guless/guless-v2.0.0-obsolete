@@ -10,6 +10,14 @@ class UIAttributeValueConversion {
     public static booleanToAttributeValue(value: boolean): null | string {
         return (value === true ? "" : null); 
     }
+
+    public static attributeValueToNumber(value: null | string): number {
+        return (value === null ? NaN : parseFloat(value));
+    }
+
+    public static numberToAttributeValue(value: number): null | string {
+        return (isNaN(value) ? null : "" + value);
+    }
 }
 
 export default UIAttributeValueConversion;
