@@ -8,9 +8,10 @@ import UIAttributeValueConversion from "./UIAttributeValueConversion";
 class UIComponent extends Container {
     private _element: HTMLElement;
 
-    constructor(element: HTMLElement = document.createElement("layer")) {
+    constructor(element: HTMLElement = document.createElement("layer"), cssSelector: string = "UIComponent") {
         super();
         this._element = element;
+        this._element.classList.add(cssSelector);
     }
 
     public get element(): HTMLElement {
