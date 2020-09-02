@@ -2,15 +2,15 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import IEventListener from "./IEventListener";
+import IEventListenerOptions from "./IEventListenerOptions";
+import IAddEventListenerOptions from "./IAddEventListenerOptions";
 import assert from "../assert";
 import internal from "../internal";
 import RegisteredEventListener from "./RegisteredEventListener";
 import RegisteredEventListenerQueue from "./RegisteredEventListenerQueue";
 import Event from "./Event";
 import EventPhase from "./EventPhase";
-import IEventListener from "./IEventListener";
-import IEventListenerOptions from "./IEventListenerOptions";
-import IAddEventListenerOptions from "./IAddEventListenerOptions";
 
 class EventDispatcher {
     private _registeredEventListenersMap: Record<string, RegisteredEventListenerQueue> = Object.create(null);
