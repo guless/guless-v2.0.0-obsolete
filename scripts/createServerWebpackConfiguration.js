@@ -9,6 +9,7 @@ const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const OnceImporter = require("node-sass-once-importer");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
 
 function createServerWebpackConfiguration(env = {}, argv = {}) {
@@ -69,6 +70,9 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                         },
                         {
                             loader: "sass-loader",
+                            options: {
+                                sassOptions: { importer: OnceImporter() },
+                            },
                         },
                     ],
                 },
