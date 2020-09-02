@@ -2,12 +2,10 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-{
-    "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "strict": true,
-        "target": "es2015",
-        "experimentalDecorators": true,
-    },
+function UISelector(name: string): ClassDecorator {
+    return (target: Function) => {
+        Object.defineProperty(target.prototype, "__CSS_SELECTOR__", { value: name, enumerable: false, writable: false, configurable: false });
+    };
 }
+
+export default UISelector;

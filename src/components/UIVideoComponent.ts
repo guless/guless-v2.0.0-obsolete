@@ -3,13 +3,15 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import UIMediaComponent from "./UIMediaComponent";
+import UISelector from "./UISelector";
 
+@UISelector("UIVideoComponent")
 class UIVideoComponent extends UIMediaComponent {
     public readonly domElement!: HTMLVideoElement;
     private _playsinline: boolean = false;
 
-    constructor(domElement: HTMLVideoElement = document.createElement("video"), cssSelector: string = "UIVideoComponent") {
-        super(domElement, cssSelector);
+    constructor(domElement: HTMLVideoElement = document.createElement("video")) {
+        super(domElement);
     }
 
     public get width(): number {

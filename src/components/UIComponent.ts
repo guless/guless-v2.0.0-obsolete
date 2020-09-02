@@ -2,27 +2,23 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import internal from "../internal";
 import Container from "../dom/Container";
+import UISelector from "./UISelector";
 import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
+@UISelector("UIComponent")
 class UIComponent extends Container {
     private _domElement: HTMLElement;
-    private _cssSelector: string;
 
-    constructor(domElement: HTMLElement = document.createElement("layer"), cssSelector: string = "UIComponent") {
+    constructor(domElement: HTMLElement = document.createElement("layer")) {
         super();
         this._domElement = domElement;
-        this._cssSelector = cssSelector;
-
-        this.classList.add(this._cssSelector);
+        this.classList.add((this as internal).__CSS_SELECTOR__);
     }
 
     public get domElement(): HTMLElement {
         return this._domElement;
-    }
-
-    public get cssSelector(): string {
-        return this._cssSelector;
     }
 
     public get style(): CSSStyleDeclaration {
@@ -66,7 +62,7 @@ class UIComponent extends Container {
     }
 
     public destroy(): void {
-        this.classList.remove(this._cssSelector);
+        this.classList.remove((this as internal).__CSS_SELECTOR__);
     }
 
     protected _updateSubtreeForInsertion(node: UIComponent): void {

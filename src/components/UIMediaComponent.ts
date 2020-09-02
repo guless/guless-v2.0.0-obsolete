@@ -3,23 +3,25 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import UIComponent from "./UIComponent";
-import MediaEvent from "../events/MediaEvent";
+import UISelector from "./UISelector";
 import UIMediaComponentReadyState from "./UIMediaComponentReadyState";
 import UIMediaComponentNetworkState from "./UIMediaComponentNetworkState";
 import UIMediaComponentPreload from "./UIMediaComponentPreload";
 import UIMediaComponentCrossOrigin from "./UIMediaComponentCrossOrigin";
+import MediaEvent from "../events/MediaEvent";
 import { SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT } from "../platform/capabilities";
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
+@UISelector("UIMediaComponent")
 abstract class UIMediaComponent extends UIComponent {
     public readonly domElement!: HTMLMediaElement;
 
     private _srcObject: null | string | MediaStream | MediaSource | Blob = null;
     private _srcObjectURL: null | string = null;
 
-    constructor(domElement: HTMLMediaElement, cssSelector: string = "UIMediaComponent") {
-        super(domElement, cssSelector);
+    constructor(domElement: HTMLMediaElement) {
+        super(domElement);
         this._transformMediaEventHandler = this._transformMediaEventHandler.bind(this);
 
         this.domElement.addEventListener(MediaEvent.ABORT,            this._transformMediaEventHandler, false);
