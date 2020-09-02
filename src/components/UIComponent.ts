@@ -6,32 +6,47 @@ import Container from "../dom/Container";
 import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
 class UIComponent extends Container {
-    private _element: HTMLElement;
+    private _domElement: HTMLElement;
+    private _cssSelector: string;
 
-    constructor(element: HTMLElement = document.createElement("layer"), cssSelector: string = "UIComponent") {
+    constructor(domElement: HTMLElement = document.createElement("layer"), cssSelector: string = "UIComponent") {
         super();
-        this._element = element;
-        this._element.classList.add(cssSelector);
+        this._domElement = domElement;
+        this._cssSelector = cssSelector;
+
+        this.classList.add(this._cssSelector);
     }
 
-    public get element(): HTMLElement {
-        return this._element;
+    public get domElement(): HTMLElement {
+        return this._domElement;
+    }
+
+    public get cssSelector(): string {
+        return this._cssSelector;
+    }
+
+    public get style(): CSSStyleDeclaration {
+        return this._domElement.style
+    }
+
+    public get classList(): DOMTokenList {
+        return this._domElement.classList;
     }
 
     public getAttribute(qualifiedName: string): null | string {
-        return this._element.getAttribute(qualifiedName);
+        return this._domElement.getAttribute(qualifiedName);
     }
 
     public setAttribute(qualifiedName: string, value: null | string): void {
-        return value === null ? this._element.removeAttribute(qualifiedName) : this._element.setAttribute(qualifiedName, value);
+        return value === null ? this._domElement.removeAttribute(qualifiedName) : this._domElement.setAttribute(qualifiedName, value);
     }
 
     public hasAttribute(qualifiedName: string): boolean {
-        return this._element.hasAttribute(qualifiedName);
+        return this._domElement.hasAttribute(qualifiedName);
     }
 
     public removeAttribute(qualifiedName: string): void {
-        return this._element.removeAttribute(qualifiedName);
+        return this._domElement.removeAttribute(qualifiedName);
     }
 
     public getAttributeValueBoolean(qualifiedName: string): boolean {
@@ -50,14 +65,18 @@ class UIComponent extends Container {
         return this.setAttribute(qualifiedName, UIAttributeValueConversion.numberToAttributeValue(value));
     }
 
+    public destroy(): void {
+        this.classList.remove(this._cssSelector);
+    }
+
     protected _updateSubtreeForInsertion(node: UIComponent): void {
         super._updateSubtreeForInsertion(node);
-        this._element.insertBefore(node._element, node.next === null ? null : (node.next as UIComponent)._element);
+        this._domElement.insertBefore(node._domElement, node.next === null ? null : (node.next as UIComponent)._domElement);
     }
 
     protected _updateSubtreeForRemoval(node: UIComponent): void {
         super._updateSubtreeForRemoval(node);
-        this._element.removeChild(node._element);
+        this._domElement.removeChild(node._domElement);
     }
 }
 
