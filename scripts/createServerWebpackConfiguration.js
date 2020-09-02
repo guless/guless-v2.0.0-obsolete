@@ -9,6 +9,7 @@ const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const OnceImporter = require("node-sass-once-importer");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
 
 function createServerWebpackConfiguration(env = {}, argv = {}) {
@@ -29,7 +30,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         },
         devServer: {
             host: "www.guless.com",
-            port: 443,
+            // port: 443,
             https: true,
             key: fs.readFileSync("./private/server.key"),
             cert: fs.readFileSync("./private/server.crt"),
@@ -69,6 +70,9 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                         },
                         {
                             loader: "sass-loader",
+                            options: {
+                                sassOptions: { importer: OnceImporter() },
+                            },
                         },
                     ],
                 },
