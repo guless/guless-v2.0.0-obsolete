@@ -30,7 +30,7 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         },
         devServer: {
             host: "www.guless.com",
-            port: 443,
+            // port: 443,
             https: true,
             key: fs.readFileSync("./private/server.key"),
             cert: fs.readFileSync("./private/server.crt"),
