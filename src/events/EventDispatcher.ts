@@ -23,7 +23,7 @@ class EventDispatcher {
         }
 
         let capture: boolean = false;
-        let context: any;
+        let context: any = null;
         let once: boolean = false;
         let priority: number = 0;
 
