@@ -92,7 +92,7 @@ abstract class UIMediaComponent extends UIComponent {
                 this.domElement.src = value;
             } else if (value === null || typeof (value as MediaStream).addTrack !== "undefined") {
                 if (this.domElement.src) {
-                    this.domElement.src = "";
+                    this.setAttribute("src", null);
                 }
                 this.domElement.srcObject = value;
             } else {
@@ -106,7 +106,7 @@ abstract class UIMediaComponent extends UIComponent {
             if (typeof value === "string") {
                 this.domElement.src = value;
             } else if (value === null) {
-                this.domElement.src = "";
+                this.setAttribute("src", null);
             } else {
                 this._srcObjectURL = createObjectURL(value);
                 this.domElement.src = this._srcObjectURL;
