@@ -4,6 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import UIAudioComponent from "@/components/UIAudioComponent";
 import UIVideoComponent from "@/components/UIVideoComponent";
+import UICanvasComponent from "@/components/UICanvasComponent";
 
 const audio: UIAudioComponent = new UIAudioComponent();
 const video: UIVideoComponent = new UIVideoComponent();
@@ -22,3 +23,16 @@ video.src = "./resources/media/bunny.mp4";
 
 document.body.appendChild(audio.domElement);
 document.body.appendChild(video.domElement);
+
+const canvas: UICanvasComponent = new UICanvasComponent();
+const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+canvas.style.background = "#f8f8f8";
+
+context.save();
+context.strokeStyle = "#009000";
+context.arc(canvas.width * 0.5, canvas.height * 0.5, 50, 0, Math.PI * 2, false);
+context.stroke();
+context.restore();
+
+document.body.appendChild(canvas.domElement);

@@ -2,6 +2,11 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@import "@/components/UIAudioComponent.scss";
-@import "@/components/UIVideoComponent.scss";
-@import "@/components/UICanvasComponent.scss";
+@import "./UIComponent.scss";
+
+$UICanvasComponent: ".UICanvasComponent" !default;
+
+#{$UICanvasComponent} {
+    @extend #{$UIComponent};
+    display: inline;
+}
