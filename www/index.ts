@@ -2,9 +2,9 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import UIAudioComponent from "@/components/UIAudioComponent";
-import UIVideoComponent from "@/components/UIVideoComponent";
-import UICanvasComponent from "@/components/UICanvasComponent";
+import UIAudioComponent from "@/ui/UIAudioComponent";
+import UIVideoComponent from "@/ui/UIVideoComponent";
+import UICanvasComponent from "@/ui/UICanvasComponent";
 
 const audio: UIAudioComponent = new UIAudioComponent();
 const video: UIVideoComponent = new UIVideoComponent();
