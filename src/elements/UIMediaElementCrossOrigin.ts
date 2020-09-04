@@ -2,11 +2,9 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@import "./UIMediaComponent.scss";
-
-$UIAudioComponent: ".UIAudioComponent";
-
-#{$UIAudioComponent} {
-    @extend #{$UIMediaComponent};
-    display: inline;
+const enum UIMediaElementCrossOrigin {
+    ANONYMOUS = "anonymous",
+    USE_CREDENTIALS = "use-credentials",
 }
+
+export default UIMediaElementCrossOrigin;

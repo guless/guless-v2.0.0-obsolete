@@ -2,11 +2,11 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@import "./UIMediaComponent.scss";
+@import "./UIElement.scss";
 
-$UIVideoComponent: ".UIVideoComponent";
+$UICanvasElement: ".UICanvasElement" !default;
 
-#{$UIVideoComponent} {
-    @extend #{$UIMediaComponent};
+#{$UICanvasElement} {
+    @extend #{$UIElement};
     display: inline;
 }

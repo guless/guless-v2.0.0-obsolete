@@ -2,12 +2,12 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import UIAudioComponent from "@/ui/UIAudioComponent";
-import UIVideoComponent from "@/ui/UIVideoComponent";
-import UICanvasComponent from "@/ui/UICanvasComponent";
+import UIAudioElement from "@/elements/UIAudioElement";
+import UIVideoElement from "@/elements/UIVideoElement";
+import UICanvasElement from "@/elements/UICanvasElement";
 
-const audio: UIAudioComponent = new UIAudioComponent();
-const video: UIVideoComponent = new UIVideoComponent();
+const audio: UIAudioElement = new UIAudioElement();
+const video: UIVideoElement = new UIVideoElement();
 
 audio.controls = true;
 audio.autoplay = true;
@@ -24,9 +24,11 @@ video.src = "./resources/media/bunny.mp4";
 document.body.appendChild(audio.domElement);
 document.body.appendChild(video.domElement);
 
-const canvas: UICanvasComponent = new UICanvasComponent();
+const canvas: UICanvasElement = new UICanvasElement();
 const context: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
 
+canvas.width = 320;
+canvas.height = 180;
 canvas.style.background = "#f8f8f8";
 
 context.save();

@@ -2,11 +2,11 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import UIComponent from "./UIComponent";
+import UIElement from "./UIElement";
 import UISelector from "./UISelector";
 
-@UISelector("UICanvasComponent")
-class UICanvasComponent extends UIComponent {
+@UISelector("UICanvasElement")
+class UICanvasElement extends UIElement {
     public readonly domElement!: HTMLCanvasElement;
 
     constructor(domElement: HTMLCanvasElement = document.createElement("canvas")) {
@@ -39,4 +39,4 @@ class UICanvasComponent extends UIComponent {
     }
 }
 
-export default UICanvasComponent;
+export default UICanvasElement;

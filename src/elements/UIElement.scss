@@ -2,11 +2,8 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@import "./UIComponent.scss";
+$UIElement: ".UIElement" !default;
 
-$UICanvasComponent: ".UICanvasComponent" !default;
-
-#{$UICanvasComponent} {
-    @extend #{$UIComponent};
-    display: inline;
+#{$UIElement} {
+    display: block;
 }

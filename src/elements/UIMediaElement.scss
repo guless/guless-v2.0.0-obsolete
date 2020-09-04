@@ -2,10 +2,10 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@import "./UIComponent.scss";
+@import "./UIElement.scss";
 
-$UIMediaComponent: ".UIMediaComponent" !default;
+$UIMediaElement: ".UIMediaElement" !default;
 
-#{$UIMediaComponent} {
-    @extend #{$UIComponent};
+#{$UIMediaElement} {
+    @extend #{$UIElement};
 }

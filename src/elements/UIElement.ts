@@ -7,8 +7,8 @@ import Container from "../dom/Container";
 import UISelector from "./UISelector";
 import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
-@UISelector("UIComponent")
-class UIComponent extends Container {
+@UISelector("UIElement")
+class UIElement extends Container {
     private _domElement: HTMLElement;
 
     constructor(domElement: HTMLElement = document.createElement("layer")) {
@@ -65,15 +65,15 @@ class UIComponent extends Container {
         this.classList.remove((this as internal).__CSS_SELECTOR__);
     }
 
-    protected _updateSubtreeForInsertion(node: UIComponent): void {
+    protected _updateSubtreeForInsertion(node: UIElement): void {
         super._updateSubtreeForInsertion(node);
-        this._domElement.insertBefore(node._domElement, node.next === null ? null : (node.next as UIComponent)._domElement);
+        this._domElement.insertBefore(node._domElement, node.next === null ? null : (node.next as UIElement)._domElement);
     }
 
-    protected _updateSubtreeForRemoval(node: UIComponent): void {
+    protected _updateSubtreeForRemoval(node: UIElement): void {
         super._updateSubtreeForRemoval(node);
         this._domElement.removeChild(node._domElement);
     }
 }
 
-export default UIComponent;
+export default UIElement;

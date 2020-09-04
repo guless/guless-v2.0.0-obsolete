@@ -2,19 +2,19 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import UIComponent from "./UIComponent";
+import UIElement from "./UIElement";
 import UISelector from "./UISelector";
-import UIMediaComponentReadyState from "./UIMediaComponentReadyState";
-import UIMediaComponentNetworkState from "./UIMediaComponentNetworkState";
-import UIMediaComponentPreload from "./UIMediaComponentPreload";
-import UIMediaComponentCrossOrigin from "./UIMediaComponentCrossOrigin";
+import UIMediaElementReadyState from "./UIMediaElementReadyState";
+import UIMediaElementNetworkState from "./UIMediaElementNetworkState";
+import UIMediaElementPreload from "./UIMediaElementPreload";
+import UIMediaElementCrossOrigin from "./UIMediaElementCrossOrigin";
 import MediaEvent from "../events/MediaEvent";
 import { SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT } from "../platform/capabilities";
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
-@UISelector("UIMediaComponent")
-abstract class UIMediaComponent extends UIComponent {
+@UISelector("UIMediaElement")
+abstract class UIMediaElement extends UIElement {
     public readonly domElement!: HTMLMediaElement;
 
     private _srcObject: null | string | MediaStream | MediaSource | Blob = null;
@@ -48,27 +48,27 @@ abstract class UIMediaComponent extends UIComponent {
         this.domElement.addEventListener(MediaEvent.WAITING,          this._transformMediaEventHandler, false);
     }
 
-    public get readyState(): UIMediaComponentReadyState {
-        return this.domElement.readyState as UIMediaComponentReadyState;
+    public get readyState(): UIMediaElementReadyState {
+        return this.domElement.readyState as UIMediaElementReadyState;
     }
 
-    public get networkState(): UIMediaComponentNetworkState {
-        return this.domElement.networkState as UIMediaComponentNetworkState;
+    public get networkState(): UIMediaElementNetworkState {
+        return this.domElement.networkState as UIMediaElementNetworkState;
     }
 
-    public get preload(): UIMediaComponentPreload {
-        return this.domElement.preload as UIMediaComponentPreload;
+    public get preload(): UIMediaElementPreload {
+        return this.domElement.preload as UIMediaElementPreload;
     }
 
-    public set preload(value: UIMediaComponentPreload) {
+    public set preload(value: UIMediaElementPreload) {
         this.domElement.preload = value;
     }
 
-    public get crossOrigin(): null | UIMediaComponentCrossOrigin {
-        return this.domElement.crossOrigin as null | UIMediaComponentCrossOrigin;
+    public get crossOrigin(): null | UIMediaElementCrossOrigin {
+        return this.domElement.crossOrigin as null | UIMediaElementCrossOrigin;
     }
 
-    public set crossOrigin(value: null | UIMediaComponentCrossOrigin) {
+    public set crossOrigin(value: null | UIMediaElementCrossOrigin) {
         this.domElement.crossOrigin = value;
     }
 
@@ -257,4 +257,4 @@ abstract class UIMediaComponent extends UIComponent {
     }
 }
 
-export default UIMediaComponent;
+export default UIMediaElement;

@@ -2,11 +2,11 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import UIMediaComponent from "./UIMediaComponent";
+import UIMediaElement from "./UIMediaElement";
 import UISelector from "./UISelector";
 
-@UISelector("UIVideoComponent")
-class UIVideoComponent extends UIMediaComponent {
+@UISelector("UIVideoElement")
+class UIVideoElement extends UIMediaElement {
     public readonly domElement!: HTMLVideoElement;
     private _playsinline: boolean = false;
 
@@ -57,4 +57,4 @@ class UIVideoComponent extends UIMediaComponent {
     }
 }
 
-export default UIVideoComponent;
+export default UIVideoElement;
