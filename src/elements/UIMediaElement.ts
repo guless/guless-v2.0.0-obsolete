@@ -6,8 +6,8 @@ import UIElement from "./UIElement";
 import UISelector from "./UISelector";
 import UIMediaElementReadyState from "./UIMediaElementReadyState";
 import UIMediaElementNetworkState from "./UIMediaElementNetworkState";
-import UIMediaElementPreload from "./UIMediaElementPreload";
-import UIMediaElementCrossOrigin from "./UIMediaElementCrossOrigin";
+import UIPreloadAttributeValue from "./UIPreloadAttributeValue";
+import UICrossOriginAttributeValue from "./UICrossOriginAttributeValue";
 import MediaEvent from "../events/MediaEvent";
 import { SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT } from "../platform/capabilities";
 import createObjectURL from "../platform/createObjectURL";
@@ -56,19 +56,19 @@ abstract class UIMediaElement extends UIElement {
         return this.domElement.networkState as UIMediaElementNetworkState;
     }
 
-    public get preload(): UIMediaElementPreload {
-        return this.domElement.preload as UIMediaElementPreload;
+    public get preload(): UIPreloadAttributeValue {
+        return this.domElement.preload as UIPreloadAttributeValue;
     }
 
-    public set preload(value: UIMediaElementPreload) {
+    public set preload(value: UIPreloadAttributeValue) {
         this.domElement.preload = value;
     }
 
-    public get crossOrigin(): null | UIMediaElementCrossOrigin {
-        return this.domElement.crossOrigin as null | UIMediaElementCrossOrigin;
+    public get crossOrigin(): null | UICrossOriginAttributeValue {
+        return this.domElement.crossOrigin as null | UICrossOriginAttributeValue;
     }
 
-    public set crossOrigin(value: null | UIMediaElementCrossOrigin) {
+    public set crossOrigin(value: null | UICrossOriginAttributeValue) {
         this.domElement.crossOrigin = value;
     }
 
