@@ -6,8 +6,8 @@ import UIElement from "./UIElement";
 import UISelector from "./UISelector";
 import UIMediaElementReadyState from "./UIMediaElementReadyState";
 import UIMediaElementNetworkState from "./UIMediaElementNetworkState";
-import UIMediaElementPreloadAttributeValue from "./UIMediaElementPreloadAttributeValue";
 import UICrossOriginAttributeValue from "./UICrossOriginAttributeValue";
+import UIMediaPreloadAttributeValue from "./UIMediaPreloadAttributeValue";
 import MediaEvent from "../events/MediaEvent";
 import { SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT } from "../platform/capabilities";
 import createObjectURL from "../platform/createObjectURL";
@@ -56,11 +56,11 @@ abstract class UIMediaElement extends UIElement {
         return this.domElement.networkState as UIMediaElementNetworkState;
     }
 
-    public get preload(): UIMediaElementPreloadAttributeValue {
-        return this.domElement.preload as UIMediaElementPreloadAttributeValue;
+    public get preload(): UIMediaPreloadAttributeValue {
+        return this.domElement.preload as UIMediaPreloadAttributeValue;
     }
 
-    public set preload(value: UIMediaElementPreloadAttributeValue) {
+    public set preload(value: UIMediaPreloadAttributeValue) {
         this.domElement.preload = value;
     }
 
