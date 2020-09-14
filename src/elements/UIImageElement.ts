@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import UIElement from "./UIElement";
 import UISelector from "./UISelector";
-import UICrossOriginAttributeValue from "./UICrossOriginAttributeValue";
+import UIElementCrossOriginAttributeValue from "./UIElementCrossOriginAttributeValue";
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
@@ -49,11 +49,11 @@ class UIImageElement extends UIElement {
         this.domElement.alt = value;
     }
 
-    public get crossOrigin(): null | UICrossOriginAttributeValue {
-        return this.domElement.crossOrigin as null | UICrossOriginAttributeValue;;
+    public get crossOrigin(): null | UIElementCrossOriginAttributeValue {
+        return this.domElement.crossOrigin as null | UIElementCrossOriginAttributeValue;;
     }
 
-    public set crossOrigin(value: null | UICrossOriginAttributeValue) {
+    public set crossOrigin(value: null | UIElementCrossOriginAttributeValue) {
         this.domElement.crossOrigin = value;
     }
 
