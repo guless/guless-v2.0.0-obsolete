@@ -117,9 +117,10 @@ class MD5 implements IHashAlgorithm {
 
     public final(): Uint8Array {
         const padlen: number = (this._cursor < 56 ? 56 - this._cursor : 120 - this._cursor);
+        const chksum: Uint8Array = encode32(this._chksum, new Uint8Array(8), true, 0, 2, 0, 8);
 
         this.update(MD5.__P__, 0, padlen);
-        this.update(encode32(this._chksum, new Uint8Array(8), true, 0, 2, 0, 8), 0, 8);
+        this.update(chksum, 0, 8);
 
         const digest: Uint8Array = encode32(this._digest, new Uint8Array(16), true, 0, 4, 0, 16);
         this.reset();
