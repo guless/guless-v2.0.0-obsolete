@@ -8,4 +8,7 @@
         "baseUrl": "../",
         "paths": { "@/*": ["./src/*"] },
     },
+    "exclude": [
+        "./resources/mediafiles/**/*.ts",
+    ],
 }

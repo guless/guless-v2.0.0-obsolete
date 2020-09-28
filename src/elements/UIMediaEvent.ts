@@ -2,10 +2,10 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import IMediaEventsMap from "./IMediaEventsMap";
-import Event from "./Event";
+import IUIMediaEventsMap from "./IUIMediaEventsMap";
+import Event from "../events/Event";
 
-class MediaEvent extends Event {
+class UIMediaEvent extends Event {
     public static readonly ABORT = "abort";
     public static readonly CAN_PLAY = "canplay";
     public static readonly CAN_PLAY_THROUGH = "canplaythrough";
@@ -29,11 +29,11 @@ class MediaEvent extends Event {
     public static readonly VOLUME_CHANGE = "volumechange";
     public static readonly WAITING = "waiting";
 
-    constructor(type: keyof IMediaEventsMap, bubbles?: boolean, cancelable?: boolean);
+    constructor(type: keyof IUIMediaEventsMap, bubbles?: boolean, cancelable?: boolean);
     constructor(type: string, bubbles?: boolean, cancelable?: boolean);
     constructor(type: string, bubbles: boolean = false, cancelable: boolean = true) {
         super(type, bubbles, cancelable);
     }
 }
 
-export default MediaEvent;
+export default UIMediaEvent;
