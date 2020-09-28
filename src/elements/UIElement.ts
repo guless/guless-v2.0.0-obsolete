@@ -9,40 +9,36 @@ import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
 @UISelector("UIElement")
 class UIElement extends Container {
-    private _domElement: HTMLElement;
+    public readonly domElement: HTMLElement;
 
     constructor(domElement: HTMLElement = document.createElement("layer")) {
         super();
-        this._domElement = domElement;
+        this.domElement = domElement;
         this.classList.add((this as internal).__CSS_SELECTOR__);
     }
 
-    public get domElement(): HTMLElement {
-        return this._domElement;
-    }
-
     public get style(): CSSStyleDeclaration {
-        return this._domElement.style
+        return this.domElement.style
     }
 
     public get classList(): DOMTokenList {
-        return this._domElement.classList;
+        return this.domElement.classList;
     }
 
     public getAttribute(qualifiedName: string): null | string {
-        return this._domElement.getAttribute(qualifiedName);
+        return this.domElement.getAttribute(qualifiedName);
     }
 
     public setAttribute(qualifiedName: string, value: null | string): void {
-        return value === null ? this._domElement.removeAttribute(qualifiedName) : this._domElement.setAttribute(qualifiedName, value);
+        return value === null ? this.domElement.removeAttribute(qualifiedName) : this.domElement.setAttribute(qualifiedName, value);
     }
 
     public hasAttribute(qualifiedName: string): boolean {
-        return this._domElement.hasAttribute(qualifiedName);
+        return this.domElement.hasAttribute(qualifiedName);
     }
 
     public removeAttribute(qualifiedName: string): void {
-        return this._domElement.removeAttribute(qualifiedName);
+        return this.domElement.removeAttribute(qualifiedName);
     }
 
     public getAttributeValueBoolean(qualifiedName: string): boolean {
@@ -67,12 +63,12 @@ class UIElement extends Container {
 
     protected _updateSubtreeForInsertion(node: UIElement): void {
         super._updateSubtreeForInsertion(node);
-        this._domElement.insertBefore(node._domElement, node.next === null ? null : (node.next as UIElement)._domElement);
+        this.domElement.insertBefore(node.domElement, node.next === null ? null : (node.next as UIElement).domElement);
     }
 
     protected _updateSubtreeForRemoval(node: UIElement): void {
         super._updateSubtreeForRemoval(node);
-        this._domElement.removeChild(node._domElement);
+        this.domElement.removeChild(node.domElement);
     }
 }
 
