@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 {
-    "extends": "../src/tsconfig.json",
+    "extends": "../tsconfig.json",
     "compilerOptions": {
         "baseUrl": "../",
         "paths": { "@/*": ["./src/*"] },
