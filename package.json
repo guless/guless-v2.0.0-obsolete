@@ -3,7 +3,7 @@
   "version": "6.0.1",
   "scripts": {
     "keygen": "source scripts/generate-self-signed-cert.sh",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm -rf coverage",
     "start": "webpack-dev-server --config=scripts/createApplicationWebpackConfiguration.js --mode=development",
     "build": "npm run clean && npm run build:esm && npm run build:es5 && npm run build:pkg",
     "build:es5": "tsc -p src/tsconfig.json --target es5 --declaration --outDir dist/es5/",
