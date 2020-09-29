@@ -2,8 +2,20 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function md5test(input: string, expect: string): void {
+import MD5 from "@/crypto/MD5";
+import encodeLChar from "@/buffer/encodeLChar";
+import hexdmp from "@/buffer/hexdmp";
 
+function md5test(input: string, result: string): void {
+    test(`"${input}" => "${result}"`, () => {
+        const md5: MD5 = new MD5();
+        const block: Uint8Array = encodeLChar(input, new Uint8Array(input.length));
+
+        md5.update(block);
+        const digest: Uint8Array = md5.final();
+
+        expect(hexdmp(digest)).toBe(result);
+    });
 }
 
 md5test("", "d41d8cd98f00b204e9800998ecf8427e");
