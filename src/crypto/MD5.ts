@@ -5,8 +5,8 @@
 import IHashAlgorithm from "./IHashAlgorithm";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
-import decode32 from "../buffer/decode32";
-import encode32 from "../buffer/encode32";
+import decodeUint32 from "../buffer/decodeUint32";
+import encodeUint32 from "../buffer/encodeUint32";
 
 class MD5 implements IHashAlgorithm {
     private static readonly __X__: Uint32Array = new Uint32Array(16);
@@ -117,12 +117,12 @@ class MD5 implements IHashAlgorithm {
 
     public final(): Uint8Array {
         const padlen: number = (this._cursor < 56 ? 56 - this._cursor : 120 - this._cursor);
-        const chksum: Uint8Array = encode32(this._chksum, new Uint8Array(8), true, 0, 2, 0, 8);
+        const chksum: Uint8Array = encodeUint32(this._chksum, new Uint8Array(8), true, 0, 2, 0, 8);
 
         this.update(MD5.__P__, 0, padlen);
         this.update(chksum, 0, 8);
 
-        const digest: Uint8Array = encode32(this._digest, new Uint8Array(16), true, 0, 4, 0, 16);
+        const digest: Uint8Array = encodeUint32(this._digest, new Uint8Array(16), true, 0, 4, 0, 16);
         this.reset();
 
         return digest;
@@ -134,7 +134,7 @@ class MD5 implements IHashAlgorithm {
         let c: number = this._digest[2];
         let d: number = this._digest[3];
 
-        decode32(block, MD5.__X__, true, offset, offset + 64, 0, 16);
+        decodeUint32(block, MD5.__X__, true, offset, offset + 64, 0, 16);
 
         /* Round 1 */
         a = MD5.__FF__(a, b, c, d, MD5.__X__[ 0],  7, 0xD76AA478);
