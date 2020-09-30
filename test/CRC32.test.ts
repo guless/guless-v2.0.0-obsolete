@@ -2,9 +2,8 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import crc32 from "@/buffer/crc32";
+import crc32 from "@/crypto/crc32";
 import encodeLChar from "@/buffer/encodeLChar";
-import hexdmp from "@/buffer/hexdmp";
 
 function crc32test(input: string, result: number): void {
     test(`"${input}" => ${result}`, () => {
