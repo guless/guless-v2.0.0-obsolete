@@ -11,7 +11,7 @@ function detectSystemEndianness(): boolean {
         const __IS_LITTLE_ENDIAN__: boolean = (__UINT32_BYTE_VIEWER__[0] === 0x78 && __UINT32_BYTE_VIEWER__[1] === 0x56 && __UINT32_BYTE_VIEWER__[2] === 0x34 && __UINT32_BYTE_VIEWER__[3] === 0x12);
         const __IS_BIG_ENDIAN__   : boolean = (__UINT32_BYTE_VIEWER__[3] === 0x78 && __UINT32_BYTE_VIEWER__[2] === 0x56 && __UINT32_BYTE_VIEWER__[1] === 0x34 && __UINT32_BYTE_VIEWER__[0] === 0x12);
 
-        assert(__IS_LITTLE_ENDIAN__ || __IS_BIG_ENDIAN__, "The system byte order is not supported.");
+        assert(__IS_LITTLE_ENDIAN__ || __IS_BIG_ENDIAN__, "The system endianness is not supported.");
         return __IS_LITTLE_ENDIAN__;
     }
 
