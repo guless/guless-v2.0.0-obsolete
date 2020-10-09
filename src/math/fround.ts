@@ -2,7 +2,6 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import assert from "../assert";
 import { SUPPORTED_MATH_FROUND, SUPPORTED_TYPED_ARRAY } from "../platform/capabilities";
 
 function createMathFRound(): typeof Math.fround {
@@ -15,7 +14,9 @@ function createMathFRound(): typeof Math.fround {
         return function fround(x: number): number { __FLOAT32_DATA_VIEWER__[0] = x; return __FLOAT32_DATA_VIEWER__[0]; };
     }
 
-    assert(false, `The "fround()" is not supported.`);
+    return function fround(x: number): number {
+        throw new Error(`The "fround()" is not implemented.`);
+    }
 }
 
 export default createMathFRound();
