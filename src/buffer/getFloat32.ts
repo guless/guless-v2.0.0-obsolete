@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { IS_LITTLE_ENDIAN as SYSTEM_IS_LITTLE_ENDIAN } from "../platform/system";
+import SYSTEM_ENDIANNESS from "../platform/endianness";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities";
 import { read } from "./IEEE754";
 
@@ -12,7 +12,7 @@ function createGetFloat32(): (source: Uint8Array, offset?: number, littleEndian?
         const __FLOAT32_BYTE_VIEWER__: Uint8Array = new Uint8Array(__FLOAT32_DATA_VIEWER__.buffer, 0, 4);
 
         return function getFloat32(source: Uint8Array, offset: number = 0, littleEndian: boolean = true): number {
-            if (littleEndian === SYSTEM_IS_LITTLE_ENDIAN) {
+            if (littleEndian === SYSTEM_ENDIANNESS) {
                 __FLOAT32_BYTE_VIEWER__[0] = source[offset    ];
                 __FLOAT32_BYTE_VIEWER__[1] = source[offset + 1];
                 __FLOAT32_BYTE_VIEWER__[2] = source[offset + 2];
