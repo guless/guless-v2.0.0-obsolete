@@ -15,7 +15,7 @@ function createCancelAnimationFrame(): typeof cancelAnimationFrame {
 
     return function cancelAnimationFrame(handle: number): void {
         throw new Error(`The "cancelAnimationFrame()" is not implemented.`);
-    }
+    };
 }
 
 export default createCancelAnimationFrame();

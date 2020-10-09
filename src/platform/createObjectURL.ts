@@ -15,7 +15,7 @@ function createCreateObjectURL(): typeof URL.createObjectURL {
 
     return function createObjectURL(object: any): string {
         throw new Error(`The "createObjectURL()" is not implemented.`);
-    }
+    };
 }
 
 export default createCreateObjectURL();

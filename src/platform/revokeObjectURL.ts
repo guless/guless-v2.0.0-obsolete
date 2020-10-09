@@ -15,7 +15,7 @@ function createRevokeObjectURL(): typeof URL.revokeObjectURL {
 
     return function revokeObjectURL(url: string): void {
         throw new Error(`The "revokeObjectURL()" is not implemented.`);
-    }
+    };
 }
 
 export default createRevokeObjectURL();

@@ -35,7 +35,7 @@ function createMathFRound(): typeof Math.fround {
         }
     
         return sign * p * (l - m / 0x800000);
-    }
+    };
 }
 
 export default createMathFRound();

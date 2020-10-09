@@ -38,7 +38,7 @@ function createGetFloat64(): (source: Uint8Array, offset?: number, littleEndian?
 
     return function getFloat64(source: Uint8Array, offset: number = 0, littleEndian: boolean = true): number {
         return read(source, offset, littleEndian, 52, 8);
-    }
+    };
 }
 
 export default createGetFloat64();

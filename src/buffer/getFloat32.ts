@@ -30,7 +30,7 @@ function createGetFloat32(): (source: Uint8Array, offset?: number, littleEndian?
 
     return function getFloat32(source: Uint8Array, offset: number = 0, littleEndian: boolean = true): number {
         return read(source, offset, littleEndian, 23, 4);
-    }
+    };
 }
 
 export default createGetFloat32();

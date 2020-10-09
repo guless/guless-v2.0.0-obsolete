@@ -15,7 +15,7 @@ function createRequestAnimationFrame(): typeof requestAnimationFrame {
 
     return function requestAnimationFrame(callback: FrameRequestCallback): number {
         throw new Error(`The "requestAnimationFrame()" is not implemented.`);
-    }
+    };
 }
 
 export default createRequestAnimationFrame();
