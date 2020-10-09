@@ -65,11 +65,11 @@ class MD5 implements IHashAlgorithm {
         return (((x) << (s)) | ((x) >>> (32 - (s))));
     }
 
-    private static __CHKSUM64__(target: Uint32Array, length: number, litttleEndian: boolean = true): void {
+    private static __CHKSUM64__(target: Uint32Array, length: number, littleEndian: boolean = true): void {
         const l32: number = (length << 3) >>> 0;
         const h32: number = (length >>> 29);
 
-        if (litttleEndian) {
+        if (littleEndian) {
             target[0] = (target[0] + l32) >>> 0;
             target[1] = (target[1] + h32 + (target[0] < l32 ? 1 : 0)) >>> 0;
         } else {
