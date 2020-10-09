@@ -12,7 +12,7 @@ function createGetFloat32(): (source: Uint8Array, offset?: number, littleEndian?
         const __FLOAT32_BYTE_VIEWER__: Uint8Array = new Uint8Array(__FLOAT32_DATA_VIEWER__.buffer, 0, 4);
 
         return function getFloat32(source: Uint8Array, offset: number = 0, littleEndian: boolean = true): number {
-            if (littleEndian && SYSTEM_IS_LITTLE_ENDIAN) {
+            if (littleEndian === SYSTEM_IS_LITTLE_ENDIAN) {
                 __FLOAT32_BYTE_VIEWER__[0] = source[offset    ];
                 __FLOAT32_BYTE_VIEWER__[1] = source[offset + 1];
                 __FLOAT32_BYTE_VIEWER__[2] = source[offset + 2];
