@@ -9,7 +9,7 @@ import UIMediaElementReadyState from "./UIMediaElementReadyState";
 import UIMediaElementNetworkState from "./UIMediaElementNetworkState";
 import UIMediaElementPreloadAttributeValue from "./UIMediaElementPreloadAttributeValue";
 import UIMediaEvent from "./UIMediaEvent";
-import { SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT } from "../platform/capabilities";
+import { SUPPORTED_MEDIA_SRC_OBJECT_ATTRIBUTE } from "../platform/capabilities/supported-media-src-object-attribute";
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
@@ -84,7 +84,7 @@ abstract class UIMediaElement extends UIElement {
 
         this._srcObject = value;
 
-        if (SUPPORTED_HTML_MEDIA_ELEMENT_SRC_OBJECT) {
+        if (SUPPORTED_MEDIA_SRC_OBJECT_ATTRIBUTE) {
             if (typeof value === "string") {
                 if (this.domElement.srcObject) {
                     this.domElement.srcObject = null;

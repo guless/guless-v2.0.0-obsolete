@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import SYSTEM_ENDIANNESS from "../platform/endianness";
-import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities";
+import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
 import { write } from "./IEEE754";
 
 function createSetFloat64(): (target: Uint8Array, value: number, offset?: number, littleEndian?: boolean) => void {

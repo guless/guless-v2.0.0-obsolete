@@ -2,7 +2,8 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { SUPPORTED_MATH_FROUND, SUPPORTED_TYPED_ARRAY } from "../platform/capabilities";
+import { SUPPORTED_MATH_FROUND } from "../platform/capabilities/supported-math-fround";
+import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
 
 function createMathFRound(): typeof Math.fround {
     if (SUPPORTED_MATH_FROUND) {
