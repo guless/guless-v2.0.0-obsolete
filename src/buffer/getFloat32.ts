@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import ENDIANNESS from "../platform/endianness";
+import { ENDIANNESS } from "../platform/endianness";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
 import { read } from "./IEEE754";
 

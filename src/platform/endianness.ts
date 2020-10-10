@@ -18,4 +18,4 @@ function detectPlatformEndianness(): boolean {
     return true;
 }
 
-export default detectPlatformEndianness();
+export const ENDIANNESS: boolean = detectPlatformEndianness();
