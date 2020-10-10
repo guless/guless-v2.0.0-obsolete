@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fault from "../fault";
 import { SUPPORTED_ANIMATION_FRAME, SUPPORTED_WEBKIT_ANIMATION_FRAME } from "./capabilities/supported-animation-frame";
 
 function createRequestAnimationFrame(): typeof requestAnimationFrame {
@@ -14,7 +15,7 @@ function createRequestAnimationFrame(): typeof requestAnimationFrame {
     }
 
     return function requestAnimationFrame(callback: FrameRequestCallback): number {
-        throw new Error(`The "requestAnimationFrame()" is not implemented.`);
+        fault(`The "requestAnimationFrame()" is not implemented.`);
     };
 }
 

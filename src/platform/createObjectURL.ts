@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fault from "../fault";
 import { SUPPORTED_URL_OBJECT, SUPPORTED_WEBKIT_URL_OBJECT } from "./capabilities/supported-url-object";
 
 function createCreateObjectURL(): typeof URL.createObjectURL {
@@ -14,7 +15,7 @@ function createCreateObjectURL(): typeof URL.createObjectURL {
     }
 
     return function createObjectURL(object: any): string {
-        throw new Error(`The "createObjectURL()" is not implemented.`);
+        fault(`The "createObjectURL()" is not implemented.`);
     };
 }
 

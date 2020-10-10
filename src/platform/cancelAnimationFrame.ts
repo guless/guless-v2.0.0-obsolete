@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fault from "../fault";
 import { SUPPORTED_ANIMATION_FRAME, SUPPORTED_WEBKIT_ANIMATION_FRAME } from "./capabilities/supported-animation-frame";
 
 function createCancelAnimationFrame(): typeof cancelAnimationFrame {
@@ -14,7 +15,7 @@ function createCancelAnimationFrame(): typeof cancelAnimationFrame {
     }
 
     return function cancelAnimationFrame(handle: number): void {
-        throw new Error(`The "cancelAnimationFrame()" is not implemented.`);
+        fault(`The "cancelAnimationFrame()" is not implemented.`);
     };
 }
 

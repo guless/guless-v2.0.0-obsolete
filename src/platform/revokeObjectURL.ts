@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import fault from "../fault";
 import { SUPPORTED_URL_OBJECT, SUPPORTED_WEBKIT_URL_OBJECT } from "./capabilities/supported-url-object";
 
 function createRevokeObjectURL(): typeof URL.revokeObjectURL {
@@ -14,7 +15,7 @@ function createRevokeObjectURL(): typeof URL.revokeObjectURL {
     }
 
     return function revokeObjectURL(url: string): void {
-        throw new Error(`The "revokeObjectURL()" is not implemented.`);
+        fault(`The "revokeObjectURL()" is not implemented.`);
     };
 }
 
