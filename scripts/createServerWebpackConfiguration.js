@@ -18,7 +18,6 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         devtool: "#inline-source-map",
         entry: {
             "index": ["./index.scss", "./index.ts"],
-            "world2d": ["./world2d.scss", "./world2d.ts"],
         },
         output: {
             path: dist,
@@ -87,12 +86,6 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
                 chunks: ["index"],
                 filename: "index.html",
                 title: "Guless",
-                template: path.resolve(context, "template.html"),
-            }),
-            new HTMLWebpackPlugin({
-                chunks: ["world2d"],
-                filename: "world2d.html",
-                title: "World2D Examples - Guless",
                 template: path.resolve(context, "template.html"),
             }),
         ],
