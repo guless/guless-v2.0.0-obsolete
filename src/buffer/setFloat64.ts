@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import SYSTEM_ENDIANNESS from "../platform/endianness";
+import ENDIANNESS from "../platform/endianness";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
 import { write } from "./IEEE754";
 
@@ -14,7 +14,7 @@ function createSetFloat64(): (target: Uint8Array, value: number, offset?: number
         return function setFloat64(target: Uint8Array, value: number, offset: number = 0, littleEndian: boolean = true): void {
             __FLOAT64_BYTE_VIEWER__[0] = value;
 
-            if (littleEndian === SYSTEM_ENDIANNESS) {
+            if (littleEndian === ENDIANNESS) {
                 target[offset    ] = __FLOAT64_BYTE_VIEWER__[0];
                 target[offset + 1] = __FLOAT64_BYTE_VIEWER__[1];
                 target[offset + 2] = __FLOAT64_BYTE_VIEWER__[2];
