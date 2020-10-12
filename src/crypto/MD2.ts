@@ -28,6 +28,25 @@ class MD2 implements IHashAlgorithm {
     ]);
 
     private static readonly __X__: Uint8Array = allocUint8Array(32);
+    private static readonly __P__: Uint8Array[] = [
+        allocUint8Array(0),
+        allocUint8Array([0x01]),
+        allocUint8Array([0x02, 0x02]),
+        allocUint8Array([0x03, 0x03, 0x03]),
+        allocUint8Array([0x04, 0x04, 0x04, 0x04]),
+        allocUint8Array([0x05, 0x05, 0x05, 0x05, 0x05]),
+        allocUint8Array([0x06, 0x06, 0x06, 0x06, 0x06, 0x06]),
+        allocUint8Array([0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07]),
+        allocUint8Array([0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x08]),
+        allocUint8Array([0x09, 0x09, 0x09, 0x09, 0x09, 0x09, 0x09, 0x09, 0x09]),
+        allocUint8Array([0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A, 0x0A]),
+        allocUint8Array([0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B, 0x0B]),
+        allocUint8Array([0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C, 0x0C]),
+        allocUint8Array([0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D, 0x0D]),
+        allocUint8Array([0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E, 0x0E]),
+        allocUint8Array([0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F]),
+        allocUint8Array([0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10]),
+    ];
 
     private _digest: Uint8Array = allocUint8Array(16);
     private _chksum: Uint8Array = allocUint8Array(16);
@@ -42,15 +61,60 @@ class MD2 implements IHashAlgorithm {
     }
 
     public update(source: Uint8Array, start: number = 0, end: number = source.length): void {
-        throw new Error("Method not implemented.");
+        const buflen: number = 16 - this._cursor;
+        const iptlen: number = end - start;
+
+        if (iptlen >= buflen) {
+            if ((buflen & 0x0F) !== 0) {
+                memcpy(source, this._buffer, start, start + buflen, this._cursor, 16);
+                start += buflen;
+                this._cursor = 0;
+                this._transform(this._buffer, this._cursor);
+            }
+
+            for (; start + 16 <= end; start += 16) {
+                this._transform(source, start);
+            }
+        }
+
+        memcpy(source, this._buffer, start, end, this._cursor, 16);
+        this._cursor += end - start;
     }
 
     public final(): Uint8Array {
-        throw new Error("Method not implemented.");
+        const padlen: number = 16 - this._cursor;
+
+        this.update(MD2.__P__[padlen], 0, padlen);
+        this.update(this._chksum, 0, 16);
+
+        const digest: Uint8Array = memcpy(this._digest, allocUint8Array(16), 0, 16, 0, 16);
+        this.reset();
+
+        return digest;
     }
 
     private _transform(block: Uint8Array, offset: number = 0): void {
-        throw new Error("Method not implemented.");
+        memcpy(block, MD2.__X__, offset, offset + 16, 0, 16);
+
+        for (let i: number = 0; i < 16; ++i) {
+            MD2.__X__[i + 16] = this._digest[i] ^ MD2.__X__[i];
+        }
+
+        for (let i: number = 0, t: number = this._chksum[15]; i < 16; ++i) {
+            t = this._chksum[i] ^= MD2.__PI_SUBST__[MD2.__X__[i] ^ t];
+        }
+
+        for (let r: number = 0, t: number = 0; r < 18; ++r) {
+            for (let i: number = 0; i < 16; ++i) {
+                t = this._digest[i] ^= MD2.__PI_SUBST__[t];
+            }
+            for (let i: number = 0; i < 32; ++i) {
+                t = MD2.__X__[i] ^= MD2.__PI_SUBST__[t];
+            }
+            t = (t + r) & 0xff;
+        }
+
+        memset(MD2.__X__, 0, 0, 32);
     }
 }
 
