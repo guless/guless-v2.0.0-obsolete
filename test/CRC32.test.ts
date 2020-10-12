@@ -2,12 +2,12 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import TextEncoder from "@/text/TextEncoder";
 import crc32 from "@/crypto/crc32";
-import encodeLChar from "@/buffer/encodeLChar";
 
 function crc32test(input: string, result: number): void {
     test(`"${input}" => ${result}`, () => {
-        const block: Uint8Array = encodeLChar(input, new Uint8Array(input.length));
+        const block: Uint8Array = new TextEncoder().encode(input);
         const digest: number = crc32(block, 0);
 
         expect(digest).toBe(result);

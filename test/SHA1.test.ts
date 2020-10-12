@@ -3,13 +3,13 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import SHA1 from "@/crypto/SHA1";
-import encodeLChar from "@/buffer/encodeLChar";
+import TextEncoder from "@/text/TextEncoder";
 import hexdmp from "@/buffer/hexdmp";
 
 function sha1test(input: string, result: string): void {
     test(`"${input}" => "${result}"`, () => {
         const sha1: SHA1 = new SHA1();
-        const block: Uint8Array = encodeLChar(input, new Uint8Array(input.length));
+        const block: Uint8Array = new TextEncoder().encode(input);
 
         sha1.update(block);
         const digest: Uint8Array = sha1.final();

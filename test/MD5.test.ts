@@ -3,13 +3,13 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import MD5 from "@/crypto/MD5";
-import encodeLChar from "@/buffer/encodeLChar";
+import TextEncoder from "@/text/TextEncoder";
 import hexdmp from "@/buffer/hexdmp";
 
 function md5test(input: string, result: string): void {
     test(`"${input}" => "${result}"`, () => {
         const md5: MD5 = new MD5();
-        const block: Uint8Array = encodeLChar(input, new Uint8Array(input.length));
+        const block: Uint8Array = new TextEncoder().encode(input);
 
         md5.update(block);
         const digest: Uint8Array = md5.final();
