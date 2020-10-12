@@ -6,9 +6,10 @@ import allocUint8Array from "../buffer/allocUint8Array";
 
 class TextEncoder {
     public encode(source: string): Uint8Array {
-        const target: Uint8Array = allocUint8Array(source.length);
-        for (let i: number = 0, j: number = 0; i < source.length && j < target.length; ++i, ++j) {
-            target[j] = source.charCodeAt(i) & 0xFF;
+        const encoded: string = unescape(encodeURIComponent(source));
+        const target: Uint8Array = allocUint8Array(encoded.length);
+        for (let i: number = 0; i < encoded.length; ++i) {
+            target[i] = encoded.charCodeAt(i);
         }
         return target;
     }
