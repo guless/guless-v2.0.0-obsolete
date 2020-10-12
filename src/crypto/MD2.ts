@@ -3,11 +3,12 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import IHashAlgorithm from "./IHashAlgorithm";
+import allocUint8Array from "../buffer/allocUint8Array";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
 
 class MD2 implements IHashAlgorithm {
-    private static readonly __PI_SUBST__: Uint8Array = new Uint8Array([
+    private static readonly __PI_SUBST__: Uint8Array = allocUint8Array([
         41 , 46 , 67 , 201, 162, 216, 124, 1  , 61 , 54 , 84 , 161, 236, 240, 6  , 19 ,
         98 , 167, 5  , 243, 192, 199, 115, 140, 152, 147, 43 , 217, 188, 76 , 130, 202,
         30 , 155, 87 , 60 , 253, 212, 224, 22 , 103, 66 , 111, 24 , 138, 23 , 229, 18 ,
@@ -26,12 +27,12 @@ class MD2 implements IHashAlgorithm {
         49 , 68 , 80 , 180, 143, 237, 31 , 26 , 219, 153, 141, 51 , 159, 17 , 131, 20 ,
     ]);
 
-    private static readonly __X__: Uint8Array = new Uint8Array(32);
+    private static readonly __X__: Uint8Array = allocUint8Array(32);
 
-    private _digest: Uint8Array = new Uint8Array(16);
-    private _chksum: Uint8Array = new Uint8Array(16);
+    private _digest: Uint8Array = allocUint8Array(16);
+    private _chksum: Uint8Array = allocUint8Array(16);
     private _cursor: number = 0;
-    private _buffer: Uint8Array = new Uint8Array(16);
+    private _buffer: Uint8Array = allocUint8Array(16);
 
     public reset(): void {
         memset(this._digest, 0, 0, 16);

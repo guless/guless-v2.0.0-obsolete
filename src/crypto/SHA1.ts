@@ -3,14 +3,16 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import IHashAlgorithm from "./IHashAlgorithm";
+import allocUint8Array from "../buffer/allocUint8Array";
+import allocUint32Array from "../buffer/allocUint32Array";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
 import decodeUint32 from "../buffer/decodeUint32";
 import encodeUint32 from "../buffer/encodeUint32";
 
 class SHA1 implements IHashAlgorithm {
-    private static readonly __X__: Uint32Array = new Uint32Array(80);
-    private static readonly __P__: Uint8Array = new Uint8Array([
+    private static readonly __X__: Uint32Array = allocUint32Array(80);
+    private static readonly __P__: Uint8Array = allocUint8Array([
         0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -34,10 +36,10 @@ class SHA1 implements IHashAlgorithm {
         }
     }
 
-    private _digest: Uint32Array = new Uint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]);
-    private _chksum: Uint32Array = new Uint32Array(2);
+    private _digest: Uint32Array = allocUint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]);
+    private _chksum: Uint32Array = allocUint32Array(2);
     private _cursor: number = 0;
-    private _buffer: Uint8Array = new Uint8Array(64);
+    private _buffer: Uint8Array = allocUint8Array(64);
 
     public reset(): void {
         this._digest[0] = 0x67452301;
@@ -74,12 +76,12 @@ class SHA1 implements IHashAlgorithm {
 
     public final(): Uint8Array {
         const padlen: number = (this._cursor < 56 ? 56 - this._cursor : 120 - this._cursor);
-        const chksum: Uint8Array = encodeUint32(this._chksum, new Uint8Array(8), false, 0, 2, 0, 8);
+        const chksum: Uint8Array = encodeUint32(this._chksum, allocUint8Array(8), false, 0, 2, 0, 8);
 
         this.update(SHA1.__P__, 0, padlen);
         this.update(chksum, 0, 8);
 
-        const digest: Uint8Array = encodeUint32(this._digest, new Uint8Array(20), false, 0, 5, 0, 20);
+        const digest: Uint8Array = encodeUint32(this._digest, allocUint8Array(20), false, 0, 5, 0, 20);
         this.reset();
 
         return digest;
