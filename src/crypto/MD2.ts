@@ -27,7 +27,7 @@ class MD2 implements IHashAlgorithm {
         49 , 68 , 80 , 180, 143, 237, 31 , 26 , 219, 153, 141, 51 , 159, 17 , 131, 20 ,
     ]);
 
-    private static readonly __X__: Uint8Array = allocUint8Array(32);
+    private static readonly __X__: Uint8Array = allocUint8Array(48);
     private static readonly __P__: Uint8Array[] = [
         allocUint8Array(0),
         allocUint8Array([0x01]),
@@ -94,27 +94,29 @@ class MD2 implements IHashAlgorithm {
     }
 
     private _transform(block: Uint8Array, offset: number = 0): void {
-        memcpy(block, MD2.__X__, offset, offset + 16, 0, 16);
+        memcpy(this._digest, MD2.__X__, 0, 16, 0, 16);
+        memcpy(block, MD2.__X__, offset, offset + 16, 16, 32);
 
         for (let i: number = 0; i < 16; ++i) {
-            MD2.__X__[i + 16] = this._digest[i] ^ MD2.__X__[i];
+            MD2.__X__[i + 32] = this._digest[i] ^ block[offset + i];
         }
 
+        /* Encrypt block (18 rounds) */
+        for (let i: number = 0, t: number = 0; i < 18; ++i) {
+            for (let j: number = 0; j < 48; ++j) {
+                t = MD2.__X__[j] ^= MD2.__PI_SUBST__[t];
+            }
+            t = (t + i) & 0xFF;
+        }
+
+        memcpy(MD2.__X__, this._digest, 0, 16, 0, 16);
+
+        /* Update checksum */
         for (let i: number = 0, t: number = this._chksum[15]; i < 16; ++i) {
-            t = this._chksum[i] ^= MD2.__PI_SUBST__[MD2.__X__[i] ^ t];
+            t = this._chksum[i] ^= MD2.__PI_SUBST__[block[offset + i] ^ t];
         }
 
-        for (let r: number = 0, t: number = 0; r < 18; ++r) {
-            for (let i: number = 0; i < 16; ++i) {
-                t = this._digest[i] ^= MD2.__PI_SUBST__[t];
-            }
-            for (let i: number = 0; i < 32; ++i) {
-                t = MD2.__X__[i] ^= MD2.__PI_SUBST__[t];
-            }
-            t = (t + r) & 0xff;
-        }
-
-        memset(MD2.__X__, 0, 0, 32);
+        memset(MD2.__X__, 0, 0, 48);
     }
 }
 
