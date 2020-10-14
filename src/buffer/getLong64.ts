@@ -24,7 +24,6 @@ function getLong64(source: Uint8Array, offset: number | Reference<number> = 0, l
             output.l32 = getUint32(source, offset, littleEndian);
         }
     }
-
     return output;
 }
 
