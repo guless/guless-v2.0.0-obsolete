@@ -7,6 +7,7 @@ import allocUint8Array from "../buffer/allocUint8Array";
 import allocUint32Array from "../buffer/allocUint32Array";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
+import Long64 from "../buffer/Long64";
 import decodeUint32 from "../buffer/decodeUint32";
 import encodeUint32 from "../buffer/encodeUint32";
 
@@ -23,21 +24,8 @@ class SHA1 implements IHashAlgorithm {
         return (((x) << (s)) | ((x) >>> (32 - (s))));
     }
 
-    private static __CHKSUM64__(target: Uint32Array, length: number, littleEndian: boolean = true): void {
-        const l32: number = (length << 3) >>> 0;
-        const h32: number = (length >>> 29);
-
-        if (littleEndian) {
-            target[0] = (target[0] + l32) >>> 0;
-            target[1] = (target[1] + h32 + (target[0] < l32 ? 1 : 0)) >>> 0;
-        } else {
-            target[1] = (target[1] + l32) >>> 0;
-            target[0] = (target[0] + h32 + (target[1] < l32 ? 1 : 0)) >>> 0;
-        }
-    }
-
     private _digest: Uint32Array = allocUint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]);
-    private _chksum: Uint32Array = allocUint32Array(2);
+    private _chksum: Long64 = new Long64(0, 0);
     private _cursor: number = 0;
     private _buffer: Uint8Array = allocUint8Array(64);
 
@@ -47,7 +35,7 @@ class SHA1 implements IHashAlgorithm {
         this._digest[2] = 0x98BADCFE;
         this._digest[3] = 0x10325476;
         this._digest[4] = 0xC3D2E1F0;
-        memset(this._chksum, 0, 0, 2);
+        this._chksum.set(0, 0);
         this._cursor = 0;
         memset(this._buffer, 0, 0, 64);
     }
@@ -71,12 +59,12 @@ class SHA1 implements IHashAlgorithm {
 
         memcpy(source, this._buffer, start, end, this._cursor, 64);
         this._cursor += end - start;
-        SHA1.__CHKSUM64__(this._chksum, iptlen, false);
+        this._chksum.add(iptlen << 3 >>> 0, iptlen >>> 29);
     }
 
     public final(): Uint8Array {
         const padlen: number = (this._cursor < 56 ? 56 - this._cursor : 120 - this._cursor);
-        const chksum: Uint8Array = encodeUint32(this._chksum, allocUint8Array(8), false, 0, 2, 0, 8);
+        const chksum: Uint8Array = this._chksum.toBuffer(allocUint8Array(8), 0, false);
 
         this.update(SHA1.__P__, 0, padlen);
         this.update(chksum, 0, 8);
@@ -136,13 +124,13 @@ class SHA1 implements IHashAlgorithm {
             a = t;
         }
 
-        memset(SHA1.__X__, 0, 0, 80);
-
         this._digest[0] = (a + this._digest[0]) >>> 0;
         this._digest[1] = (b + this._digest[1]) >>> 0;
         this._digest[2] = (c + this._digest[2]) >>> 0;
         this._digest[3] = (d + this._digest[3]) >>> 0;
         this._digest[4] = (e + this._digest[4]) >>> 0;
+
+        memset(SHA1.__X__, 0, 0, 80);
     }
 }
 
