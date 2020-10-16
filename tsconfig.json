@@ -4,9 +4,9 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 {
     "compilerOptions": {
-        "module": "es2015",
+        "module": "commonjs",
         "moduleResolution": "node",
         "strict": true,
-        "target": "es2015",
+        "target": "es5",
     },
 }
