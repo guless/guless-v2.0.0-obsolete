@@ -12,7 +12,6 @@
     "bugs": {
         "url": "https://github.com/guless/guless/issues"
     },
-    "type": "module",
     "scripts": {
         "keygen": "source scripts/generate-self-signed-cert.sh",
         "clean": "rm -rf dist && rm -rf coverage",
