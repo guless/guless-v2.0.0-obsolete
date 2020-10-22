@@ -15,13 +15,13 @@ function createRequestAnimationFrame(): typeof requestAnimationFrame {
     }
 
     let timeNow: number;
-    let timeCall: number = 0;
+    let timeToCall: number = 0;
     
     return function requestAnimationFrame(callback: FrameRequestCallback): number {
         timeNow = Date.now();
-        timeCall = Math.max(timeCall + 16, timeNow);
+        timeToCall = Math.max(timeToCall + 16, timeNow);
 
-        return setTimeout(() => callback(timeCall), timeCall - timeNow) as internal;
+        return setTimeout(() => callback(timeToCall), timeToCall - timeNow) as internal;
     };
 }
 
