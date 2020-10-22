@@ -8,7 +8,9 @@ import memslc from "./memslc";
 function memcpy<T extends Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Float32Array | Float64Array>(source: T, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): void {
     if (typeof (target as internal).set === "function") {
         sourceEnd = sourceStart + Math.min(sourceEnd - sourceStart, targetEnd - targetStart);
-        (target as internal).set(memslc(source, sourceStart, sourceEnd), targetStart);
+        if (sourceStart < sourceEnd) {
+            (target as internal).set(memslc(source, sourceStart, sourceEnd), targetStart);
+        }
     } else {
         for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j < targetEnd; ++i, ++j) {
             target[j] = source[i];
