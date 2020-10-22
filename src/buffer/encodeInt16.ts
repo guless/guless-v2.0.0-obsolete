@@ -4,11 +4,10 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import setInt16 from "./setInt16";
 
-function encodeInt16(source: Int16Array, target: Uint8Array, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function encodeInt16(source: Int16Array, target: Uint8Array, littleEndian: boolean = true, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): void {
     for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j + 2 <= targetEnd; ++i, j += 2) {
         setInt16(target, source[i], j, littleEndian);
     }
-    return target;
 }
 
 export default encodeInt16;

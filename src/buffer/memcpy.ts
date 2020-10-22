@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import internal from "../internal";
 
-function memcpy<T extends Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Float32Array | Float64Array | Uint8ClampedArray>(source: T, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function memcpy<T extends Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array | Float32Array | Float64Array>(source: T, target: T, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): void {
     if (typeof (target as internal).set === "function" && typeof (source as internal).subarray === "function") {
         sourceEnd = sourceStart + Math.min(sourceEnd - sourceStart, targetEnd - targetStart);
 
@@ -13,15 +13,11 @@ function memcpy<T extends Int8Array | Int16Array | Int32Array | Uint8Array | Uin
         } else {
             (target as internal).set((source as internal).subarray(sourceStart, sourceEnd), targetStart);
         }
-
-        return target;
+    } else {
+        for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j < targetEnd; ++i, ++j) {
+            target[j] = source[i];
+        }
     }
-
-    for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j < targetEnd; ++i, ++j) {
-        target[j] = source[i];
-    }
-
-    return target;
 }
 
 export default memcpy;

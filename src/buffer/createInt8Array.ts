@@ -4,20 +4,14 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import internal from "../internal";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
-import memset from "./memset";
+import createTypedArrayLike from "./createTypedArrayLike";
 
-function allocInt8Array(length: number): Int8Array;
-function allocInt8Array(buffer: number[]): Int8Array;
-function allocInt8Array(buffer: any): Int8Array {
+function createInt8Array(buffer: number | number[]): Int8Array {
     if (SUPPORTED_TYPED_ARRAY) {
-        return new Int8Array(buffer);
+        return new Int8Array(buffer as internal);
     }
 
-    if (typeof buffer === "number") {
-        return memset(new Array(buffer) as internal, 0, 0, buffer);
-    }
-
-    return buffer;
+    return createTypedArrayLike(buffer) as internal;
 }
 
-export default allocInt8Array;
+export default createInt8Array;

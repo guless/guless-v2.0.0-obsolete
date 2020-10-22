@@ -3,17 +3,18 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import IHashAlgorithm from "./IHashAlgorithm";
-import allocUint8Array from "../buffer/allocUint8Array";
-import allocUint32Array from "../buffer/allocUint32Array";
+import createUint8Array from "../buffer/createUint8Array";
+import createUint32Array from "../buffer/createUint32Array";
+import Long64 from "../platform/Long64";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
-import Long64 from "../buffer/Long64";
 import decodeUint32 from "../buffer/decodeUint32";
 import encodeUint32 from "../buffer/encodeUint32";
+import setLong64 from "../buffer/setLong64";
 
 class RMD256 implements IHashAlgorithm {
-    private static readonly __X__: Uint32Array = allocUint32Array(16);
-    private static readonly __P__: Uint8Array = allocUint8Array([
+    private static readonly __X__: Uint32Array = createUint32Array(16);
+    private static readonly __P__: Uint8Array = createUint8Array([
         0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0   , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -86,10 +87,10 @@ class RMD256 implements IHashAlgorithm {
         return (((x) << (s)) | ((x) >>> (32 - (s))));
     }
 
-    private _digest: Uint32Array = allocUint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0x76543210, 0xFEDCBA98, 0x89ABCDEF, 0x01234567]);
+    private _digest: Uint32Array = createUint32Array([0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0x76543210, 0xFEDCBA98, 0x89ABCDEF, 0x01234567]);
     private _chksum: Long64 = new Long64(0, 0);
     private _cursor: number = 0;
-    private _buffer: Uint8Array = allocUint8Array(64);
+    private _buffer: Uint8Array = createUint8Array(64);
 
     public reset(): void {
         this._digest[0] = 0x67452301;
@@ -129,12 +130,14 @@ class RMD256 implements IHashAlgorithm {
 
     public final(): Uint8Array {
         const padlen: number = (this._cursor < 56 ? 56 - this._cursor : 120 - this._cursor);
-        const chksum: Uint8Array = this._chksum.toBuffer(allocUint8Array(8), 0, true);
+        const chksum: Uint8Array = createUint8Array(8);
+        setLong64(chksum, this._chksum, 0, true);
 
         this.update(RMD256.__P__, 0, padlen);
         this.update(chksum, 0, 8);
 
-        const digest: Uint8Array = encodeUint32(this._digest, allocUint8Array(32), true, 0, 8, 0, 32);
+        const digest: Uint8Array = createUint8Array(32);
+        encodeUint32(this._digest, digest, true, 0, 8, 0, 32);
         this.reset();
 
         return digest;

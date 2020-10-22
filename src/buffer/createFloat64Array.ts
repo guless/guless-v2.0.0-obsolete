@@ -4,20 +4,14 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import internal from "../internal";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
-import memset from "./memset";
+import createTypedArrayLike from "./createTypedArrayLike";
 
-function allocInt32Array(length: number): Int32Array;
-function allocInt32Array(buffer: number[]): Int32Array;
-function allocInt32Array(buffer: any): Int32Array {
+function createFloat64Array(buffer: number | number[]): Float64Array {
     if (SUPPORTED_TYPED_ARRAY) {
-        return new Int32Array(buffer);
+        return new Float64Array(buffer as internal);
     }
 
-    if (typeof buffer === "number") {
-        return memset(new Array(buffer) as internal, 0, 0, buffer);
-    }
-
-    return buffer;
+    return createTypedArrayLike(buffer) as internal;
 }
 
-export default allocInt32Array;
+export default createFloat64Array;

@@ -4,11 +4,10 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import getInt8 from "./getInt8";
 
-function decodeInt8(source: Uint8Array, target: Int8Array, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): typeof target {
+function decodeInt8(source: Uint8Array, target: Int8Array, sourceStart: number = 0, sourceEnd: number = source.length, targetStart: number = 0, targetEnd: number = target.length): void {
     for (let i: number = sourceStart, j: number = targetStart; i < sourceEnd && j < targetEnd; ++i, ++j) {
         target[j] = getInt8(source, i);
     }
-    return target;
 }
 
 export default decodeInt8;

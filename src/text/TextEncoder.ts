@@ -4,7 +4,7 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import internal from "../internal";
 import { SUPPORTED_TEXT_CODEC } from "../platform/capabilities/supported-text-codec";
-import allocUint8Array from "../buffer/allocUint8Array";
+import createUint8Array from "../buffer/createUint8Array";
 
 function createTextEncoder(): typeof TextEncoder {
     if (SUPPORTED_TEXT_CODEC) {
@@ -14,7 +14,7 @@ function createTextEncoder(): typeof TextEncoder {
     return class TextEncoder {
         public encode(source: string): Uint8Array {
             const encoded: string = unescape(encodeURIComponent(source));
-            const target: Uint8Array = allocUint8Array(encoded.length);
+            const target: Uint8Array = createUint8Array(encoded.length);
             for (let i: number = 0; i < encoded.length; ++i) {
                 target[i] = encoded.charCodeAt(i);
             }
