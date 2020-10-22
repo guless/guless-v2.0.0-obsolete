@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import Reference from "./Reference";
+import Reference from "../platform/Reference";
 
 function setInt16(target: Uint8Array, value: number, offset: number | Reference<number> = 0, littleEndian: boolean = true): void {
     if (typeof offset === "number") {

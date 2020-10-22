@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import Long64 from "./Long64";
-import Reference from "./Reference";
+import Reference from "../platform/Reference";
 import setUint32 from "./setUint32";
 
 function setLong64(target: Uint8Array, value: Long64, offset: number | Reference<number> = 0, littleEndian: boolean = true): void {

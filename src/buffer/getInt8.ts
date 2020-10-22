@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import Reference from "./Reference";
+import Reference from "../platform/Reference";
 
 function getInt8(source: Uint8Array, offset: number | Reference<number> = 0): number {
     if (typeof offset === "number") {

@@ -5,7 +5,7 @@
 import { ENDIANNESS } from "../platform/endianness";
 import { SUPPORTED_TYPED_ARRAY } from "../platform/capabilities/supported-typed-array";
 import { read } from "./IEEE754";
-import Reference from "./Reference";
+import Reference from "../platform/Reference";
 
 function createGetFloat32(): (source: Uint8Array, offset?: number | Reference<number>, littleEndian?: boolean) => number {
     if (SUPPORTED_TYPED_ARRAY) {

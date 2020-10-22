@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import Reference from "./Reference";
+import Reference from "../platform/Reference";
 
 function setBoolean(target: Uint8Array, value: boolean, offset: number | Reference<number> = 0): void {
     if (typeof offset === "number") {
