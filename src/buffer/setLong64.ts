@@ -2,7 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import Long64 from "../platform/Long64";
+import Long64 from "./Long64";
 import setUint32 from "./setUint32";
 
 function setLong64(target: Uint8Array, value: Long64, offset: number = 0, littleEndian: boolean = true): void {

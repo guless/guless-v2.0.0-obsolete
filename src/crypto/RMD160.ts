@@ -5,11 +5,11 @@
 import IHashAlgorithm from "./IHashAlgorithm";
 import createUint8Array from "../buffer/createUint8Array";
 import createUint32Array from "../buffer/createUint32Array";
-import Long64 from "../platform/Long64";
 import memset from "../buffer/memset";
 import memcpy from "../buffer/memcpy";
 import decodeUint32 from "../buffer/decodeUint32";
 import encodeUint32 from "../buffer/encodeUint32";
+import Long64 from "../buffer/Long64";
 import setLong64 from "../buffer/setLong64";
 
 class RMD160 implements IHashAlgorithm {
