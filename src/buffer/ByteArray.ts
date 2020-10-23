@@ -44,6 +44,16 @@ class ByteArray {
         this._totalChunkSize += data.length;
     }
 
+    public flush(): Uint8Array[] {
+        this._truncateCapacity(this._length);
+
+        const chunks: Uint8Array[] = this._chunks;
+        this._chunks = [];
+        this._totalChunkSize = 0;
+        this._length = 0;
+        return chunks;
+    }
+
     private _increaseCapacity(value: number): void {
         while (this._totalChunkSize + this._maxChunkSize <= value) {
             this._chunks.push(createUint8Array(this._maxChunkSize));
