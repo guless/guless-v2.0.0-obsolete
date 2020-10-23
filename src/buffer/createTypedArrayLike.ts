@@ -11,7 +11,7 @@ function createTypedArrayLike(buffer: number | number[]): number[] {
         memset(buffer as internal, 0, 0, buffer.length);
     }
 
-    return buffer;
+    return buffer.slice(0);
 }
 
 export default createTypedArrayLike;
