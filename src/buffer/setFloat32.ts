@@ -13,7 +13,7 @@ function createSetFloat32(): (target: Uint8Array, value: number, offset?: number
         const __FLOAT32_BYTE_VIEWER__: Uint8Array = new Uint8Array(__FLOAT32_DATA_VIEWER__.buffer, 0, 4);
 
         return function setFloat32(target: Uint8Array, value: number, offset: number | Reference<number> = 0, littleEndian: boolean = true): void {
-            __FLOAT32_BYTE_VIEWER__[0] = value;
+            __FLOAT32_DATA_VIEWER__[0] = value;
 
             if (typeof offset === "number") {
                 if (littleEndian === ENDIANNESS) {
