@@ -79,7 +79,7 @@ class BinaryWriter {
     public writeBytes(source: Uint8Array, start: number = 0, end: number = source.length): void {
         this._ensureWriteChunks(this._cursor, end - start);
         memseg(source, this._chunks, start, end, this._chunkId, this._chunks.length, this._cursor - this._offsetChunkSize);
-        this._currentWritePosition.value += end + start;
+        this._currentWritePosition.value += end - start;
         this._finishWriteChunks();
     }
 
