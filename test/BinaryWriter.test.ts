@@ -5,7 +5,7 @@
 import BinaryWriter from "@/buffer/BinaryWriter";
 import memmrg from "@/buffer/memmrg";
 
-test("writer", () => {
+test("binary writer", () => {
     const writer: BinaryWriter = new BinaryWriter();
 
     writer.writeBoolean(true);

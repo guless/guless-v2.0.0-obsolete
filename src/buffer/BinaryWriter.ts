@@ -3,32 +3,25 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import Reference from "../platform/Reference";
+import createSharedUint8Array from "./createSharedUint8Array";
 import createUint8Array from "./createUint8Array";
-import memseg from "./memseg";
-import memcut from "./memcut";
 import Long64 from "./Long64";
+import memcut from "./memcut";
+import memseg from "./memseg";
 import setBoolean from "./setBoolean";
-import setInt8 from "./setInt8";
-import setInt16 from "./setInt16";
-import setInt32 from "./setInt32";
-import setUint8 from "./setUint8";
-import setUint16 from "./setUint16";
-import setUint32 from "./setUint32";
 import setFloat32 from "./setFloat32";
 import setFloat64 from "./setFloat64";
+import setInt16 from "./setInt16";
+import setInt32 from "./setInt32";
+import setInt8 from "./setInt8";
 import setLong64 from "./setLong64";
+import setUint16 from "./setUint16";
+import setUint32 from "./setUint32";
+import setUint8 from "./setUint8";
 
 class BinaryWriter {
     public static readonly MIN_CHUNK_SIZE: number = 4;
     public static readonly MAX_CHUNK_SIZE: number = 16384;
-
-    private static __SWAP_BUFFER__: null | Uint8Array = null;
-    private static createSwapBuffer(length: number): Uint8Array {
-        if (BinaryWriter.__SWAP_BUFFER__ === null || BinaryWriter.__SWAP_BUFFER__.length < length) {
-            BinaryWriter.__SWAP_BUFFER__ = createUint8Array(length);
-        }
-        return BinaryWriter.__SWAP_BUFFER__;
-    }
 
     private _chunks: Uint8Array[] = [];
     private _totalChunkSize: number = 0;
@@ -63,11 +56,6 @@ class BinaryWriter {
         return this._length;
     }
 
-    public set length(value: number) {
-        this._length = value;
-        this._ensureCapacity(this._length);
-    }
-
     public get littleEndian(): boolean {
         return this._littleEndian;
     }
@@ -77,9 +65,10 @@ class BinaryWriter {
     }
 
     public writeBytes(source: Uint8Array, start: number = 0, end: number = source.length): void {
-        this._ensureWriteChunks(this._cursor, end - start);
+        const length: number = end - start;
+        this._ensureWriteChunks(this._cursor, length);
         memseg(source, this._chunks, start, end, this._chunkId, this._chunks.length, this._cursor - this._offsetChunkSize);
-        this._currentWritePosition.value += end - start;
+        this._currentWritePosition.value += length;
         this._finishWriteChunks();
     }
 
@@ -156,23 +145,26 @@ class BinaryWriter {
         return emittedChunks;
     }
 
-    private _moveUpCursorPosition(value: number): void {
-        this._cursor += value;
-        this._length = Math.max(this._length, this._cursor);
+    private _ensureWriteBuffer(cursor: number, length: number): void {
+        this._ensureWriteChunks(cursor, length);
+
+        if (this._currentWritePosition.value + length > this._currentWriteBuffer!.length) {
+            this._currentWriteToCursor = cursor;
+            this._currentWriteToSwapBuffer = true;
+            this._currentWriteBuffer = createSharedUint8Array(Math.max(8, length));
+            this._currentWritePosition.value = 0;
+            this._currentSavedPosition = 0;
+        }
     }
 
-    private _adjustWritePosition(cursor: number): void {
-        if (cursor >= this._offsetChunkSize) {
-            while ((this._chunkId + 1 < this._chunks.length) && (cursor >= this._offsetChunkSize + this._chunks[this._chunkId].length)) {
-                this._offsetChunkSize += this._chunks[this._chunkId].length;
-                this._chunkId++;
-            }
-        } else {
-            while ((this._chunkId > 0) && (cursor < this._offsetChunkSize)) {
-                this._chunkId--;
-                this._offsetChunkSize -= this._chunks[this._chunkId].length;
-            }
+    private _finishWriteBuffer(): void {
+        if (this._currentWriteToSwapBuffer) {
+            memseg(this._currentWriteBuffer!, this._chunks, this._currentSavedPosition, this._currentWritePosition.value, this._chunkId, this._chunks.length, this._currentWriteToCursor - this._offsetChunkSize);
+            this._currentWriteToCursor = 0;
+            this._currentWriteToSwapBuffer = false;
         }
+
+        this._finishWriteChunks();
     }
 
     private _ensureWriteChunks(cursor: number, length: number): void {
@@ -194,26 +186,23 @@ class BinaryWriter {
         this._moveUpCursorPosition(totalWriteAmount);
     }
 
-    private _ensureWriteBuffer(cursor: number, length: number): void {
-        this._ensureWriteChunks(cursor, length);
-
-        if (this._currentWritePosition.value + length > this._currentWriteBuffer!.length) {
-            this._currentWriteToCursor = cursor;
-            this._currentWriteToSwapBuffer = true;
-            this._currentWriteBuffer = BinaryWriter.createSwapBuffer(Math.max(8, length));
-            this._currentWritePosition.value = 0;
-            this._currentSavedPosition = 0;
+    private _adjustWritePosition(cursor: number): void {
+        if (cursor >= this._offsetChunkSize) {
+            while ((this._chunkId + 1 < this._chunks.length) && (cursor >= this._offsetChunkSize + this._chunks[this._chunkId].length)) {
+                this._offsetChunkSize += this._chunks[this._chunkId].length;
+                this._chunkId++;
+            }
+        } else {
+            while ((this._chunkId > 0) && (cursor < this._offsetChunkSize)) {
+                this._chunkId--;
+                this._offsetChunkSize -= this._chunks[this._chunkId].length;
+            }
         }
     }
 
-    private _finishWriteBuffer(): void {
-        if (this._currentWriteToSwapBuffer) {
-            memseg(this._currentWriteBuffer!, this._chunks, this._currentSavedPosition, this._currentWritePosition.value, this._chunkId, this._chunks.length, this._currentWriteToCursor - this._offsetChunkSize);
-            this._currentWriteToCursor = 0;
-            this._currentWriteToSwapBuffer = false;
-        }
-
-        this._finishWriteChunks();
+    private _moveUpCursorPosition(value: number): void {
+        this._cursor += value;
+        this._length = Math.max(this._length, this._cursor);
     }
 
     private _ensureCapacity(length: number): void {
