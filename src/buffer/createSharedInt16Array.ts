@@ -6,7 +6,7 @@ import createInt16Array from "./createInt16Array";
 
 let __SHARED_INT16_ARRAY__: null | Int16Array = null;
 
-function createSharedInt8Array(length: number): Int16Array {
+function createSharedInt16Array(length: number): Int16Array {
     if (__SHARED_INT16_ARRAY__ === null || __SHARED_INT16_ARRAY__.length < length) {
         __SHARED_INT16_ARRAY__ = createInt16Array(length);
     }
