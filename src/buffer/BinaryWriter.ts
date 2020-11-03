@@ -18,8 +18,11 @@ import setLong64 from "./setLong64";
 import setUint16 from "./setUint16";
 import setUint32 from "./setUint32";
 import setUint8 from "./setUint8";
+import setVarint32 from "./setVarint32";
+import sizeOfVarint32 from "./sizeofVarint32";
 
 class BinaryWriter {
+    public static readonly SWAP_BUFFER_SIZE: number = 16;
     public static readonly MIN_CHUNK_SIZE: number = 4;
     public static readonly MAX_CHUNK_SIZE: number = 16384;
 
@@ -132,6 +135,13 @@ class BinaryWriter {
         this._finishWriteBuffer();
     }
 
+    public writeVarint32(value: number): void {
+        const length: number = sizeOfVarint32(value);
+        this._ensureWriteBuffer(this._cursor, length);
+        setVarint32(this._currentWriteBuffer!, value, this._currentWritePosition);
+        this._finishWriteBuffer();
+    }
+
     public flush(): Uint8Array[] {
         this._shrinkCapacity(this._length);
 
@@ -151,7 +161,7 @@ class BinaryWriter {
         if (this._currentWritePosition.value + length > this._currentWriteBuffer!.length) {
             this._currentWriteToCursor = cursor;
             this._currentWriteToSwapBuffer = true;
-            this._currentWriteBuffer = createSharedUint8Array(Math.max(8, length));
+            this._currentWriteBuffer = createSharedUint8Array(Math.max(BinaryWriter.SWAP_BUFFER_SIZE, length));
             this._currentWritePosition.value = 0;
             this._currentSavedPosition = 0;
         }

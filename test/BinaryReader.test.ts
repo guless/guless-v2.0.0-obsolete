@@ -18,3 +18,27 @@ test("binary reader", () => {
     const bytes: Uint8Array = new Uint8Array(16);
     expect(reader.readBytes(bytes)).toEqual(new Uint8Array([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F]));
 });
+
+test("read varint", () => {
+    const reader: BinaryReader = new BinaryReader([
+        new Uint8Array([0xFF, 0xFF, 0xFF, 0xFF]),
+        new Uint8Array([0x0F]),
+        new Uint8Array([0xFF, 0xFF, 0xFF]),
+        new Uint8Array([0xFF, 0x0F]),
+        new Uint8Array([0xFF, 0xFF]),
+        new Uint8Array([0xFF, 0xFF, 0x0F]),
+        new Uint8Array([0xFF]),
+        new Uint8Array([0xFF, 0xFF, 0xFF, 0x0F]),
+        new Uint8Array([0xFF]),
+        new Uint8Array([0xFF]),
+        new Uint8Array([0xFF]),
+        new Uint8Array([0xFF]),
+        new Uint8Array([0x0F]),
+    ]);
+
+    expect(reader.readVarint32()).toBe(0xFFFFFFFF);
+    expect(reader.readVarint32()).toBe(0xFFFFFFFF);
+    expect(reader.readVarint32()).toBe(0xFFFFFFFF);
+    expect(reader.readVarint32()).toBe(0xFFFFFFFF);
+    expect(reader.readVarint32()).toBe(0xFFFFFFFF);
+});

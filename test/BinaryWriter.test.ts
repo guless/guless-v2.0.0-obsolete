@@ -21,5 +21,36 @@ test("binary writer", () => {
     const emittedBuffer: Uint8Array = new Uint8Array(totalWriteAmount);
 
     memmrg(writer.flush(), emittedBuffer);
-    expect(emittedBuffer).toEqual(new Uint8Array([1, 205, 204, 204, 61, 154, 153, 153, 153, 153, 153, 185, 63, 120, 86, 52, 18, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]));
+    expect(emittedBuffer).toEqual(new Uint8Array([
+        1,
+        205, 204, 204, 61,
+        154, 153, 153, 153, 153, 153, 185, 63,
+        120, 86, 52, 18,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+    ]));
+});
+
+test("write varint", () => {
+    const writer: BinaryWriter = new BinaryWriter();
+
+    writer.writeVarint32(0xFFFFFFFF);
+    writer.writeVarint32(0xFFFFFFFF);
+    writer.writeVarint32(0xFFFFFFFF);
+    writer.writeVarint32(0xFFFFFFFF);
+    writer.writeVarint32(0xFFFFFFFF);
+
+    expect(writer.cursor).toBe(25);
+    expect(writer.length).toBe(25);
+
+    const totalWriteAmount: number = writer.length;
+    const emittedBuffer: Uint8Array = new Uint8Array(totalWriteAmount);
+
+    memmrg(writer.flush(), emittedBuffer);
+    expect(emittedBuffer).toEqual(new Uint8Array([
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+    ]));
 });

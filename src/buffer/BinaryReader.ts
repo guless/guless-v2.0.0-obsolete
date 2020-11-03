@@ -15,10 +15,13 @@ import getLong64 from "./getLong64";
 import getUint16 from "./getUint16";
 import getUint32 from "./getUint32";
 import getUint8 from "./getUint8";
+import getVarint32 from "./getVarint32";
 import Long64 from "./Long64";
 import memmrg from "./memmrg";
 
 class BinaryReader {
+    public static readonly SWAP_BUFFER_SIZE: number = 16;
+
     private _chunks: Uint8Array[] = [];
     private _totalChunkSize: number = 0;
     private _littleEndian: boolean;
@@ -136,6 +139,14 @@ class BinaryReader {
         return output;
     }
 
+    public readVarint32(): number {
+        const length: number = Math.max(1, Math.min(5, this._length - this._cursor));
+        this._ensureReadBuffer(this._cursor, length);
+        const output: number = getVarint32(this._currentReadBuffer!, this._currentReadPosition, this._currentReadPosition.value + length);
+        this._finishReadBuffer();
+        return output;
+    }
+
     public append(data: Uint8Array): void {
         this._chunks.push(data);
         this._length = this._totalChunkSize += data.length;
@@ -145,7 +156,7 @@ class BinaryReader {
         this._ensureReadChunks(cursor, length);
 
         if (this._currentReadPosition.value + length > this._currentReadBuffer!.length) {
-            this._currentReadBuffer = createSharedUint8Array(Math.max(8, length));
+            this._currentReadBuffer = createSharedUint8Array(Math.max(BinaryReader.SWAP_BUFFER_SIZE, length));
             this._currentReadPosition.value = 0;
             this._currentSavedPosition = 0;
 
