@@ -3,6 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import BinaryWriter from "@/buffer/BinaryWriter";
+import Long64 from "@/buffer/Long64";
 import memmrg from "@/buffer/memmrg";
 
 test("binary writer", () => {
@@ -30,7 +31,7 @@ test("binary writer", () => {
     ]));
 });
 
-test("write varint", () => {
+test("write varint32", () => {
     const writer: BinaryWriter = new BinaryWriter();
 
     writer.writeVarint32(0xFFFFFFFF);
@@ -52,5 +53,32 @@ test("write varint", () => {
         0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
         0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
         0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+    ]));
+});
+
+test("write varint64", () => {
+    const writer: BinaryWriter = new BinaryWriter();
+
+    writer.writeVarint64(new Long64(0xFFFFFFFF, 0xFFFFFFFF));
+    writer.writeVarint64(new Long64(0xFFFFFFFF, 0x0FFFFFFF));
+    writer.writeVarint64(new Long64(0xFFFFFFFF, 0x00));
+    writer.writeVarint64(new Long64(0x0FFFFFFF, 0x00));
+    writer.writeVarint64(new Long64(0x80, 0x00));
+    writer.writeVarint64(new Long64(0x7F, 0x00));
+
+    expect(writer.cursor).toBe(31);
+    expect(writer.length).toBe(31);
+
+    const totalWriteAmount: number = writer.length;
+    const emittedBuffer: Uint8Array = new Uint8Array(totalWriteAmount);
+
+    memmrg(writer.flush(), emittedBuffer);
+    expect(emittedBuffer).toEqual(new Uint8Array([
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0xFF, 0x0F,
+        0xFF, 0xFF, 0xFF, 0x7F,
+        0x80, 0x01,
+        0x7F,
     ]));
 });

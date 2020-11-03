@@ -16,6 +16,7 @@ import getUint16 from "./getUint16";
 import getUint32 from "./getUint32";
 import getUint8 from "./getUint8";
 import getVarint32 from "./getVarint32";
+import getVarint64 from "./getVarint64";
 import Long64 from "./Long64";
 import memmrg from "./memmrg";
 
@@ -132,9 +133,9 @@ class BinaryReader {
         return output;
     }
 
-    public readLong64(target: Long64 = new Long64(0, 0)): Long64 {
+    public readLong64(target: Long64): typeof target {
         this._ensureReadBuffer(this._cursor, 8);
-        const output: Long64 = getLong64(this._currentReadBuffer!, this._currentReadPosition, this._littleEndian, target);
+        const output: Long64 = getLong64(this._currentReadBuffer!, target, this._currentReadPosition, this._littleEndian);
         this._finishReadBuffer();
         return output;
     }
@@ -143,6 +144,14 @@ class BinaryReader {
         const length: number = Math.max(1, Math.min(5, this._length - this._cursor));
         this._ensureReadBuffer(this._cursor, length);
         const output: number = getVarint32(this._currentReadBuffer!, this._currentReadPosition, this._currentReadPosition.value + length);
+        this._finishReadBuffer();
+        return output;
+    }
+
+    public readVarint64(target: Long64): typeof target {
+        const length: number = Math.max(1, Math.min(10, this._length - this._cursor));
+        this._ensureReadBuffer(this._cursor, length);
+        const output: Long64 = getVarint64(this._currentReadBuffer!, target, this._currentReadPosition, this._currentReadPosition.value + length);
         this._finishReadBuffer();
         return output;
     }

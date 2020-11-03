@@ -20,7 +20,9 @@ import setUint16 from "./setUint16";
 import setUint32 from "./setUint32";
 import setUint8 from "./setUint8";
 import setVarint32 from "./setVarint32";
+import setVarint64 from "./setVarint64";
 import sizeOfVarint32 from "./sizeofVarint32";
+import sizeOfVarint64 from "./sizeOfVarint64";
 
 class BinaryWriter {
     public static readonly SWAP_BUFFER_SIZE: number = 16;
@@ -140,6 +142,13 @@ class BinaryWriter {
         const length: number = sizeOfVarint32(value);
         this._ensureWriteBuffer(this._cursor, length);
         setVarint32(this._currentWriteBuffer!, value, this._currentWritePosition);
+        this._finishWriteBuffer();
+    }
+
+    public writeVarint64(value: Long64): void {
+        const length: number = sizeOfVarint64(value);
+        this._ensureWriteBuffer(this._cursor, length);
+        setVarint64(this._currentWriteBuffer!, value, this._currentWritePosition);
         this._finishWriteBuffer();
     }
 
