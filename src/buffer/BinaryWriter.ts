@@ -2,6 +2,7 @@
 /// @Copyright ~2020 ☜Samlv9☞ and other contributors
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import clz32 from "../math/clz32";
 import Reference from "../platform/Reference";
 import createSharedUint8Array from "./createSharedUint8Array";
 import createUint8Array from "./createUint8Array";
@@ -247,7 +248,7 @@ class BinaryWriter {
     }
 
     private _roundUpChunkSize(value: number): number {
-        return Math.pow(2, Math.ceil(Math.log(value) / Math.LN2));
+        return Math.pow(2, 32 - clz32(value));
     }
 
     private _limitChunkSize(value: number): number {
