@@ -3,7 +3,7 @@
 /// @MIT-LICENSE | 6.0 | https://developers.guless.com/
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const path = require("path");
-const dist = path.resolve(__dirname, "../dist/www/");
+const dist = path.resolve(__dirname, "../www/dist/");
 const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
 const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfiguration");
@@ -11,8 +11,8 @@ const createDefaultWebpackConfiguration = require("./createDefaultWebpackConfigu
 function createWorkerWebpackConfiguration(env = {}, argv = {}) {
     return mergeWebpackConfiguration(createDefaultWebpackConfiguration(env, argv), {
         context,
+        devtool: argv.mode !== "development" ? false : "inline-source-map",
         target: "webworker",
-        devtool: "#inline-source-map",
         entry: {
             "service-worker": "./service-worker.ts",
         },
