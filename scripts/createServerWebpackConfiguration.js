@@ -4,7 +4,6 @@
 /// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const fs = require("fs");
 const path = require("path");
-const dist = path.resolve(__dirname, "../www/dist/");
 const context = path.resolve(__dirname, "../www/");
 const mergeWebpackConfiguration = require("webpack-merge");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
@@ -20,7 +19,6 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
             "index": ["./index.scss", "./index.ts"],
         },
         output: {
-            path: dist,
             filename: "[name].js",
         },
         resolve: {
@@ -30,12 +28,10 @@ function createServerWebpackConfiguration(env = {}, argv = {}) {
         },
         devServer: {
             host: "www.guless.com",
-            // port: 443,
             https: true,
             key: fs.readFileSync("./private/server.key"),
             cert: fs.readFileSync("./private/server.crt"),
-            injectClient: false,
-            injectHot: false,
+            contentBase: context,
         },
         module: {
             rules: [

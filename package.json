@@ -16,10 +16,9 @@
         "keygen": "source scripts/generate-self-signed-cert.sh",
         "clean": "rm -rf dist/ && rm -rf www/dist/ && rm -rf coverage/",
         "start": "webpack-dev-server --config=scripts/createApplicationWebpackConfiguration.js --mode=development",
-        "build": "npm run clean && npm run build:esm && npm run build:cpy",
-        "build:www": "webpack-cli --config=scripts/createApplicationWebpackConfiguration.js --mode=production",
+        "build": "npm run clean && npm run build:esm && npm run build:assets",
         "build:esm": "tsc -p src/tsconfig.json --declaration --outDir dist/",
-        "build:cpy": "cpx package.json dist/ && cpx \"src/**/*.scss\" dist/",
+        "build:assets": "cpx package.json dist/ && cpx \"src/**/*.scss\" dist/",
         "test": "jest",
         "deploy": "npm version patch && npm run build && npm publish dist/ --access public && git push"
     },
