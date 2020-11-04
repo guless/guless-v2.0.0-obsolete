@@ -228,32 +228,6 @@ abstract class UIMediaElement extends UIElement {
         return this.domElement.pause();
     }
 
-    public destroy(): void {
-        super.destroy();
-        this.domElement.removeEventListener(UIMediaEvent.ABORT,            this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.CAN_PLAY,         this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.CAN_PLAY_THROUGH, this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.DURATION_CHANGE,  this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.EMPTIED,          this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.ENDED,            this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.ERROR,            this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.LOADED_DATA,      this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.LOADED_METADATA,  this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.LOAD_START,       this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.PAUSE,            this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.PLAY,             this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.PLAYING,          this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.PROGRESS,         this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.RATE_CHANGE,      this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.SEEKED,           this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.SEEKING,          this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.STALLED,          this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.SUSPEND,          this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.TIME_UPDATE,      this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.VOLUME_CHANGE,    this._transformMediaEventHandler, false);
-        this.domElement.removeEventListener(UIMediaEvent.WAITING,          this._transformMediaEventHandler, false);
-    }
-
     private _transformMediaEventHandler(evt: Event): void {
         this.dispatchEvent(new UIMediaEvent(evt.type));
     }

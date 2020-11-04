@@ -57,10 +57,6 @@ class UIElement extends Container {
         return this.setAttribute(qualifiedName, UIAttributeValueConversion.numberToAttributeValue(value));
     }
 
-    public destroy(): void {
-        this.classList.remove((this as internal).__CSS_SELECTOR__);
-    }
-
     protected _updateSubtreeForInsertion(node: UIElement): void {
         super._updateSubtreeForInsertion(node);
         this.domElement.insertBefore(node.domElement, node.next === null ? null : (node.next as UIElement).domElement);
