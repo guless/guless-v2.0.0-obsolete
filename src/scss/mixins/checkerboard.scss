@@ -1,7 +1,0 @@
-@mixin checkerboard($gridSize: 10px, $foregroundColor: #ccc, $backgroundColor: #fff) {
-    background-color: $backgroundColor;
-    background-size: $gridSize * 2 $gridSize * 2;
-    background-position: 0 0, $gridSize $gridSize;
-    background-image: linear-gradient(45deg, $foregroundColor 25%, transparent 25%, transparent 75%, $foregroundColor 75%, $foregroundColor),
-                      linear-gradient(45deg, $foregroundColor 25%, transparent 25%, transparent 75%, $foregroundColor 75%, $foregroundColor);
-}
