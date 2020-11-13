@@ -19,7 +19,7 @@ function createRequestAnimationFrame(): typeof requestAnimationFrame {
     
     return function requestAnimationFrame(callback: FrameRequestCallback): number {
         timeNow = Date.now();
-        timeToCall = Math.max(timeToCall + 16, timeNow);
+        timeToCall = timeNow < timeToCall ? timeNow : Math.max(timeToCall + 16, timeNow);
 
         return setTimeout(() => callback(timeToCall), timeToCall - timeNow) as internal;
     };
