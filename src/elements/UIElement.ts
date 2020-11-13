@@ -9,11 +9,8 @@ import UIAttributeValueConversion from "./UIAttributeValueConversion";
 
 @UISelector("UIElement")
 class UIElement extends Container {
-    public readonly domElement: HTMLElement;
-
-    constructor(domElement: HTMLElement = document.createElement("layer")) {
+    constructor(public readonly domElement: HTMLElement = document.createElement("layer")) {
         super();
-        this.domElement = domElement;
         this.classList.add((this as internal).__CSS_SELECTOR__);
     }
 

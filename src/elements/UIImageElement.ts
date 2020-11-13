@@ -8,10 +8,12 @@ import UIElementCrossOriginAttributeValue from "./UIElementCrossOriginAttributeV
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
+declare interface UIImageElement {
+    readonly domElement: HTMLImageElement;
+}
+
 @UISelector("UIImageElement")
 class UIImageElement extends UIElement {
-    public readonly domElement!: HTMLImageElement;
-
     private _srcObject: null | string | Blob = null;
     private _srcObjectURL: null | string = null;
 

@@ -13,10 +13,12 @@ import { SUPPORTED_MEDIA_SRC_OBJECT_ATTRIBUTE } from "../platform/capabilities/s
 import createObjectURL from "../platform/createObjectURL";
 import revokeObjectURL from "../platform/revokeObjectURL";
 
+declare interface UIMediaElement {
+    readonly domElement: HTMLMediaElement;
+}
+
 @UISelector("UIMediaElement")
 abstract class UIMediaElement extends UIElement {
-    public readonly domElement!: HTMLMediaElement;
-
     private _srcObject: null | string | MediaStream | MediaSource | Blob = null;
     private _srcObjectURL: null | string = null;
 

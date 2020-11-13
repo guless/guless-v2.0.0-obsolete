@@ -5,9 +5,12 @@
 import UIMediaElement from "./UIMediaElement";
 import UISelector from "./UISelector";
 
+declare interface UIVideoElement {
+    readonly domElement: HTMLVideoElement;
+}
+
 @UISelector("UIVideoElement")
 class UIVideoElement extends UIMediaElement {
-    public readonly domElement!: HTMLVideoElement;
     private _playsinline: boolean = false;
 
     constructor(domElement: HTMLVideoElement = document.createElement("video")) {

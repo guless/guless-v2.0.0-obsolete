@@ -5,10 +5,12 @@
 import UIMediaElement from "./UIMediaElement";
 import UISelector from "./UISelector";
 
+declare interface UIAudioElement {
+    readonly domElement: HTMLAudioElement;
+}
+
 @UISelector("UIAudioElement")
 class UIAudioElement extends UIMediaElement {
-    public readonly domElement!: HTMLAudioElement;
-    
     constructor(domElement: HTMLAudioElement = document.createElement("audio")) {
         super(domElement);
     }

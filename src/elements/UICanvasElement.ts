@@ -5,10 +5,12 @@
 import UIElement from "./UIElement";
 import UISelector from "./UISelector";
 
+declare interface UICanvasElement {
+    readonly domElement: HTMLCanvasElement;
+}
+
 @UISelector("UICanvasElement")
 class UICanvasElement extends UIElement {
-    public readonly domElement!: HTMLCanvasElement;
-
     constructor(domElement: HTMLCanvasElement = document.createElement("canvas")) {
         super(domElement);
     }
