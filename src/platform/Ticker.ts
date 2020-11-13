@@ -12,7 +12,7 @@ import ITickerEventsMap from "./ITickerEventsMap";
 import requestAnimationFrame from "./requestAnimationFrame";
 import TickerEvent from "./TickerEvent";
 
-interface Ticker {
+declare interface Ticker {
     addEventListener<K extends keyof ITickerEventsMap>(type: K, listener: (this: Ticker, event: ITickerEventsMap[K]) => void, options?: boolean | IAddEventListenerOptions): void;
     addEventListener(type: string, listener: IEventListener, options?: boolean | IAddEventListenerOptions): void;
     removeEventListener<K extends keyof ITickerEventsMap>(type: K, listener: (this: Ticker, event: ITickerEventsMap[K]) => void, options?: boolean | IEventListenerOptions): void;
